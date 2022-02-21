@@ -1,4 +1,3 @@
-
 FROM docker.io/python:3.8-slim AS builder
 RUN pip install --user pipenv
 # Tell pipenv to create venv in the current directory
@@ -22,8 +21,9 @@ RUN /app/venv/bin/python -c "import flask; print(flask.__version__)"
 # HERE GOES ANY CODE YOU NEED TO ADD TO CREATE YOUR APPLICATION'S IMAGE
 # For example
 # RUN apt install -y libcurl3-gnutls
-# RUN adduser --uid 123123 coolio
+# RUN adduser --uid 123123 coolie
 COPY . /app
 WORKDIR /app/
 
-CMD ["./venv/bin/python", "index.py"]
+# $PORT is set by Heroku
+CMD ./venv/bin/gunicorn -w 4 --bind 0.0.0.0:$PORT index:app
