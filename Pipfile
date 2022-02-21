@@ -5,8 +5,24 @@ name = "pypi"
 
 [packages]
 flask = "*"
+gunicorn = "*"
 
 [dev-packages]
 
 [requires]
 python_version = "3.8"
+
+[scripts]
+hrku-bld = "heroku container:push web --app design-project-b23"
+hrku-run = "heroku container:release web --app design-project-b23"
+hrku-logs = "heroku logs --tail -a design-project-b23"
+
+dkr-bld = "docker build -t design_project/demo ."
+dkr-run = "docker run -ti -p 8080:80 design_project/demo"
+# if this doesn't run immediately, know that it takes a minute or two for ports
+# to get freed up. Either change 8080 to a larger number or wait.
+
+dkr-kill = "bash -c \"docker ps | awk '{print $1}' | tail -n +2 | xargs -ixxx docker kill xxx\""
+dkr-rm = "bash -c \"docker ps -a | awk '{print $1}' | tail -n +2 | xargs -ixxx docker rm xxx\""
+
+
