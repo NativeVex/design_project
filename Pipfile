@@ -16,6 +16,7 @@ python_version = "3.8"
 rmt = "bash -c \"pipenv run hrku-bld && pipenv run hrku-run && pipenv run hrku-logs\""
 hrku-bld = "heroku container:push web --app design-project-b23"
 hrku-run = "heroku container:release web --app design-project-b23"
+hrku-open = "heroku open -a design-project-b23"
 hrku-logs = "heroku logs --tail -a design-project-b23"
 
 lcl = "bash -c \"pipenv run dkr-kill; pipenv run dkr-rm; pipenv run dkr-bld && pipenv run dkr-run\""
