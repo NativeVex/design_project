@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    body { background-image: url("/static/foods7.jpg");background-size:cover;background-repeat:no-repeat } 
+  
+  
+  </style>
+    <h1 style="margin-top:10px;text-align:center;background-color:grey;color:black">{% block title %} Your Personal Meal Plan {% endblock %}</h1>
+    <div style="width: 50%; margin: auto">
+        {% for meal in mealplan %}
+        <div style="padding: 10px; background-color: #EEE; margin: 20px">
+            <p style="font-size: 24px">{{ meal }}</p>
+        </div>
+        {% endfor %}
+    </div>
+{% endblock %}
