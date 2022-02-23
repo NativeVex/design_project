@@ -3,6 +3,7 @@ import sys
 import json
 import data_src
 import itertools
+import random
 
 
 #TODO: make this actually connect to a DB and pull recipes. Might need to add inputs to do a preliminary filtering of the DB first.
@@ -92,10 +93,13 @@ def calculate_meal_plan_nutrition(recipes):
     return nutrition_data
 
 def meal_plan_RSS(health_requirements, meal_plan_nutrition_data):
+    #TODO: data scaling; otherwise an error in calories will matter a lot more than an error in vitamin A
     RSS = 0
     offset = diff_nutritional_values(health_requirements, meal_plan_nutrition_data)
     for i in offset:
         RSS += offset[i]**2
+    #if we want some randomness so it doesn't always spit out the same meal plan we can uncomment and/or change the following line
+    #RSS += random.random() * 2
 
 #Interface of this use case to the outside
 #In: Health requirements
@@ -120,14 +124,17 @@ def gen_meal_plan(json_health_requirements):
     #We can assess the quality of a meal plan given the RSS of the meal plan wrt the reqs. With this we can compare
     #two meal plans and pick the better one.
     meals_per_meal_plan = 3
-    possible_meal_plans = itertools.combinations(available_recipes, meals_per_meal_plan)
+    possible_meal_plans_iterator = itertools.combinations(available_recipes, meals_per_meal_plan)
 
     #print all possible meal plans
-    for i in possible_meal_plans:
-        for j in range(meals_per_meal_plan):
-            print(i[j]["name"])
-        print("===")
+    for i in possible_meal_plans_iterator:
+        possible_meal_plans.append(i)
+#       for j in range(meals_per_meal_plan): 
+#           print(i[j]["name"])
+#       print("===")
+
+    return json.dumps(possible_meal_plans[0])
+
 
     
 
-gen_meal_plan("")

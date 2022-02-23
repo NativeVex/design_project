@@ -15,6 +15,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      #maybe build it locally to run tests before pushing to production? Just my $0.02
 
 ### ⬇ IMPORTANT PART ⬇ ###
 
@@ -57,3 +58,12 @@ jobs:
    
           
 ### ⬆ IMPORTANT PART ⬆ ###
+
+# test:
+#   runs-on: ubuntu-latest
+#   steps:
+#     - name: Checkout
+#       uses: actions/checkout@v2
+
+#     - name: run pytest
+#       run:  pytest webapp/
