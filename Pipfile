@@ -7,6 +7,9 @@ name = "pypi"
 flask = "*"
 gunicorn = "*"
 design_project_b23 = {editable = true, path = "."}
+build = "*"
+dockerfile = "*"
+license = "*"
 
 [dev-packages]
 pyright = "*"

@@ -1,7 +1,8 @@
 import json
 import sys
 from webapp import mealplan
-test_gen_meal_plan():
+
+def test_gen_meal_plan():
     #TODO: health reqs
     result_json = mealplan.gen_meal_plan("")
     assert(type(result_json) == str)

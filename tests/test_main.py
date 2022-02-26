@@ -1,1 +1,1 @@
-import webapp as src
+from tests import *
