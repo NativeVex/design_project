@@ -1,5 +1,6 @@
-import ../src/webapp/mealplan
 import json
+import sys
+from tests import *
 
 def test_gen_meal_plan():
     #TODO: health reqs
