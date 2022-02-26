@@ -5,14 +5,14 @@ FROM ubuntu:latest
 RUN apt update -y && apt install -y software-properties-common
 RUN add-apt-repository ppa:deadsnakes/ppa
 RUN apt install -y python3.9 python3-pip
-ADD ./webapp/requirements.txt /tmp/requirements.txt
+ADD ./src/requirements.txt /tmp/requirements.txt
 ADD Pipfile.lock Pipfile /opt/webapp/
 
 # Install dependencies
 RUN pip3 install --no-cache-dir -q -r /tmp/requirements.txt
 
 # Add our code
-ADD ./webapp /opt/webapp/
+ADD ./src/webapp /opt/webapp/
 WORKDIR /opt/webapp
 
 RUN python3 --version
