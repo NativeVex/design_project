@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "5c96b244c6f39f055f663752ed5e4defed66007548cd78a76d67d667ac24f821"
+            "sha256": "7ad9bd1e5324d680ea8425e18a50525feb34dcb9ce39534b3983115b1dce831e"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -23,6 +23,10 @@
             ],
             "markers": "python_version >= '3.6'",
             "version": "==8.0.4"
+        },
+        "design-project-b23": {
+            "editable": true,
+            "path": "."
         },
         "flask": {
             "hashes": [
@@ -146,10 +150,6 @@
             "editable": true,
             "path": "."
         },
-        "design-project-b23-nativevex": {
-            "editable": true,
-            "path": "."
-        },
         "executing": {
             "hashes": [
                 "sha256:32fc6077b103bd19e6494a72682d66d5763cf20a106d5aa7c5ccbea4e47b0df7",
@@ -262,7 +262,7 @@
                 "sha256:1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926",
                 "sha256:8abb2f1d86890a2dfb989f9a77cfcfd3e47c2a354b01111771326f8aa26e0254"
             ],
-            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'",
+            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2'",
             "version": "==1.16.0"
         },
         "stack-data": {

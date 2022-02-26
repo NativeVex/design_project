@@ -6,6 +6,7 @@ name = "pypi"
 [packages]
 flask = "*"
 gunicorn = "*"
+design_project_b23 = {editable = true, path = "."}
 
 [dev-packages]
 pyright = "*"
