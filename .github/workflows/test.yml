@@ -4,7 +4,6 @@ name: Run tests.
 # Run workflow on every push to master branch.
 on:
   push:
-    branches: [develop]
 
 # Your workflows jobs.
 jobs:
