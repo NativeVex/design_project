@@ -4,7 +4,7 @@ FROM ubuntu:latest
 # Install python and pip
 RUN apt update -y && apt install -y software-properties-common
 RUN add-apt-repository ppa:deadsnakes/ppa
-RUN apt install -y python3.8 python3-pip
+RUN apt install -y python3.9 python3-pip
 ADD ./webapp/requirements.txt /tmp/requirements.txt
 ADD Pipfile.lock Pipfile /opt/webapp/
 
