@@ -1,0 +1,18 @@
+# Your workflow name.
+name: Run tests.
+
+# Run workflow on every push to master branch.
+on:
+  push:
+    branches: [develop]
+
+# Your workflows jobs.
+jobs:
+  pytest-all:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Run pytest
+        run:  pytest tests/
