@@ -11,7 +11,6 @@ design_project_b23 = {editable = true, path = "."}
 [dev-packages]
 pyright = "*"
 ipython = "*"
-design_project_b23 = {editable = true, path = "."}
 
 [requires]
 python_version = "3.9"

@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "7ad9bd1e5324d680ea8425e18a50525feb34dcb9ce39534b3983115b1dce831e"
+            "sha256": "7a2e4ab844c989028452d66ca2ac17c1aac3bdaf4360c988a42c414b5639d0ad"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -145,10 +145,6 @@
             ],
             "markers": "python_version >= '3.5'",
             "version": "==5.1.1"
-        },
-        "design-project-b23": {
-            "editable": true,
-            "path": "."
         },
         "executing": {
             "hashes": [
