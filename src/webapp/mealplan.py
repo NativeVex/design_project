@@ -92,12 +92,14 @@ def calculate_meal_plan_nutrition(recipes):
         nutrition_data = sum_nutritional_values(nutrition_data, i["nutritional value"])
     return nutrition_data
 
-def meal_plan_RSS(health_requirements, meal_plan_nutrition_data):
+def meal_plan_RSS(health_requirements, meal_plan):
     #TODO: data scaling; otherwise an error in calories will matter a lot more than an error in vitamin A
     RSS = 0
-    offset = diff_nutritional_values(health_requirements, meal_plan_nutrition_data)
-    for i in offset:
-        RSS += offset[i]**2
+    for i in meal_plan:
+        offset = diff_nutritional_values(health_requirements, i["nutritional value"])
+        for j in offset:
+            RSS += offset[j]**2
+    return RSS
     #if we want some randomness so it doesn't always spit out the same meal plan we can uncomment and/or change the following line
     #RSS += random.random() * 2
 
@@ -106,9 +108,9 @@ def meal_plan_RSS(health_requirements, meal_plan_nutrition_data):
 #Out: Meal plan
 def gen_meal_plan(json_health_requirements):
     available_recipes = []
-    possible_meal_plans = []
+    best_meal_plan = 0
 
-#   health_requirements = json.loads(json_health_requirements)
+    health_requirements = json.loads(json_health_requirements)
 
     #### If we change the get_recipes_from_db output to share one giant JSON string then life gets easier.
     available_recipes_json = get_recipes_from_db()
@@ -127,14 +129,14 @@ def gen_meal_plan(json_health_requirements):
     possible_meal_plans_iterator = itertools.combinations(available_recipes, meals_per_meal_plan)
 
     #print all possible meal plans
+    lowest_RSS = 1000000000000
     for i in possible_meal_plans_iterator:
-        possible_meal_plans.append(i)
+        current_meal_plan_RSS = meal_plan_RSS(health_requirements, i)
+        if (current_meal_plan_RSS < lowest_RSS):
+            lowest_RSS = current_meal_plan_RSS
+            best_meal_plan = i
 #       for j in range(meals_per_meal_plan): 
 #           print(i[j]["name"])
 #       print("===")
 
-    return json.dumps(possible_meal_plans[0])
-
-
-    
-
+    return json.dumps(best_meal_plan)

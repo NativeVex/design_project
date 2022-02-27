@@ -10,6 +10,7 @@ design_project_b23 = {editable = true, path = "."}
 build = "*"
 dockerfile = "*"
 license = "*"
+pytest = "*"
 
 [dev-packages]
 pyright = "*"
