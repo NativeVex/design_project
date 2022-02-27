@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<html>
+  <head>
+     <title>Demo Form</title>
+     <link rel="stylesheet" media="screen" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  </head>
+  <style>
+    body { background-image: url("/static/foods4.jpg");background-size:cover;background-repeat:no-repeat } 
+  
+  
+  </style>
+  <body>
+
+    
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+
+{% for message in messages %}
+    
+
+    {% if "Error" in message[1]: %}
+        <div class="alert alert-danger">
+        <strong>Error: </strong> {{ message[1] }}
+        </div>
+    {% endif %}
+{% endfor %}
+    {% endif %}
+{% endwith %}
+    <br>
+    <div class="row align-items-center justify-content-center">
+    <div class="col-md-4" style="background-color:grey;color:black;border-radius:10px;width:60%">
+      <form  action="" method="post" role="form">
+        {{ form.csrf }}
+        <h1 style="text-align:center;background-color:grey;color:black">Enter your Diet Nutrition preferences</h1>
+
+        <div class="form-group">
+
+          <label for="Calories">Calories:</label>
+          <input type="number" class="form-control" id="Calories" name="Calories" placeholder="Calories?">
+            <br>
+          <label for="Carbs">Carbs:</label>
+          <input type="number" class="form-control" id="Carbs" name="Carbs" placeholder="Carbs?">
+	    <br>
+	  <label for="Proteins">Proteins:</label>
+	  <input type="number" class="form-control" id="Proteins" name="Proteins" placeholder="Proteins?">
+	    <br>
+	  <label for="Fibers">Fibers:</label>
+	  <input type="number" class="form-control" id="Fibers" name="Fibers" placeholder="Fibers?">
+    <br> 
+    <label for="Allergies">Allergies:</label>
+    <input type="text" class="form-control" id="Allergies" name="Allergies" placeholder="Allergies?">
+    
+	</div>
+        <br>													   
+        <center>
+          <button type="button"><a href="{{url_for('mealplan')}}"><input type="button" value=”Submit”></a>         </center>
+      </form>
+
+      <br>
+
+
+
+    </div>
+    <br>
+  </body>
+</html>
+{% endblock %}
