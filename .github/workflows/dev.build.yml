@@ -7,14 +7,6 @@ on:
     branches: [develop]
 
 # Your workflows jobs.
-jobs:
-  build-local:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Build locally
   build:
     runs-on: ubuntu-latest
     steps:

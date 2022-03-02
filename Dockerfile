@@ -1,4 +1,4 @@
-#Grab the latest alpine image
+#Grab the latest ubuntu image
 FROM ubuntu:latest
 
 # Install python and pip
@@ -10,6 +10,8 @@ ADD Pipfile.lock Pipfile /opt/webapp/
 
 # Install dependencies
 RUN pip3 install --no-cache-dir -q -r /tmp/requirements.txt
+ADD dkr_setup/setup.py pyproject.toml /opt/
+RUN pip3 install -e /opt/
 
 # Add our code
 ADD ./src/webapp /opt/webapp/
@@ -26,5 +28,5 @@ USER myuser
 
 # Run the app.  CMD is required to run on Heroku
 # $PORT is set by Heroku
-#CMD gunicorn -w 4 --bind 0.0.0.0:80 wsgi
-CMD gunicorn -w 4 --bind 0.0.0.0:$PORT wsgi
+CMD gunicorn -w 4 --bind 0.0.0.0:80 wsgi
+#CMD gunicorn -w 4 --bind 0.0.0.0:$PORT wsgi
