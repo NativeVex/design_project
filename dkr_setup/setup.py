@@ -1,4 +1,5 @@
 import setuptools
+import sys
 
 setuptools.setup(
     name="webapp",
