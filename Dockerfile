@@ -11,13 +11,14 @@ ADD ./src/requirements.txt /tmp/requirements.txt
 ADD Pipfile.lock Pipfile /opt/webapp/
 RUN pip3 install --no-cache-dir -q -r /tmp/requirements.txt
 ADD dkr_setup/setup.py pyproject.toml /opt/
-RUN pip3 install -e /opt/
-RUN pip3 list
-RUN python3 -c "import webapp"
 
 # Add our code
 ADD ./src/webapp /opt/webapp/
-WORKDIR /opt/webapp
+WORKDIR /opt/webapp/
+
+ENV PYTHONPATH=/opt/
+
+RUN pip3 install -e /opt/ && pip3 list
 
 RUN python3 --version
 

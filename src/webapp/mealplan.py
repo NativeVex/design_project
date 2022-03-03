@@ -74,8 +74,12 @@ def diff_nutritional_values(n1, n2):
     Returns:
     dict: difference of n1 and n2
     """
+    print("----DIFF NUTRITIONAL VALUES----")
+    print("n1:", type(n1))
+    print("n2:", type(n2))
     n3 = dict(n1)
     for i in n1:
+        print(i)
         n3[i] -= n2[i]
     return n3
 
@@ -93,6 +97,9 @@ def calculate_meal_plan_nutrition(recipes):
     return nutrition_data
 
 def meal_plan_RSS(health_requirements, meal_plan):
+    print("----MEAL PLAN RSS----")
+    print("health_requirements:",type(health_requirements))
+    print("meal_plan:", type(meal_plan))
     #TODO: data scaling; otherwise an error in calories will matter a lot more than an error in vitamin A
     RSS = 0
     for i in meal_plan:
@@ -107,6 +114,7 @@ def meal_plan_RSS(health_requirements, meal_plan):
 #In: Health requirements
 #Out: Meal plan
 def gen_meal_plan(json_health_requirements):
+    print(json_health_requirements)
     available_recipes = []
     best_meal_plan = 0
 

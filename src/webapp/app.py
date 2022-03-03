@@ -64,10 +64,10 @@ def mealplan():
         protein=request.form.get('Proteins')
         list1=[1,2,3]
 
-        jsoninfo={}
-        jsoninfo['calories']=Calories
-        jsoninfo['carbs']=Carbs
-        jsoninfo['protein']=protein
+        jsoninfo = data_src.nutritional_values()
+        jsoninfo['calories']=int(Calories)
+        jsoninfo['carbs']=int(Carbs)
+        jsoninfo['protein']=int(protein)
         jsonstring=json.dumps(jsoninfo)
         mealplan=gen_meal_plan(jsonstring)
         return render_template('mealplans.html',bestmealplan=mealplan)
