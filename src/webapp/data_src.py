@@ -6,4 +6,5 @@ def recipe_data():
     skeleton = json.loads('{"name":"n/a","ingredients":[],"nutritional value":""}')
     skeleton["nutritional value"] = nutritional_values()
     return skeleton
-
+def meal_plan():
+    return [recipe_data(), recipe_data(), recipe_data()]
