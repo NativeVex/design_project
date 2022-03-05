@@ -6,52 +6,29 @@ import pytest
 import itertools
 from webapp import mealplan
 from webapp import data_src
+import test_data
 
 
 
-#input generators using randomness
-def sample_nutritional_values():
-    nutritionalvalues = data_src.nutritional_values()
-    for i in nutritionalvalues:
-        nutritionalvalues[i] = int(random.random() * 200)
-    return nutritionalvalues
-
-def sample_recipe():
-    recipe = data_src.recipe_data()
-    recipe["name"] = str(base64.b64encode(random.randbytes(20)))
-    for i in range(random.randint(3, 20)):
-        recipe["ingredients"].append(str(base64.b64encode(random.randbytes(20))))
-    recipe["nutritional value"] = sample_nutritional_values()
-    return recipe
-
-def sample_meal_plan():
-    meal_plan = data_src.meal_plan()
-    meal_plan[0] = sample_recipe()
-    meal_plan[1] = sample_recipe()
-    meal_plan[2] = sample_recipe()
-    return meal_plan
-
-def sample_health_reqs():
-    return sample_nutritional_values()
 
 #define what the variables are for this use case
 @pytest.fixture
 def health_reqs():
-    return sample_health_reqs()
+    return test_data.sample_health_reqs()
 
 @pytest.fixture
 def meal_plan_a():
-    return sample_meal_plan()
+    return test_data.sample_meal_plan()
 
 @pytest.fixture
 def meal_plan_b():
-    return sample_meal_plan()
+    return test_data.sample_meal_plan()
 
 @pytest.fixture
 def recipe_list():
     ls = []
     for i in range(12):
-        ls.append(sample_recipe())
+        ls.append(test_data.sample_recipe())
     return ls
 
 @pytest.fixture
@@ -68,9 +45,9 @@ def json_recipe_list(recipe_list):
 #we can run this test several times, each time with different inputs, using this.
 @pytest.mark.parametrize("n1,n2",
         [
-            (sample_nutritional_values(), sample_nutritional_values()),
-            (sample_nutritional_values(), sample_nutritional_values()),
-            (sample_nutritional_values(), sample_nutritional_values())
+            (test_data.sample_nutritional_values(), test_data.sample_nutritional_values()),
+            (test_data.sample_nutritional_values(), test_data.sample_nutritional_values()),
+            (test_data.sample_nutritional_values(), test_data.sample_nutritional_values())
             ])
 def test_sum_nutritional_values(n1, n2):
 #   n1 = sample_nutritional_values()
@@ -84,9 +61,17 @@ def test_sum_nutritional_values(n1, n2):
 #we can mark a test as expected to fail like this:
 @pytest.mark.xfail(reason="Showcasing pytest functionality")
 def test_should_fail():
-    n1 = sample_nutritional_values()
+    n1 = test_data.sample_nutritional_values()
     n1["calories"] = "yabba dabba doo"
-    n2 = sample_nutritional_values()
+    n2 = test_data.sample_nutritional_values()
+    result = mealplan.sum_nutritional_values(n1, n2)
+    for i in result:
+        assert(result[i] == n1[i] + n2[i])
+
+@pytest.mark.xfail(reason="Showcasing pytest functionality")
+def test_should_pass():
+    n1 = test_data.sample_nutritional_values()
+    n2 = test_data.sample_nutritional_values()
     result = mealplan.sum_nutritional_values(n1, n2)
     for i in result:
         assert(result[i] == n1[i] + n2[i])
@@ -98,23 +83,23 @@ def test_zero():
         return result
 
 def test_diff_nutritional_values():
-    n1 = sample_nutritional_values()
-    n2 = sample_nutritional_values()
+    n1 = test_data.sample_nutritional_values()
+    n2 = test_data.sample_nutritional_values()
     result = mealplan.diff_nutritional_values(n1, n2)
     for i in result:
         assert(result[i] == n1[i] - n2[i])
     
     return
 def test_calculate_meal_plan_nutrition():
-    meal_plan = sample_meal_plan()
+    meal_plan = test_data.sample_meal_plan()
     print(meal_plan)
     nutrition = mealplan.calculate_meal_plan_nutrition(meal_plan)
     for i in nutrition:
         assert(nutrition[i] == meal_plan[0]["nutritional value"][i] + meal_plan[1]["nutritional value"][i] + meal_plan[2]["nutritional value"][i])
     return
 def test_meal_plan_RSS():
-    healthreqs = sample_nutritional_values()
-    meal_plan = sample_meal_plan()
+    healthreqs = test_data.sample_nutritional_values()
+    meal_plan = test_data.sample_meal_plan()
     rss = mealplan.meal_plan_RSS(healthreqs, meal_plan)
     real_rss = 0
     for i in meal_plan:
