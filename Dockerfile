@@ -4,8 +4,9 @@
 #      Make this code either always install PG12 or not depend on it being version 12
 # Command to run POSTGRES:
 #/usr/lib/postgresql/12/bin/postgres -D /var/lib/postgresql/12/main -c config_file=/etc/postgresql/12/main/postgresql.conf &
-# I added this in dkr_setup/dkr_script.sh. Problem is this command needs to be run as the postgres user and I don't know
-# if I wanna have gunicorn running as postgres or try to get postgres setup to run under myuser.
+# This is in dkr_setup/dkr_script.sh. We need to run this as postgres and the other command as myuser. We do a weird thing
+# where we start as root and then run both using su to have them as different users. It's hacky but it works and postgres
+# is accessible from the command line with the command psql -d docker
 ################################
 #Grab the latest ubuntu image
 FROM ubuntu:latest
@@ -16,11 +17,6 @@ RUN add-apt-repository ppa:deadsnakes/ppa
 RUN apt install -y python3.9 python3-pip postgresql postgresql-client postgresql-contrib
 ADD ./src/requirements.txt /tmp/requirements.txt
 
-#Add Postgres PGP key
-
-#Add Postgres Repo
-
-################################
 # Install dependencies
 ADD Pipfile.lock Pipfile /opt/webapp/
 RUN pip3 install --no-cache-dir -q -r /tmp/requirements.txt
@@ -50,9 +46,13 @@ RUN echo "listen_addresses='*'" >> /etc/postgresql/12/main/postgresql.conf
 #EXPOSE not supported by Heroku so we have to change here
 VOLUME  ["/etc/postgresql", "/var/log/postgresql", "/var/lib/postgresql"]
 
-USER myuser
-
+# Weird rickety thing to run two things as two different users
+USER root
+ADD dkr_setup/dkr_script.sh /opt/
+RUN chmod +x /opt/dkr_script.sh
+CMD /opt/dkr_script.sh
 # Run the app.  CMD is required to run on Heroku
-# $PORT is set by Heroku
-CMD gunicorn -w 4 --bind 0.0.0.0:80 wsgi
-#CMD gunicorn -w 4 --bind 0.0.0.0:$PORT wsgi
+#USER myuser
+## $PORT is set by Heroku
+#CMD gunicorn -w 4 --bind 0.0.0.0:80 wsgi
+##CMD gunicorn -w 4 --bind 0.0.0.0:$PORT wsgi
