@@ -27,8 +27,8 @@ def sample_recipe():
 def sample_meal_plan():
     meal_plan = data_src.meal_plan()
     meal_plan[0] = sample_recipe()
-    meal_plan[0] = sample_recipe()
-    meal_plan[0] = sample_recipe()
+    meal_plan[1] = sample_recipe()
+    meal_plan[2] = sample_recipe()
     return meal_plan
 
 def sample_health_reqs():
@@ -63,22 +63,43 @@ def json_recipe_list(recipe_list):
 
 
 
+#test functions
 
-def test_sum_nutritional_values():
-    n1 = sample_nutritional_values()
-    n2 = sample_nutritional_values()
-    print(n1)
-    print(n2)
+#we can run this test several times, each time with different inputs, using this.
+@pytest.mark.parametrize("n1,n2",
+        [
+            (sample_nutritional_values(), sample_nutritional_values()),
+            (sample_nutritional_values(), sample_nutritional_values()),
+            (sample_nutritional_values(), sample_nutritional_values())
+            ])
+def test_sum_nutritional_values(n1, n2):
+#   n1 = sample_nutritional_values()
+#   n2 = sample_nutritional_values()
     result = mealplan.sum_nutritional_values(n1, n2)
     for i in result:
         assert(result[i] == n1[i] + n2[i])
     
     return
+
+#we can mark a test as expected to fail like this:
+@pytest.mark.xfail(reason="Showcasing pytest functionality")
+def test_should_fail():
+    n1 = sample_nutritional_values()
+    n1["calories"] = "yabba dabba doo"
+    n2 = sample_nutritional_values()
+    result = mealplan.sum_nutritional_values(n1, n2)
+    for i in result:
+        assert(result[i] == n1[i] + n2[i])
+
+#we can expect a specific type of error like this:
+def test_zero():
+    with pytest.raises(ZeroDivisionError):
+        result = 1/0
+        return result
+
 def test_diff_nutritional_values():
     n1 = sample_nutritional_values()
     n2 = sample_nutritional_values()
-    print(n1)
-    print(n2)
     result = mealplan.diff_nutritional_values(n1, n2)
     for i in result:
         assert(result[i] == n1[i] - n2[i])
