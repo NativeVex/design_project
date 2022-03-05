@@ -72,10 +72,16 @@ class TestBadNVs:
         nv["calories"] = "yabba dabba doo"
         test_nutritional_values(nv)
         return
+    def test_missing_something(self):
+        nv = sample_nutritional_values()
+        idx = random.choice(nv)
+        nv.pop(idx)
+        test_nutritional_values(nv)
     def test_bad_something(self):
         nv = sample_nutritional_values()
         idx = random.choice(nv)
         nv[idx] = "yabba dabba doo"
+        test_nutritional_values(nv)
     def test_missing_item(self):
         nv = sample_nutritional_values()
         nv.pop("vitaminA")
