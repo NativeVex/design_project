@@ -33,3 +33,4 @@ dkr-run = "docker run -ti -p 8080:80 design_project/demo"
 # to get freed up. Either change 8080 to a larger number or wait.
 dkr-kill = "bash -c \"docker ps | awk '{print $1}' | tail -n +2 | xargs -ixxx docker kill xxx\""
 dkr-rm = "bash -c \"docker ps -a | awk '{print $1}' | tail -n +2 | xargs -ixxx docker rm xxx\""
+dkr-root = "bash -c \"docker exec -u root -it `docker ps | awk '{print $1}' | tail -n +2` bash\""
