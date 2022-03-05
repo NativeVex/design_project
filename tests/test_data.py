@@ -105,6 +105,10 @@ class TestBadRDs:
         rd = sample_recipe()
         rd["nutritional value"].pop("vitaminA")
         test_recipe_data(rd)
+    def test_missing_something(self):
+        rd = sample_recipe()
+        idx = random.choice(rd)
+        rd.pop(idx)
     def test_empty_recipe(self):
         rd = dict()
         test_recipe_data(rd)
