@@ -2,20 +2,28 @@
 FROM ubuntu:latest
 
 # Install python and pip
-RUN apt update -y && apt install -y software-properties-common
+RUN apt update -y && apt install -y --no-install-recommends software-properties-common
 RUN add-apt-repository ppa:deadsnakes/ppa
 RUN apt install -y python3.9 python3-pip
-ADD ./src/requirements.txt /tmp/requirements.txt
-ADD Pipfile.lock Pipfile /opt/webapp/
+RUN pip install pipenv
+#ADD ./src/requirements.txt /tmp/requirements.txt
 
 # Install dependencies
-RUN pip3 install --no-cache-dir -q -r /tmp/requirements.txt
+#ADD Pipfile.lock Pipfile /opt/webapp/
+#RUN pip3 install --no-cache-dir -q -r /tmp/requirements.txt
+#ADD dkr_setup/setup.py pyproject.toml /opt/
 
 # Add our code
-ADD ./src/webapp /opt/webapp/
-WORKDIR /opt/webapp
+ADD . /opt/webapp/
+WORKDIR /opt/webapp/
+RUN PIPENV_VENV_IN_PROJECT=1 pipenv install --system --deploy --ignore-pipfile
+ENV PATH="/.venv/bin:$PATH"
 
-RUN python3 --version
+#ENV PYTHONPATH=/opt/
+
+#RUN pip3 install -e /opt/ && pip3 list
+
+#RUN python3 --version
 
 # Expose is NOT supported by Heroku
 # EXPOSE 5000
