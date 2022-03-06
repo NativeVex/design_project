@@ -5,38 +5,43 @@ import base64
 import pytest
 import itertools
 from webapp import mealplan
-from webapp import data_src
+from webapp.data_src import DataStructures
 
 
 #Functions to test that a given datastructure is valid
 #Written to be used in other test code 
+random.seed(0)
+@pytest.fixture
 def sample_nutritional_values():
-    nutritionalvalues = data_src.nutritional_values()
+    nutritionalvalues = DataStructures.nutritional_values()
     for i in nutritionalvalues:
         nutritionalvalues[i] = int(random.random() * 200)
     return nutritionalvalues
 
+@pytest.fixture
 def sample_recipe():
-    recipe = data_src.recipe_data()
+    recipe = DataStructures.recipe_data()
     recipe["name"] = str(base64.b64encode(random.randbytes(20)))
     for i in range(random.randint(3, 20)):
         recipe["ingredients"].append(str(base64.b64encode(random.randbytes(20))))
     recipe["nutritional value"] = sample_nutritional_values()
     return recipe
 
+@pytest.fixture
 def sample_meal_plan():
-    meal_plan = data_src.meal_plan()
+    meal_plan = DataStructures.meal_plan()
     meal_plan[0] = sample_recipe()
     meal_plan[1] = sample_recipe()
     meal_plan[2] = sample_recipe()
     return meal_plan
 
+@pytest.fixture
 def sample_health_reqs():
     return sample_nutritional_values()
 
 @pytest.mark.parametrize("nv", [(sample_nutritional_values())])
 def test_nutritional_values(nv):
-    template_nv = data_src.nutritional_values()
+    template_nv = DataStructures.nutritional_values()
     for i in template_nv:
         assert(i in nv)
         assert(type(nv[i]) == type(template_nv[i]))
@@ -44,7 +49,7 @@ def test_nutritional_values(nv):
 
 @pytest.mark.parametrize("rd", [(sample_recipe())])
 def test_recipe_data(rd):
-    template_rd = data_src.recipe_data()
+    template_rd = DataStructures.recipe_data()
     for i in template_rd:
         assert(i in rd)
     assert("name" in rd)
