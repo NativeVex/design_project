@@ -6,11 +6,14 @@ name = "pypi"
 [packages]
 flask = "*"
 gunicorn = "*"
+design_project_b23 = {editable = true, path = "."}
 
 [dev-packages]
+pyright = "*"
+ipython = "*"
 
 [requires]
-python_version = "3.8"
+python_version = "3.9"
 
 [scripts]
 rmt = "bash -c \"pipenv run hrku-bld && pipenv run hrku-run && pipenv run hrku-logs\""
@@ -27,5 +30,3 @@ dkr-run = "docker run -ti -p 8080:80 design_project/demo"
 
 dkr-kill = "bash -c \"docker ps | awk '{print $1}' | tail -n +2 | xargs -ixxx docker kill xxx\""
 dkr-rm = "bash -c \"docker ps -a | awk '{print $1}' | tail -n +2 | xargs -ixxx docker rm xxx\""
-
-
