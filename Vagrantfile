@@ -9,6 +9,8 @@ Vagrant.configure("2") do |config|
   config.vm.box = "ubuntu/focal64"
   config.vm.provider "virtualbox" do |v|
     v.memory = 8192
+    v.cpus = 4
+    v.gui = true
   end
 
   config.vm.provision "shell", inline: <<-SHELL
@@ -22,11 +24,20 @@ Vagrant.configure("2") do |config|
     usermod -aG docker vagrant
     add-apt-repository ppa:deadsnakes/ppa
     apt install -y magic-wormhole git python3.9 python3-pip
-    pip install pipenv
     echo "\nexport PATH=\'/home/vagrant/.local/bin:$PATH\'" >> /home/vagrant/.bashrc
     curl https://cli-assets.heroku.com/install.sh | sh
     curl -s https://install.zerotier.com | sudo bash
     zerotier-cli join 6ab565387aafde26
     cp -r /vagrant .
+  SHELL
+
+  config.vm.provision "build", type: "shell", run: "never", inline: <<-SHELL
+    pip install pipenv --no-input
+    which pipenv
+    bash -c "su vagrant &&\
+             cd /vagrant &&\
+             pipenv install --dev &&\
+             pipenv run dkr-bld &&\
+             pipenv run dkr-run"
   SHELL
 end

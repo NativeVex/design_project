@@ -18,6 +18,7 @@ ADD . /opt/webapp/
 WORKDIR /opt/webapp/
 RUN PIPENV_VENV_IN_PROJECT=1 pipenv install --system --deploy --ignore-pipfile
 ENV PATH="/.venv/bin:$PATH"
+ENV PORT=8080
 
 #ENV PYTHONPATH=/opt/
 
@@ -35,4 +36,4 @@ USER myuser
 # Run the app.  CMD is required to run on Heroku
 # $PORT is set by Heroku
 #CMD gunicorn -w 4 --bind 0.0.0.0:80 wsgi
-CMD gunicorn -w 4 --bind 0.0.0.0:$PORT wsgi
+CMD gunicorn -w 4 --bind 0.0.0.0:$PORT app
