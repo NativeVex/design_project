@@ -4,8 +4,8 @@ import random
 import base64
 import pytest
 import itertools
-from webapp import mealplan
-from webapp import data_src
+from flaskr import mealplan
+from flaskr import data_src
 import test_data
 
 
