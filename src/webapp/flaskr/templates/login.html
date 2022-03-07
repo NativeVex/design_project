@@ -1,0 +1,39 @@
+{% extends "navigation.html" %}
+
+{% block content %}
+<style>
+    body { background-image: url("/static/foods.jpg");background-size:cover;background-repeat:no-repeat } 
+
+
+</style>
+<body>
+<br>
+    
+    <div class="row align-items-center justify-content-center">
+    <div class="col-md-4" style="background-color:grey;color:black; border-radius:10px;width:50%">
+      <form  action="" method="post" role="form">
+        <h1 style="text-align:center;background-color:grey;color:black">Login to your Health/Diet Planner Account</h1>
+
+        <div class="form-group">
+ 
+          <label for="username">Enter Username:</label>
+          <input type="text" class="form-control" id="username" name="username" placeholder="username?">
+           </div>
+        <br>	
+        <label for="password">Enter Password:</label>
+          <input type="text" class="form-control" id="password" name="password" placeholder="password?">
+           												   
+ 
+        <center>
+          <button type="submit" class="btn btn-success">Sign In</button>
+        </center>
+      </form>
+ 
+      <br>
+ 
+    </div>
+    <div style="background-color:grey;margin-top:40px;color:black;border-radius:10px;width:90%">
+    <p>Our health tracker/diet planning website app aims to aid consumers with making health-conscious decisions and empower them to follow through on these commitments. We intend to do this by providing consumers a simple and easy-to-use application that will help them find food, exercises, and recipes based on diet and health expectations. Given recent increasing consumer interest in living healthy and mindful lives, we believe that providing consumers with the ability to track, manage, as well as discover new diets will help solve real-world health and diet misinformation as well as issues stemming from the lack of information about healthy foods.</p>
+</div>
+    </body>
+{% endblock %}
