@@ -3,7 +3,6 @@ import sys
 from webapp import mealplan
 from webapp import data_src
 
-
 def test_gen_meal_plan():
     #TODO: health reqs
     sample_nutritional_values = data_src.nutritional_values()

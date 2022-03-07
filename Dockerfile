@@ -1,4 +1,4 @@
-#Grab the latest alpine image
+#Grab the latest ubuntu image
 FROM ubuntu:latest
 
 # Install python and pip
@@ -36,4 +36,4 @@ USER myuser
 # Run the app.  CMD is required to run on Heroku
 # $PORT is set by Heroku
 #CMD gunicorn -w 4 --bind 0.0.0.0:80 wsgi
-CMD gunicorn -w 4 --bind 0.0.0.0:$PORT app
+CMD gunicorn -w 4 --bind 0.0.0.0:$PORT wsgi
