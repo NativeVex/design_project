@@ -2,6 +2,7 @@ import os
 import sys
 import json
 from flaskr import data_src
+from flaskr.data_src import DataStructures
 import itertools
 import random
 
