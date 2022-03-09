@@ -4,8 +4,8 @@ from time import strftime
 from flask import Flask, jsonify, render_template, flash, request
 from wtforms import Form, StringField, validators, StringField, SubmitField
 
-from flaskr import data_src
-from flaskr.mealplan import gen_meal_plan, get_recipes_from_db
+from flaskr.data_src import DataStructures
+from flaskr.mealplan import MealplanGenerator
 
 
 app = Flask(__name__)
@@ -64,12 +64,13 @@ def mealplan():
         protein=request.form.get('Proteins')
         list1=[1,2,3]
 
-        jsoninfo = data_src.nutritional_values()
+        jsoninfo = DataStructures.nutritional_values()
         jsoninfo['calories']=int(Calories)
         jsoninfo['carbs']=int(Carbs)
         jsoninfo['protein']=int(protein)
         jsonstring=json.dumps(jsoninfo)
-        mealplan=gen_meal_plan(jsonstring)
+        mpg = MealplanGenerator(jsonstring)
+        mealplan = mpg.gen_meal_plan()
         return render_template('mealplans.html',bestmealplan=mealplan)
     elif request.method == 'GET':
         return render_template('mealplans.html')

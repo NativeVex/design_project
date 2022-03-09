@@ -4,9 +4,8 @@ import random
 import base64
 import pytest
 import itertools
-from flaskr import mealplan
-from flaskr import data_src
-import test_data
+from flaskr.mealplan import MealplanGenerator
+from flaskr.data_src import DataStructures
 
 
 
@@ -39,69 +38,54 @@ def json_recipe_list(recipe_list):
     return ls
 
 @pytest.fixture
-def mpg_class():
-    return mealplan.MealplanGenerator(json.dumps(test_data.sample_nutritional_values()))
+def mpg_class(nv1):
+    return MealplanGenerator(json.dumps(nv1))
 
 
 
 #test functions
 
-#we can run this test several times, each time with different inputs, using this.
-@pytest.mark.parametrize("n1,n2",
-        [
-            (test_data.sample_nutritional_values(), test_data.sample_nutritional_values()),
-            (test_data.sample_nutritional_values(), test_data.sample_nutritional_values()),
-            (test_data.sample_nutritional_values(), test_data.sample_nutritional_values())
-            ])
-def test_sum_nutritional_values(n1, n2, mpg_class):
+def test_sum_nutritional_values(nv1, nv2, mpg_class):
     """Tests _sum_nutritional_values utility function"""
-    result = mpg_class._sum_nutritional_values(n1, n2)
+    result = mpg_class._sum_nutritional_values(nv1, nv2)
     for i in result:
-        assert(result[i] == n1[i] + n2[i])
+        assert(result[i] == nv1[i] + nv2[i])
     
     return
 
 #we can mark a test as expected to fail like this:
 @pytest.mark.xfail(reason="Showcasing pytest functionality", strict=True)
-def test_sum_nutritional_values_fail(mpg_class):
+def test_sum_nutritional_values_fail(nv1, nv2, mpg_class):
     """Tests _sum_nutritional_values with string for one value; should fail"""
-    n1 = test_data.sample_nutritional_values()
-    n1["calories"] = "yabba dabba doo"
-    n2 = test_data.sample_nutritional_values()
-    result = mpg_class._sum_nutritional_values(n1, n2)
+    nv1["calories"] = "yabba dabba doo"
+    result = mpg_class._sum_nutritional_values(nv1, nv2)
     for i in result:
-        assert(result[i] == n1[i] + n2[i])
+        assert(result[i] == nv1[i] + nv2[i])
 
 #we can expect a specific type of error like this:
 
-def test_diff_nutritional_values(mpg_class):
+def test_diff_nutritional_values(nv1, nv2, mpg_class):
     """Tests _diff_nutritional_values utility function"""
-    n1 = test_data.sample_nutritional_values()
-    n2 = test_data.sample_nutritional_values()
-    result = mpg_class._diff_nutritional_values(n1, n2)
+    result = mpg_class._diff_nutritional_values(nv1, nv2)
     for i in result:
-        assert(result[i] == n1[i] - n2[i])
-    
+        assert(result[i] == nv1[i] - nv2[i])
     return
-def test_calculate_meal_plan_nutrition(mpg_class):
+
+def test_calculate_meal_plan_nutrition(mp, mpg_class):
     """Tests _calculate_meal_plan_nutrition utility function"""
-    meal_plan = test_data.sample_meal_plan()
-    print(meal_plan)
-    nutrition = mpg_class._calculate_meal_plan_nutrition(meal_plan)
+    nutrition = mpg_class._calculate_meal_plan_nutrition(mp)
 
     for i in nutrition:
-        assert(nutrition[i] == meal_plan[0]["nutritional value"][i] + meal_plan[1]["nutritional value"][i] + meal_plan[2]["nutritional value"][i])
+        assert(nutrition[i] == mp[0]["nutritional value"][i] + mp[1]["nutritional value"][i] + mp[2]["nutritional value"][i])
     return
 
-def test_meal_plan_RSS(mpg_class):
+def test_meal_plan_RSS(sample_health_reqs, mp, mpg_class):
     """Tests _meal_plan_RSS function that gets the RSS of a mealplan"""
-    healthreqs = test_data.sample_nutritional_values()
-    meal_plan = test_data.sample_meal_plan()
-    rss = mpg_class._meal_plan_RSS(healthreqs, meal_plan)
+    rss = mpg_class._meal_plan_RSS(sample_health_reqs, mp)
     real_rss = 0
-    for i in meal_plan:
-        for j in healthreqs:
-            real_rss += (healthreqs[j] - i["nutritional value"][j])**2
+    for i in mp:
+        for j in sample_health_reqs:
+            real_rss += (sample_health_reqs[j] - i["nutritional value"][j])**2
     assert(real_rss == rss)
     return
 

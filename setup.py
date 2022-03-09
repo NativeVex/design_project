@@ -4,7 +4,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="webapp",
+    name="flaskr",
     version = "0.0.1",
     author = "Artur Janik, Chloe Atchabahian",
     author_email = "aj2614@nyu.edu",
@@ -22,8 +22,8 @@ setuptools.setup(
         "License :: OSI Approved :: GNU Affero General Public License v3",
         "Operating System :: OS Independent"
     ],
-    package_dir={"": "src"},
-    package=setuptools.find_packages(where="src"),
+    package_dir={"": "src/webapp"},
+    package=setuptools.find_packages(where="src/webapp"),
     python_requires=">=3.9",
 )
 
