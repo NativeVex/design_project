@@ -4,6 +4,7 @@ FROM ubuntu:latest
 # Install python and pip
 RUN apt update -y && apt install -y --no-install-recommends software-properties-common
 RUN add-apt-repository ppa:deadsnakes/ppa
+
 RUN apt install -y python3.9 python3.9-distutils curl
 RUN curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
 RUN python3.9 get-pip.py
