@@ -10,10 +10,6 @@ import random
 #Idea for DB source: https://www.fatsecret.com/calories-nutrition/search?q=(encoded string)
 #This returns an array of JSON strings. Do we instead want one giant json string? Good question.
 def get_recipes_from_db():
-    #Hard coded recipes for now
-    recipes = []
-    recipes.append('{"name":"Chicken Parm","ingredients":["Chicken","Parmesan"],"nutritional value":{"calories":254,"carbs":12.18,"protein":22.83,"fat":12.38,"cholesterol":108,"sodium":615,"vitaminA":66,"vitaminB1":0,"vitaminB2":0,"vitaminB3":0,"vitaminB5":0,"vitaminB6":0,"vitaminB9":0,"vitaminB12":0,"vitaminC":4.7,"vitaminD":0,"vitaminE":0,"vitaminK":0,"calcium":145,"copper":0,"fluoride":0,"iodine":0,"iron":1.9,"magnesium":0,"manganese":0,"molybdenum":0,"phosphorus":0,"potassium":353,"selenium":0,"zinc":0}}')
-
     adobo_chicken = data_src.recipe_data()
     adobo_chicken["name"] = "Adobo Chicken"
     adobo_chicken["ingredients"] = ["Chicken", "Adobo Sauce"]
@@ -27,7 +23,10 @@ def get_recipes_from_db():
     adobo_chicken["nutritional value"]["calcium"] = 14
     adobo_chicken["nutritional value"]["iron"] = 1.05
     adobo_chicken["nutritional value"]["potassium"] = 147
-    recipes.append(json.dumps(adobo_chicken))
+    recipes = [
+        '{"name":"Chicken Parm","ingredients":["Chicken","Parmesan"],"nutritional value":{"calories":254,"carbs":12.18,"protein":22.83,"fat":12.38,"cholesterol":108,"sodium":615,"vitaminA":66,"vitaminB1":0,"vitaminB2":0,"vitaminB3":0,"vitaminB5":0,"vitaminB6":0,"vitaminB9":0,"vitaminB12":0,"vitaminC":4.7,"vitaminD":0,"vitaminE":0,"vitaminK":0,"calcium":145,"copper":0,"fluoride":0,"iodine":0,"iron":1.9,"magnesium":0,"manganese":0,"molybdenum":0,"phosphorus":0,"potassium":353,"selenium":0,"zinc":0}}',
+        json.dumps(adobo_chicken),
+    ]
 
     ice_cream_sandwich = data_src.recipe_data()
     ice_cream_sandwich["name"] = "Ice Cream Sandwich"
@@ -107,22 +106,20 @@ def meal_plan_RSS(health_requirements, meal_plan):
 #In: Health requirements
 #Out: Meal plan
 def gen_meal_plan(json_health_requirements):
-    available_recipes = []
     best_meal_plan = 0
 
     health_requirements = json.loads(json_health_requirements)
 
     #### If we change the get_recipes_from_db output to share one giant JSON string then life gets easier.
     available_recipes_json = get_recipes_from_db()
-    for i in available_recipes_json:
-        available_recipes.append(json.loads(i))
+    available_recipes = [json.loads(i) for i in available_recipes_json]
     #### END of the weird JSON array thingy.
 
 
     #n choose k reqs. For this proof of concept n is number of recipes and k is 3. Thus there are 
     # n! / (k!(n-k)!) answers. This is obviously impossible to compute for any significant number of recipes.
     #Thus, we need to do some form of optimization. Open to suggestions but for now our dataset is small so we can just do this.
-    
+
     #We can assess the quality of a meal plan given the RSS of the meal plan wrt the reqs. With this we can compare
     #two meal plans and pick the better one.
     meals_per_meal_plan = 3

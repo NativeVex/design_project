@@ -44,10 +44,10 @@ def diet():
         Allergies=request.form['Allergies']
 
         if form.validate():
-            if(int(Calories)<0 or int(Carbs)<0 or int(Proteins)<0 or int(Fibers)<0):
+            if (int(Calories)<0 or int(Carbs)<0 or int(Proteins)<0 or int(Fibers)<0):
                 flash('Error: No negative numbers allowed')
             else:
-                flash('You entered this many calories: {}'.format(Calories))
+                flash(f'You entered this many calories: {Calories}')
 
         else:
             flash('Error: All Fields are Required')
@@ -58,21 +58,18 @@ def diet():
 
 @app.route('/mealplan', methods=['GET','POST'])
 def mealplan():
-    if request.method == 'POST':
+    if request.method == 'GET':
+        return render_template('mealplans.html')
+    elif request.method == 'POST':
         Calories=request.form.get('Calories')
         Carbs=request.form.get('Carbs')
         protein=request.form.get('Proteins')
         list1=[1,2,3]
 
-        jsoninfo={}
-        jsoninfo['calories']=Calories
-        jsoninfo['carbs']=Carbs
-        jsoninfo['protein']=protein
+        jsoninfo = {'calories': Calories, 'carbs': Carbs, 'protein': protein}
         jsonstring=json.dumps(jsoninfo)
         mealplan=gen_meal_plan(jsonstring)
         return render_template('mealplans.html',bestmealplan=mealplan)
-    elif request.method == 'GET':
-        return render_template('mealplans.html')
 
         
 
@@ -120,10 +117,10 @@ def exercises():
         musclegroups=request.form['musclegroups']
 
         if otherform.validate():
-            if(int(duration)<0 or int(frequency)<0):
+            if (int(duration)<0 or int(frequency)<0):
                 flash('Error: No negative numbers allowed')
             else:
-                flash('You entered this much duration: {}'.format(duration))
+                flash(f'You entered this much duration: {duration}')
 
         else:
             flash('Error: All Fields are Required')
