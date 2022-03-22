@@ -4,8 +4,8 @@ from time import strftime
 from flask import Flask, jsonify, render_template, flash, request
 from wtforms import Form, StringField, validators, StringField, SubmitField
 
-from webapp import data_src
-from webapp.mealplan import gen_meal_plan, get_recipes_from_db
+from flaskr.data_src import DataStructures
+from flaskr.mealplan import MealplanGenerator
 
 
 app = Flask(__name__)
@@ -28,6 +28,10 @@ def login():
 @app.route("/points/")
 def points():
     return render_template('points.html')
+
+@app.route("/saveduserinfo/")
+def saveduserinfo():
+    return render_template('saveduserinfo.html')
 
 @app.route("/signup/")
 def signup():
@@ -55,26 +59,29 @@ def diet():
     return render_template('mealplanner.html', form=form)
 
 
-
 @app.route('/mealplan', methods=['GET','POST'])
 def mealplan():
     if request.method == 'POST':
-        Calories=request.form.get('Calories')
-        Carbs=request.form.get('Carbs')
-        protein=request.form.get('Proteins')
+        Calories=request.form.get("Calories")
+        Carbs=request.form.get("Carbs")
+        protein=request.form.get("Proteins")
         list1=[1,2,3]
 
-        jsoninfo={}
-        jsoninfo['calories']=Calories
-        jsoninfo['carbs']=Carbs
-        jsoninfo['protein']=protein
-        jsonstring=json.dumps(jsoninfo)
-        mealplan=gen_meal_plan(jsonstring)
-        return render_template('mealplans.html',bestmealplan=mealplan)
+        jsoninfo = DataStructures.nutritional_values()
+        jsoninfo["calories"] = int(Calories)
+        jsoninfo["carbs"] = int(Carbs)
+        jsoninfo["protein"] = int(protein)
+        jsonstring = json.dumps(jsoninfo)
+        mpg = MealplanGenerator(jsonstring)
+        mealplan = mpg.gen_meal_plan()
+        jsondata=json.loads(mealplan)
+        return render_template("mealplans.html", bestmealplan=jsondata)
     elif request.method == 'GET':
         return render_template('mealplans.html')
 
+    
         
+            
 
 
 
@@ -89,18 +96,8 @@ class foodsform(Form):
 
 @app.route('/listitems/')
 def listitems():
-    foodform = dietform(request.form)
-    if request.method == 'POST':
-        newfood=request.form['Food']
-        
-        if foodform.validate():
-
-                return render_template('shoppinglist.html',form=foodform)
-
-        else:
-            flash('Error: All Fields are Required')
-
-    return render_template('shoppinglist.html',form=foodform)
+    #get shopping list ingredients for meal plan from database 
+    return render_template('shoppinglist.html')
 
 
 
