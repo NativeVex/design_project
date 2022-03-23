@@ -1,4 +1,5 @@
 import pytest
+
 from webapp.models import User
 
 

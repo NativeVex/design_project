@@ -1,5 +1,6 @@
 import pytest
-from webapp.app import db, app
+
+from webapp.app import app, db
 from webapp.models import User
 
 
