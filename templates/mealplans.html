@@ -25,6 +25,15 @@
             <br>
             <br>
     {% endfor %}
+    <form action="{{ url_for('savemealplan') }}" method="post">
+        <tbody>
+           <tr>
+          <br>
+          <th><input type="text" name="bestmealplan" value='{{ bestmealplan }}' required></th>
+          <th><input type="submit" name="button" class="btn btn-success" value="Save Mealplan"></a></th>
+          </tr>
+        </tbody>
+    </form>
         </div>
         {% for meal in mealplans %}
         <div style="padding: 15px; background-color:white; margin: 25px">

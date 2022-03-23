@@ -155,6 +155,15 @@
 
             </div>
           </div>
+          <form action="{{ url_for('saveexerciseplan') }}" method="post">
+            <tbody>
+               <tr>
+              <br>
+              <th><input type="text" name="bestexerciseplan" value='{{ bestexerciseplan }}' required></th>
+              <th><input type="submit" name="button" class="btn btn-success" value="Save Exerciseplan"></a></th>
+              </tr>
+            </tbody>
+        </form>
         
 
       </div>

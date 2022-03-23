@@ -19,96 +19,162 @@ body { background-image: url("/static/foods4.jpg");background-size:cover;backgro
 <body>
 
 
-<div class="w3-container w3-white w3-padding-64 w3-xxlarge" id="menu">
-  <div class="w3-content">
-  
-    <h1 class="w3-center w3-jumbo" style="margin-bottom:64px">USER PROFILE INFO</h1>
-    <div class="w3-row w3-center w3-border w3-border-dark-grey w3-black">
-      <a href="javascript:void(0)" onclick="openMenu(event, 'Pizza');" id="myLink">
-        <div class="w3-col s4 tablink w3-padding-large w3-hover-blue">Saved Shopping List/Recipes</div>
-      </a>
-      <a href="javascript:void(0)" onclick="openMenu(event, 'Pasta');">
-        <div class="w3-col s4 tablink w3-padding-large w3-hover-blue">Saved Exercises</div>
-      </a>
-      <a href="javascript:void(0)" onclick="openMenu(event, 'Starter');">
-        <div class="w3-col s4 tablink w3-padding-large w3-hover-blue">Current Points</div>
-      </a>
+  <div style="padding: 15px; background-color: white; margin: 10px">
+    <h2>Saved Weekly Meal Plan</h2>
+    {% if bestmealplan is defined %}
+
+    <table class="table table-bordered">
+      <tbody>
+        <tr>
+          {% for item in bestmealplan %}
+          <td>Name: {{item['name']}}</td>
+          <td>Ingredients: {{item['ingredients']}}</td>
+          <td>Nutritional Values: {{item['nutritional value']}}</td>
+        </tr>
+          {% endfor %}
+
+      </tbody>
+      {% endif %}
+
+    </table>
+    <h2>Saved Weekly Exercise Plan</h2>
+    {% if bestexerciseplan is defined %}
+
+    <table class="table table-bordered">
+      <tbody>
+        <tr>
+          <td><h5 class="card-title"> Sunday</h5></td>
+          <td><h5 class="card-title"> Name: {{bestexerciseplan['Sunday'][0]['Name']}}</h5></td>
+          <td><h5 class="card-title"> Sets: {{bestexerciseplan['Sunday'][0]['sets']}}</h5></td>
+          <td><h5 class="card-title"> Reps: {{bestexerciseplan['Sunday'][0]['reps']}}</h5></td>
+          <td><h5 class="card-title"> Target Muscle Group: {{bestexerciseplan['Sunday'][0]['targetmusclegroup']}}</h5></td>
+          <td><h5 class="card-title"> Name: {{bestexerciseplan['Sunday'][1]['Name']}}</h5></td>
+          <td><h5 class="card-title"> Sets: {{bestexerciseplan['Sunday'][1]['sets']}}</h5></td>
+          <td><h5 class="card-title"> Reps: {{bestexerciseplan['Sunday'][1]['reps']}}</h5></td>
+          <td><h5 class="card-title"> Target Muscle Group: {{bestexerciseplan['Sunday'][1]['targetmusclegroup']}}</h5></td>
+          <td><h5 class="card-title"> Name: {{bestexerciseplan['Sunday'][2]['Name']}}</h5></td>
+          <td><h5 class="card-title"> Sets: {{bestexerciseplan['Sunday'][2]['sets']}}</h5></td>
+          <td><h5 class="card-title"> Reps: {{bestexerciseplan['Sunday'][2]['reps']}}</h5></td>
+          <td><h5 class="card-title"> Target Muscle Group: {{bestexerciseplan['Sunday'][2]['targetmusclegroup']}}</h5></td>
+        </tr>
+        <tr>
+          <td><h5 class="card-title"> Monday</h5></td>
+
+
+          <td><h5 class="card-title"> Name: {{bestexerciseplan['Monday'][0]['Name']}}</h5></td>
+          <td><h5 class="card-title"> Sets: {{bestexerciseplan['Monday'][0]['sets']}}</h5></td>
+          <td><h5 class="card-title"> Reps: {{bestexerciseplan['Monday'][0]['reps']}}</h5></td>
+          <td><h5 class="card-title"> Target Muscle Group: {{bestexerciseplan['Monday'][0]['targetmusclegroup']}}</h5></td>
+          <td><h5 class="card-title"> Name: {{bestexerciseplan['Monday'][1]['Name']}}</h5></td>
+          <td><h5 class="card-title"> Sets: {{bestexerciseplan['Monday'][1]['sets']}}</h5></td>
+          <td><h5 class="card-title"> Reps: {{bestexerciseplan['Monday'][1]['reps']}}</h5></td>
+          <td><h5 class="card-title"> Target Muscle Group: {{bestexerciseplan['Monday'][1]['targetmusclegroup']}}</h5></td>
+          <td><h5 class="card-title"> Name: {{bestexerciseplan['Monday'][2]['Name']}}</h5></td>
+          <td><h5 class="card-title"> Sets: {{bestexerciseplan['Monday'][2]['sets']}}</h5></td>
+          <td><h5 class="card-title"> Reps: {{bestexerciseplan['Monday'][2]['reps']}}</h5></td>
+          <td><h5 class="card-title"> Target Muscle Group: {{bestexerciseplan['Monday'][2]['targetmusclegroup']}}</h5></td>
+        
+        </tr>
+        <tr>
+          <td><h5 class="card-title"> Tuesday</h5></td>
+
+
+
+          <td><h5 class="card-title"> Name: {{bestexerciseplan['Tuesday'][0]['Name']}}</h5></td>
+          <td><h5 class="card-title"> Sets: {{bestexerciseplan['Tuesday'][0]['sets']}}</h5></td>
+          <td><h5 class="card-title"> Reps: {{bestexerciseplan['Tuesday'][0]['reps']}}</h5></td>
+          <td><h5 class="card-title"> Target Muscle Group: {{bestexerciseplan['Tuesday'][0]['targetmusclegroup']}}</h5></td>
+          <td><h5 class="card-title"> Name: {{bestexerciseplan['Tuesday'][1]['Name']}}</h5></td>
+          <td><h5 class="card-title"> Sets: {{bestexerciseplan['Tuesday'][1]['sets']}}</h5></td>
+          <td><h5 class="card-title"> Reps: {{bestexerciseplan['Tuesday'][1]['reps']}}</h5></td>
+          <td><h5 class="card-title"> Target Muscle Group: {{bestexerciseplan['Tuesday'][1]['targetmusclegroup']}}</h5></td>
+          <td><h5 class="card-title"> Name: {{bestexerciseplan['Tuesday'][2]['Name']}}</h5></td>
+          <td><h5 class="card-title"> Sets: {{bestexerciseplan['Tuesday'][2]['sets']}}</h5></td>
+          <td><h5 class="card-title"> Reps: {{bestexerciseplan['Tuesday'][2]['reps']}}</h5></td>
+          <td><h5 class="card-title"> Target Muscle Group: {{bestexerciseplan['Tuesday'][2]['targetmusclegroup']}}</h5></td>
+       
+        </tr>
+        <tr>
+          <td><h5 class="card-title"> Wednesday</h5></td>
+
+
+
+          <td><h5 class="card-title"> Name: {{bestexerciseplan['Wednesday'][0]['Name']}}</h5></td>
+          <td><h5 class="card-title"> Sets: {{bestexerciseplan['Wednesday'][0]['sets']}}</h5></td>
+          <td><h5 class="card-title"> Reps: {{bestexerciseplan['Wednesday'][0]['reps']}}</h5></td>
+          <td><h5 class="card-title"> Target Muscle Group: {{bestexerciseplan['Wednesday'][0]['targetmusclegroup']}}</h5></td>
+          <td><h5 class="card-title"> Name: {{bestexerciseplan['Wednesday'][1]['Name']}}</h5></td>
+          <td><h5 class="card-title"> Sets: {{bestexerciseplan['Wednesday'][1]['sets']}}</h5></td>
+          <td><h5 class="card-title"> Reps: {{bestexerciseplan['Wednesday'][1]['reps']}}</h5></td>
+          <td><h5 class="card-title"> Target Muscle Group: {{bestexerciseplan['Wednesday'][1]['targetmusclegroup']}}</h5></td>
+          <td><h5 class="card-title"> Name: {{bestexerciseplan['Wednesday'][2]['Name']}}</h5></td>
+          <td><h5 class="card-title"> Sets: {{bestexerciseplan['Wednesday'][2]['sets']}}</h5></td>
+          <td><h5 class="card-title"> Reps: {{bestexerciseplan['Wednesday'][2]['reps']}}</h5></td>
+          <td><h5 class="card-title"> Target Muscle Group: {{bestexerciseplan['Wednesday'][2]['targetmusclegroup']}}</h5></td>
+        
+        </tr>
+        <tr>
+          <td><h5 class="card-title"> Thursday</h5></td>
+
+          <td><h5 class="card-title"> Name: {{bestexerciseplan['Thursday'][0]['Name']}}</h5></td>
+          <td><h5 class="card-title"> Sets: {{bestexerciseplan['Thursday'][0]['sets']}}</h5></td>
+          <td><h5 class="card-title"> Reps: {{bestexerciseplan['Thursday'][0]['reps']}}</h5></td>
+          <td><h5 class="card-title"> Target Muscle Group: {{bestexerciseplan['Thursday'][0]['targetmusclegroup']}}</h5></td>
+          <td><h5 class="card-title"> Name: {{bestexerciseplan['Thursday'][1]['Name']}}</h5></td>
+          <td><h5 class="card-title"> Sets: {{bestexerciseplan['Thursday'][1]['sets']}}</h5></td>
+          <td><h5 class="card-title"> Reps: {{bestexerciseplan['Thursday'][1]['reps']}}</h5></td>
+          <td><h5 class="card-title"> Target Muscle Group: {{bestexerciseplan['Thursday'][1]['targetmusclegroup']}}</h5></td>
+          <td><h5 class="card-title"> Name: {{bestexerciseplan['Thursday'][2]['Name']}}</h5></td>
+          <td><h5 class="card-title"> Sets: {{bestexerciseplan['Thursday'][2]['sets']}}</h5></td>
+          <td><h5 class="card-title"> Reps: {{bestexerciseplan['Thursday'][2]['reps']}}</h5></td>
+          <td><h5 class="card-title"> Target Muscle Group: {{bestexerciseplan['Thursday'][2]['targetmusclegroup']}}</h5></td>
+        
+        </tr>
+        <tr>
+          <td><h5 class="card-title"> Friday</h5></td>
+
+
+
+          <td><h5 class="card-title"> Name: {{bestexerciseplan['Friday'][0]['Name']}}</h5></td>
+          <td><h5 class="card-title"> Sets: {{bestexerciseplan['Friday'][0]['sets']}}</h5></td>
+          <td><h5 class="card-title"> Reps: {{bestexerciseplan['Friday'][0]['reps']}}</h5></td>
+          <td><h5 class="card-title"> Target Muscle Group: {{bestexerciseplan['Friday'][0]['targetmusclegroup']}}</h5></td>
+          <td><h5 class="card-title"> Name: {{bestexerciseplan['Friday'][1]['Name']}}</h5></td>
+          <td><h5 class="card-title"> Sets: {{bestexerciseplan['Friday'][1]['sets']}}</h5></td>
+          <td><h5 class="card-title"> Reps: {{bestexerciseplan['Friday'][1]['reps']}}</h5></td>
+          <td><h5 class="card-title"> Target Muscle Group: {{bestexerciseplan['Friday'][1]['targetmusclegroup']}}</h5></td>
+          <td><h5 class="card-title"> Name: {{bestexerciseplan['Friday'][2]['Name']}}</h5></td>
+          <td><h5 class="card-title"> Sets: {{bestexerciseplan['Friday'][2]['sets']}}</h5></td>
+          <td><h5 class="card-title"> Reps: {{bestexerciseplan['Friday'][2]['reps']}}</h5></td>
+          <td><h5 class="card-title"> Target Muscle Group: {{bestexerciseplan['Friday'][2]['targetmusclegroup']}}</h5></td>
+        
+        </tr>
+        <tr>
+
+          <td><h5 class="card-title"> Saturday</h5></td>
+          <td><h5 class="card-title"> Name: {{bestexerciseplan['Saturday'][0]['Name']}}</h5></td>
+          <td><h5 class="card-title"> Sets: {{bestexerciseplan['Saturday'][0]['sets']}}</h5></td>
+          <td><h5 class="card-title"> Reps: {{bestexerciseplan['Saturday'][0]['reps']}}</h5></td>
+          <td><h5 class="card-title"> Target Muscle Group: {{bestexerciseplan['Saturday'][0]['targetmusclegroup']}}</h5></td>
+          <td><h5 class="card-title"> Name: {{bestexerciseplan['Saturday'][1]['Name']}}</h5></td>
+          <td><h5 class="card-title"> Sets: {{bestexerciseplan['Saturday'][1]['sets']}}</h5></td>
+          <td><h5 class="card-title"> Reps: {{bestexerciseplan['Saturday'][1]['reps']}}</h5></td>
+          <td><h5 class="card-title"> Target Muscle Group: {{bestexerciseplan['Saturday'][1]['targetmusclegroup']}}</h5></td>
+          <td><h5 class="card-title"> Name: {{bestexerciseplan['Saturday'][2]['Name']}}</h5></td>
+          <td><h5 class="card-title"> Sets: {{bestexerciseplan['Saturday'][2]['sets']}}</h5></td>
+          <td><h5 class="card-title"> Reps: {{bestexerciseplan['Saturday'][2]['reps']}}</h5></td>
+          <td><h5 class="card-title"> Target Muscle Group: {{bestexerciseplan['Saturday'][2]['targetmusclegroup']}}</h5></td>
+        
+        </tr>
+        {% endif %}
+
+        
+
+      </tbody>
+    </table>
     </div>
-
-    <div id="Pizza" class="w3-container menu w3-padding-32 w3-black">
-      <h1><b>Margherita</b> <span class="w3-right w3-tag w3-dark-grey w3-round">$12.50</span></h1>
-      <p class="w3-text-grey">Fresh tomatoes, fresh mozzarella, fresh basil</p>
-      <hr>
-   
-      <h1><b>Formaggio</b> <span class="w3-right w3-tag w3-dark-grey w3-round">$15.50</span></h1>
-      <p class="w3-text-grey">Four cheeses (mozzarella, parmesan, pecorino, jarlsberg)</p>
-      <hr>
-      
-      <h1><b>Chicken</b> <span class="w3-right w3-tag w3-dark-grey w3-round">$17.00</span></h1>
-      <p class="w3-text-grey">Fresh tomatoes, mozzarella, chicken, onions</p>
-      <hr>
-
-      <h1><b>Pineapple'o'clock</b> <span class="w3-right w3-tag w3-dark-grey w3-round">$16.50</span></h1>
-      <p class="w3-text-grey">Fresh tomatoes, mozzarella, fresh pineapple, bacon, fresh basil</p>
-      <hr>
-
-      <h1><b>Meat Town</b> <span class="w3-tag w3-red w3-round">Hot!</span><span class="w3-right w3-tag w3-dark-grey w3-round">$20.00</span></h1>
-      <p class="w3-text-grey">Fresh tomatoes, mozzarella, hot pepporoni, hot sausage, beef, chicken</p>
-      <hr>
-
-      <h1><b>Parma</b> <span class="w3-tag w3-grey w3-round">New</span><span class="w3-right w3-tag w3-dark-grey w3-round">$21.50</span></h1>
-      <p class="w3-text-grey">Fresh tomatoes, mozzarella, parma, bacon, fresh arugula</p>
-    </div>
-
-    <div id="Pasta" class="w3-container menu w3-padding-32 w3-black">
-      <h1><b>Lasagna</b> <span class="w3-tag w3-grey w3-round">Popular</span> <span class="w3-right w3-tag w3-dark-grey w3-round">$13.50</span></h1>
-      <p class="w3-text-grey">Special sauce, mozzarella, parmesan, ground beef</p>
-      <hr>
-   
-      <h1><b>Ravioli</b> <span class="w3-right w3-tag w3-dark-grey w3-round">$14.50</span></h1>
-      <p class="w3-text-grey">Ravioli filled with cheese</p>
-      <hr>
-      
-      <h1><b>Spaghetti Classica</b> <span class="w3-right w3-tag w3-dark-grey w3-round">$11.00</span></h1>
-      <p class="w3-text-grey">Fresh tomatoes, onions, ground beef</p>
-      <hr>
-
-      <h1><b>Seafood pasta</b> <span class="w3-right w3-tag w3-dark-grey w3-round">$25.50</span></h1>
-      <p class="w3-text-grey">Salmon, shrimp, lobster, garlic</p>
-    </div>
-
-
-    <div id="Starter" class="w3-container menu w3-padding-32 w3-black">
-      <h1><b>Today's Soup</b> <span class="w3-tag w3-grey w3-round">Seasonal</span><span class="w3-right w3-tag w3-dark-grey w3-round">$5.50</span></h1>
-      <p class="w3-text-grey">Ask the waiter</p>
-      <hr>
-   
-      <h1><b>Bruschetta</b> <span class="w3-right w3-tag w3-dark-grey w3-round">$8.50</span></h1>
-      <p class="w3-text-grey">Bread with pesto, tomatoes, onion, garlic</p>
-      <hr>
-      
-      <h1><b>Garlic bread</b> <span class="w3-right w3-tag w3-dark-grey w3-round">$9.50</span></h1>
-      <p class="w3-text-grey">Grilled ciabatta, garlic butter, onions</p>
-      <hr>
-      
-      <h1><b>Tomozzarella</b> <span class="w3-right w3-tag w3-dark-grey w3-round">$10.50</span></h1>
-      <p class="w3-text-grey">Tomatoes and mozzarella</p>
-    </div><br>
-
-  </div>
-</div>
-
-<script>
-    function openMenu(evt, menuName) {
-      var i, x, tablinks;
-      x = document.getElementsByClassName("menu");
-      for (i = 0; i < x.length; i++) {
-         x[i].style.display = "none";
-      }
-      document.getElementById(menuName).style.display = "block";
-    }
-    </script>
-
+  <script>
+  </script>
 </body>
 </html>
 
