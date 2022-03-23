@@ -29,6 +29,11 @@ Vagrant.configure("2") do |config|
     curl -s https://install.zerotier.com | sudo bash
     zerotier-cli join 6ab565387aafde26
     cp -r /vagrant .
+    pip install pipenv --no-input
+    which pipenv
+    bash -c "su vagrant &&\
+             cd /vagrant &&\
+             pipenv install --dev"
   SHELL
 
   config.vm.provision "build", type: "shell", run: "never", inline: <<-SHELL
@@ -36,7 +41,6 @@ Vagrant.configure("2") do |config|
     which pipenv
     bash -c "su vagrant &&\
              cd /vagrant &&\
-             pipenv install --dev &&\
              pipenv run dkr-bld &&\
              pipenv run dkr-run"
   SHELL

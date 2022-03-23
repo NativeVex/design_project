@@ -3,15 +3,24 @@ from random import randint
 from time import strftime
 from flask import Flask, jsonify, render_template, flash, request
 from wtforms import Form, StringField, validators, StringField, SubmitField
+from flask_login import LoginManager
 
 from webapp import data_src
 from webapp.mealplan import gen_meal_plan, get_recipes_from_db
 
+from models import User, db
 
-app = Flask(__name__)
+app = Flask(__name__, instance_relative_config=True)
 
-app.config.from_object(__name__)
-app.config['SECRET_KEY'] = '5e4c0f48eef083bde520ef8027eb12e3f8bafcc763969d58'
+login = LoginManager()
+login.login_view = "users.login"
+
+db.init_app(app)
+login.init_app(app)
+
+@login.user_loader
+def load_user(user_id):
+    return User.query.filter(User.id == int(user_id)).first()
 
 class dietform(Form):
     Calories = StringField('Calories:', validators=[validators.DataRequired()])
@@ -55,7 +64,6 @@ def diet():
     return render_template('mealplanner.html', form=form)
 
 
-
 @app.route('/mealplan', methods=['GET','POST'])
 def mealplan():
     if request.method == 'POST':
@@ -73,9 +81,6 @@ def mealplan():
         return render_template('mealplans.html',bestmealplan=mealplan)
     elif request.method == 'GET':
         return render_template('mealplans.html')
-
-        
-
 
 
 @app.route('/exerciseplan/')

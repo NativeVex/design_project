@@ -22,8 +22,8 @@ setuptools.setup(
         "License :: OSI Approved :: GNU Affero General Public License v3",
         "Operating System :: OS Independent"
     ],
-    package_dir={"": "src"},
-    package=setuptools.find_packages(where="src"),
+    package_dir={"": "src/webapp"},
+    package=setuptools.find_packages(where="src/webapp"),
     python_requires=">=3.9",
 )
 
