@@ -4,8 +4,8 @@ import os
 import random
 import sys
 
-from flaskr import data_src
-from flaskr.data_src import DataStructures
+from webapp import data_src
+from webapp.data_src import DataStructures
 
 
 def get_exercises_from_db():
