@@ -12,9 +12,9 @@ from flask import (
     session,
     url_for,
 )
-from flaskr.data_src import DataStructures
-from flaskr.exerciseplan import get_exercises_from_db
-from flaskr.mealplan import MealplanGenerator
+from webapp.data_src import DataStructures
+from webapp.exerciseplan import get_exercises_from_db
+from webapp.mealplan import MealplanGenerator
 from wtforms import Form, StringField, SubmitField, validators
 
 app = Flask(__name__)
