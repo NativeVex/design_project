@@ -112,7 +112,8 @@ class MealplanGenerator(data_src.DataStructures):
         nutrition_data = DataStructures.nutritional_values()
         for i in recipes:
             nutrition_data = self._sum_nutritional_values(
-                nutrition_data, i["nutritional value"])
+                nutrition_data, i["nutritional value"]
+            )
         return nutrition_data
 
     def _meal_plan_RSS(self, health_requirements, meal_plan):
@@ -122,10 +123,11 @@ class MealplanGenerator(data_src.DataStructures):
         # TODO: data scaling; otherwise an error in calories will matter a lot more than an error in vitamin A
         RSS = 0
         for i in meal_plan:
-            offset = self._diff_nutritional_values(health_requirements,
-                                                   i["nutritional value"])
+            offset = self._diff_nutritional_values(
+                health_requirements, i["nutritional value"]
+            )
             for j in offset:
-                RSS += offset[j]**2
+                RSS += offset[j] ** 2
         return RSS
         # if we want some randomness so it doesn't always spit out the same meal plan we can uncomment and/or change the following line
         # RSS += random.random() * 2
@@ -147,13 +149,15 @@ class MealplanGenerator(data_src.DataStructures):
         # two meal plans and pick the better one.
         meals_per_meal_plan = 3
         possible_meal_plans_iterator = itertools.combinations(
-            self.recipes, meals_per_meal_plan)
+            self.recipes, meals_per_meal_plan
+        )
 
         # print all possible meal plans
         lowest_RSS = 1000000000000
         for i in possible_meal_plans_iterator:
             current_meal_plan_RSS = self._meal_plan_RSS(
-                self.user_health_requirements, i)
+                self.user_health_requirements, i
+            )
             if current_meal_plan_RSS < lowest_RSS:
                 lowest_RSS = current_meal_plan_RSS
                 best_meal_plan = i
