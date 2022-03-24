@@ -11,6 +11,8 @@
         <form action="/diet/" method="">
             <button name="btn" class="btn-primary btn-lg" type="submit">Generate new mealplan</button>
         </form>    
+        {% if bestmealplan is defined %}
+
         <br>
         <form action="/listitems/" method="">
             <button name="btn1" class="btn-primary btn-lg" type="submit">Generate Shopping List from mealplan</button>
@@ -40,6 +42,9 @@
             <p style="font-size: 24px">{{ meal }}</p>
         </div>
 {% endfor %}
+
+{% endif %}
+
         
     </div>
 {% endblock %}
