@@ -18,6 +18,10 @@ jobs:
         with:
           python-version: "3.9"
 
+      - name: Install Pipenv
+        run: |
+          python3.9 -m pip install pipenv
+
       - name: Install requirements
         run: |
           python3.9 -m pipenv install --deploy --ignore-pipfile
