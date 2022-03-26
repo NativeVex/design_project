@@ -34,4 +34,4 @@ jobs:
 #          python -m pip install pytest
 
       - name: Run pytest
-        run:  pytest src/webapp/tests/
+        run:  ./.venv/bin/pytest src/webapp/tests/
