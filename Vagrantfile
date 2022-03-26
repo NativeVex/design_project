@@ -7,6 +7,7 @@
 # you're doing.
 Vagrant.configure("2") do |config|
   config.vm.box = "ubuntu/bionic64"
+  config.vm.network "forwarded_port", guest: 8080, host: 8080
   config.vm.provider "virtualbox" do |v|
     v.memory = 8192
     v.cpus = 4
@@ -29,6 +30,7 @@ Vagrant.configure("2") do |config|
     curl -s https://install.zerotier.com | sudo bash
     zerotier-cli join 6ab565387aafde26
     cp -r /vagrant .
+    pip3 install pipenv
   SHELL
 
   config.vm.provision "build", type: "shell", run: "never", inline: <<-SHELL
