@@ -1,6 +1,7 @@
-from project import db
 from datetime import datetime
-from werkzeug.security import generate_password_hash, check_password_hash
+
+from project import db
+from werkzeug.security import check_password_hash, generate_password_hash
 
 
 class User(db.Model):
@@ -15,10 +16,10 @@ class User(db.Model):
     REMEMBER: Never store the plaintext password in a database!
     """
 
-    __tablename__ = 'users'
+    __tablename__ = "users"
 
     email = None
-    username=None
+    username = None
     password_hashed = None
 
     def __init__(self, email: str, username: str, password_plaintext: str):
@@ -41,7 +42,7 @@ class User(db.Model):
         return generate_password_hash(password_plaintext)
 
     def __repr__(self):
-        return f'<User: {self.email}>'
+        return f"<User: {self.email}>"
 
     @property
     def is_authenticated(self):

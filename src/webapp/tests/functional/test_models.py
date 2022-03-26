@@ -2,7 +2,6 @@
 #   from flaskr.models import User
 #   from flaskr import create_app
 
-
 #   @pytest.fixture(scope='module')
 #   def new_user():
 #       user = User('patkennedy79@gmail.com', 'FlaskIsAwesome')
@@ -19,7 +18,6 @@
 #       assert new_user.hashed_password != 'FlaskIsAwesome'
 #       assert new_user.role == 'user'
 
-
 #   @pytest.fixture(scope='module')
 #   def test_client():
 #       flask_app = create_app('flask_test.cfg')
@@ -29,7 +27,6 @@
 #           # Establish an application context
 #           with flask_app.app_context():
 #               yield testing_client  # this is where the testing happens!
-
 
 #   def test_home_page_with_fixture(test_client):
 #       """
@@ -41,8 +38,6 @@
 #       assert response.status_code == 200
 #       assert b"Login to your Health/Diet Planner Account" in response.data
 
-
-
 #   def test_points_page_with_fixture(test_client):
 #       """
 #       GIVEN a Flask application configured for testing
@@ -52,7 +47,6 @@
 #       response = test_client.get('/points/')
 #       assert response.status_code == 200
 #       assert b"Points History Calendar" in response.data
-
 
 #   def test_points_page_post_with_fixture(test_client):
 #       """
@@ -64,7 +58,6 @@
 #       assert response.status_code == 405
 #       assert b"Points History Calendar" not in response.data
 
-
 #   def test_signup_page_with_fixture(test_client):
 #       """
 #       GIVEN a Flask application configured for testing
@@ -74,7 +67,6 @@
 #       response = test_client.get('/signup/')
 #       assert response.status_code == 200
 #       assert b"Sign Up for a New Health/Diet Planner Account" in response.data
-
 
 #   def test_diet_page_with_fixture(test_client):
 #       """
