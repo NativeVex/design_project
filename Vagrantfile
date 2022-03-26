@@ -14,7 +14,6 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.provision "shell", inline: <<-SHELL
-    touch /var/lib/man-db/auto-update
     apt-get update
     apt-get install -y ca-certificates curl gnupg lsb-release
     curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
@@ -24,11 +23,7 @@ Vagrant.configure("2") do |config|
     groupadd docker
     usermod -aG docker vagrant
     add-apt-repository ppa:deadsnakes/ppa
-    apt install -y magic-wormhole git
-    apt install -y python3.9 python3.9-distutils curl
-    curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
-    python3.9 get-pip.py
-    python3.9 -m pip install pipenv
+    apt install -y magic-wormhole git python3-pip python3.9
     echo "\nexport PATH=\'/home/vagrant/.local/bin:$PATH\'" >> /home/vagrant/.bashrc
     curl https://cli-assets.heroku.com/install.sh | sh
     curl -s https://install.zerotier.com | sudo bash

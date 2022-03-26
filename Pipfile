@@ -39,5 +39,4 @@ dkr-rm = "bash -c \"pipenv run dkr-kill && (docker ps -a | awk '{print $1}' | ta
 vgt-hard-reset = "vagrant.exe destroy && vagrant.exe up --provision-with build"
 vgt-port-fwd = "ssh -NTR 8080:localhost:8080 vagrant@localhost"
 vgt-dkr-repl = "vagrant.exe ssh -c 'cd /vagrant && pipenv run dkr-bld && pipenv run dkr-run"
-dkr-rm = "bash -c \"docker ps -a | awk '{print $1}' | tail -n +2 | xargs -ixxx docker rm xxx\""
 
