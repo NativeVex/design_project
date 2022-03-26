@@ -17,7 +17,7 @@ random.seed(0)
 def nv1():
     nutritionalvalues = DataStructures.nutritional_values()
     for i in nutritionalvalues:
-        nutritionalvalues[i] = int(random.random() * 200)
+        nutritionalvalues[i] = random.random() * 200
     return nutritionalvalues
 
 
@@ -25,7 +25,7 @@ def nv1():
 def nv2():
     nutritionalvalues = DataStructures.nutritional_values()
     for i in nutritionalvalues:
-        nutritionalvalues[i] = int(random.random() * 200)
+        nutritionalvalues[i] = random.random() * 200
     return nutritionalvalues
 
 

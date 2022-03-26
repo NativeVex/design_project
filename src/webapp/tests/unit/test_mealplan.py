@@ -7,6 +7,7 @@ import sys
 import pytest
 from flaskr.data_src import DataStructures
 from flaskr.mealplan import MealplanGenerator
+import test_data
 
 
 # define what the variables are for this use case
@@ -102,7 +103,7 @@ def test_meal_plan_RSS(sample_health_reqs, mp, mpg_class):
 
 def test_module_integration(mpg_class):
     """Tests full functionality of mealplan generator module"""
-
+    test_data.test_meal_plan(json.loads(mpg_class.gen_meal_plan()))
     return
 
 

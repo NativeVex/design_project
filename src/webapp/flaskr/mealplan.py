@@ -15,38 +15,38 @@ def get_recipes_from_db():
     # Hard coded recipes for now
     recipes = []
     recipes.append(
-        '{"name":"Chicken Parm","ingredients":["Chicken","Parmesan"],"nutritional value":{"calories":254,"carbs":12.18,"protein":22.83,"fat":12.38,"cholesterol":108,"sodium":615,"vitaminA":66,"vitaminB1":0,"vitaminB2":0,"vitaminB3":0,"vitaminB5":0,"vitaminB6":0,"vitaminB9":0,"vitaminB12":0,"vitaminC":4.7,"vitaminD":0,"vitaminE":0,"vitaminK":0,"calcium":145,"copper":0,"fluoride":0,"iodine":0,"iron":1.9,"magnesium":0,"manganese":0,"molybdenum":0,"phosphorus":0,"potassium":353,"selenium":0,"zinc":0}}'
+        '{"name":"Chicken Parm","ingredients":["Chicken","Parmesan"],"nutritional value":{"calories":254.0,"carbs":12.18,"protein":22.83,"fat":12.38,"cholesterol":108.0,"sodium":615.0,"vitaminA":66.0,"vitaminB1":0.0,"vitaminB2":0.0,"vitaminB3":0.0,"vitaminB5":0.0,"vitaminB6":0.0,"vitaminB9":0.0,"vitaminB12":0.0,"vitaminC":4.7,"vitaminD":0.0,"vitaminE":0.0,"vitaminK":0.0,"calcium":145.0,"copper":0.0,"fluoride":0.0,"iodine":0.0,"iron":1.9,"magnesium":0.0,"manganese":0.0,"molybdenum":0.0,"phosphorus":0.0,"potassium":353.0,"selenium":0.0,"zinc":0.0}}'
     )
 
     adobo_chicken = DataStructures.recipe_data()
     adobo_chicken["name"] = "Adobo Chicken"
     adobo_chicken["ingredients"] = ["Chicken", "Adobo Sauce"]
-    adobo_chicken["nutritional value"]["calories"] = 107
+    adobo_chicken["nutritional value"]["calories"] = 107.0
     adobo_chicken["nutritional value"]["fat"] = 4.93
     adobo_chicken["nutritional value"]["carbs"] = 2.48
     adobo_chicken["nutritional value"]["protein"] = 11.88
-    adobo_chicken["nutritional value"]["sodium"] = 392
-    adobo_chicken["nutritional value"]["vitaminA"] = 9
+    adobo_chicken["nutritional value"]["sodium"] = 392.0
+    adobo_chicken["nutritional value"]["vitaminA"] = 9.0
     adobo_chicken["nutritional value"]["vitaminC"] = 0.5
-    adobo_chicken["nutritional value"]["calcium"] = 14
+    adobo_chicken["nutritional value"]["calcium"] = 14.0
     adobo_chicken["nutritional value"]["iron"] = 1.05
-    adobo_chicken["nutritional value"]["potassium"] = 147
+    adobo_chicken["nutritional value"]["potassium"] = 147.0
     recipes.append(json.dumps(adobo_chicken))
 
     ice_cream_sandwich = DataStructures.recipe_data()
     ice_cream_sandwich["name"] = "Ice Cream Sandwich"
     ice_cream_sandwich["ingredients"] = ["Ice", "Cream", "Sandwich"]
-    ice_cream_sandwich["nutritional value"]["calories"] = 143
+    ice_cream_sandwich["nutritional value"]["calories"] = 143.0
     ice_cream_sandwich["nutritional value"]["fat"] = 5.6
     ice_cream_sandwich["nutritional value"]["carbs"] = 21.75
     ice_cream_sandwich["nutritional value"]["protein"] = 2.61
-    ice_cream_sandwich["nutritional value"]["cholesterol"] = 20
-    ice_cream_sandwich["nutritional value"]["sodium"] = 37
-    ice_cream_sandwich["nutritional value"]["vitaminA"] = 53
+    ice_cream_sandwich["nutritional value"]["cholesterol"] = 20.0
+    ice_cream_sandwich["nutritional value"]["sodium"] = 37.0
+    ice_cream_sandwich["nutritional value"]["vitaminA"] = 53.0
     ice_cream_sandwich["nutritional value"]["vitaminC"] = 0.3
-    ice_cream_sandwich["nutritional value"]["calcium"] = 60
+    ice_cream_sandwich["nutritional value"]["calcium"] = 60.0
     ice_cream_sandwich["nutritional value"]["iron"] = 0.28
-    ice_cream_sandwich["nutritional value"]["potassium"] = 122
+    ice_cream_sandwich["nutritional value"]["potassium"] = 122.0
     ice_cream_sandwich["nutritional value"]
     recipes.append(json.dumps(ice_cream_sandwich))
 
