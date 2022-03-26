@@ -18,8 +18,7 @@ def get_recipes_from_db():
         '{"name":"Chicken Parm","ingredients":["Chicken","Parmesan"],"nutritional value":{"calories":254,"carbs":12.18,"protein":22.83,"fat":12.38,"cholesterol":108,"sodium":615,"vitaminA":66,"vitaminB1":0,"vitaminB2":0,"vitaminB3":0,"vitaminB5":0,"vitaminB6":0,"vitaminB9":0,"vitaminB12":0,"vitaminC":4.7,"vitaminD":0,"vitaminE":0,"vitaminK":0,"calcium":145,"copper":0,"fluoride":0,"iodine":0,"iron":1.9,"magnesium":0,"manganese":0,"molybdenum":0,"phosphorus":0,"potassium":353,"selenium":0,"zinc":0}}'
     )
 
-    jsonstr= '{"Sunday":{"calories":254,"carbs":12.18,"protein":22.83,"fat":12.38,"cholesterol":108,"sodium":615,"vitaminA":66,"vitaminB1":0,"vitaminB2":0,"vitaminB3":0,"vitaminB5":0,"vitaminB6":0,"vitaminB9":0,"vitaminB12":0,"vitaminC":4.7,"vitaminD":0,"vitaminE":0,"vitaminK":0,"calcium":145,"copper":0,"fluoride":0,"iodine":0,"iron":1.9,"magnesium":0,"manganese":0,"molybdenum":0,"phosphorus":0,"potassium":353,"selenium":0,"zinc":0}}'
-
+    jsonstr = '{"Sunday":{"calories":254,"carbs":12.18,"protein":22.83,"fat":12.38,"cholesterol":108,"sodium":615,"vitaminA":66,"vitaminB1":0,"vitaminB2":0,"vitaminB3":0,"vitaminB5":0,"vitaminB6":0,"vitaminB9":0,"vitaminB12":0,"vitaminC":4.7,"vitaminD":0,"vitaminE":0,"vitaminK":0,"calcium":145,"copper":0,"fluoride":0,"iodine":0,"iron":1.9,"magnesium":0,"manganese":0,"molybdenum":0,"phosphorus":0,"potassium":353,"selenium":0,"zinc":0}}'
 
     adobo_chicken = DataStructures.recipe_data()
     adobo_chicken["name"] = "Adobo Chicken"
