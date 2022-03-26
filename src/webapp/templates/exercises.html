@@ -1,0 +1,60 @@
+{% extends 'navigation.html' %}
+
+{% block content %}
+<html>
+  <head>
+     <title>Health Planner</title>
+     <link rel="stylesheet" media="screen" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  </head>
+  <style>
+    body { background-image: url("/static/sports1.jpg");background-size:cover;background-repeat:no-repeat } 
+  
+  </style>
+  <body>
+
+
+    <div class="container">
+      <h2 style="background-color:white;color:black">Hello {{session["username"] }}</h2>
+
+      
+    <div class="row align-items-center justify-content-center" >
+
+    <div class="col-md-4" style="background-color:grey;color:black;border-radius:10px;">
+      <form  action="/exerciseplan" method="post" role="form">
+        {{ form.csrf }}
+        <h1 style="text-align:center;background-color:grey;color:black">Enter your exercise requirements</h1>
+
+        <div class="form-group">
+
+          <label for="duration">Exercise Duration:</label>
+          <input type="number" class="form-control" id="duration" name="duration" placeholder="duration?">
+            <br>
+          <label for="intensity">Exercise Intensity:</label>
+          <input type="text" class="form-control" id="intensity" name="intensity" placeholder="intensity?">
+	    <br>
+	  <label for="frequency">Exercise Frequency:</label>
+	  <input type="number" class="form-control" id="frequency" name="frequency" placeholder="frequency?">
+	    <br>
+	  <label for="musclegroups">Desired Muscle Groups:</label>
+	  <input type="text" class="form-control" id="musclegroups" name="musclegroups" placeholder="musclegroups?">
+	</div>
+
+        <br>													   
+
+        <center>
+          <button type="submit" class="btn btn-success">Submit</button>
+        </center>
+      </form>
+
+      <br>
+
+    </div>
+    <br>
+    </div>
+    </div>
+  </body>
+</html>
+{% endblock %}
