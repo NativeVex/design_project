@@ -99,7 +99,7 @@ class TestBadRDs:
         rd.pop(idx)
 
     def test_empty_recipe(self):
-        rd = dict()
+        rd = {}
         test_recipe_data(rd)
 
     def test_good_recipe(rd1, self):

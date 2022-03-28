@@ -29,18 +29,12 @@ def meal_plan_b():
 
 @pytest.fixture
 def recipe_list():
-    ls = []
-    for i in range(12):
-        ls.append(test_data.sample_recipe())
-    return ls
+    return [test_data.sample_recipe() for _ in range(12)]
 
 
 @pytest.fixture
 def json_recipe_list(recipe_list):
-    ls = []
-    for i in recipe_list:
-        ls.append(json.dumps(i))
-    return ls
+    return [json.dumps(i) for i in recipe_list]
 
 
 @pytest.fixture
@@ -128,5 +122,4 @@ def test_module_integration(mpg_class):
 # IGNORE ME
 def test_zero():
     with pytest.raises(ZeroDivisionError):
-        result = 1 / 0
-        return result
+        return 1 / 0
