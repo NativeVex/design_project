@@ -15,38 +15,46 @@ def test_home_page():
         # assert response.status_code == 200
         assert b"Login to your Health/Diet Planner Account" in response.data
 
+
 def test_logintoexistingaccount(test_client):
     """
     GIVEN a Flask application configured for testing
     WHEN the '/' page is posted to (POST)
     THEN check the response is valid when users enter their username and password
     """
-    response = test_client.post('/',
-                                data=dict(username='newuser', password='anything'))
+    response = test_client.post("/",
+                                data=dict(username="newuser",
+                                          password="anything"))
     assert response.status_code == 200
-    
+
+
 def test_signupforaccount(test_client):
     """
     GIVEN a Flask application configured for testing
     WHEN the '/signup/' page is posted to (POST) when the user enters signup information
-    
+
     """
-    response = test_client.post('/signup/',
-                                data=dict(email='any@gmail.com', username='newuser',password='some'),
-                                follow_redirects=True)
-    assert response.status_code == 200    
+    response = test_client.post(
+        "/signup/",
+        data=dict(email="any@gmail.com", username="newuser", password="some"),
+        follow_redirects=True,
+    )
+    assert response.status_code == 200
+
 
 def test_generatemealplan(test_client):
     """
     GIVEN a Flask application configured for testing
     WHEN the '/mealplan' page is posted to (POST) when the user enters health requirements data
-    
+
     """
-    response = test_client.post('/mealplan',
-                                data=dict(Calories='2000', Carbs='20',Proteins='6'))
-    assert response.status_code == 200   
- 
-    
+    response = test_client.post("/mealplan",
+                                data=dict(Calories="2000",
+                                          Carbs="20",
+                                          Proteins="6"))
+    assert response.status_code == 200
+
+
 def test_home_page_with_fixture(test_client):
     """
     GIVEN a Flask application configured for testing
