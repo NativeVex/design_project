@@ -90,7 +90,7 @@ def saveduserinfo():
     return render_template("saveduserinfo.html")
 
 
-@app.route("/signup/")
+@app.route("/signup/", methods=["GET", "POST"])
 def signup():
     """This function goes to the signup page where
     the user sees a form where they can sign up using their email,
@@ -102,7 +102,9 @@ def signup():
         email = request.form["email"]
         username = request.form["username"]
         password = request.form["password"]
-    return render_template("signup.html")
+        return render_template("signup.html")
+    elif request.method == "GET":
+        return render_template("signup.html")
 
 
 @app.route("/diet/", methods=["GET", "POST"])
