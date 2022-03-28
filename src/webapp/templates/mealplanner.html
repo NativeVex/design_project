@@ -15,7 +15,7 @@
   
   </style>
   <body>
-
+    <h2 style="background-color:white;color:black">Hello {{session["username"] }}</h2>
     <br>
     <div class="row align-items-center justify-content-center">
     <div class="col-md-4" style="background-color:grey;color:black;border-radius:10px;width:60%">
@@ -26,13 +26,13 @@
         <div class="form-group">
 
           <label for="Calories">Calories:</label>
-          <input type="number" class="form-control" id="Calories" name="Calories" placeholder="Calories?">
+          <input type="number" class="form-control" id="Calories" name="Calories" placeholder="Calories?" required>
             <br>
           <label for="Carbs">Carbs:</label>
-          <input type="number" class="form-control" id="Carbs" name="Carbs" placeholder="Carbs?">
+          <input type="number" class="form-control" id="Carbs" name="Carbs" placeholder="Carbs?" required>
 	    <br>
 	  <label for="Proteins">Proteins:</label>
-	  <input type="number" class="form-control" id="Proteins" name="Proteins" placeholder="Proteins?">
+	  <input type="number" class="form-control" id="Proteins" name="Proteins" placeholder="Proteins?" required>
 	    <br>
 	  <label for="Fibers">Fibers:</label>
 	  <input type="number" class="form-control" id="Fibers" name="Fibers" placeholder="Fibers?">

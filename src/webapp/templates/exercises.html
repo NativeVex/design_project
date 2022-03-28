@@ -16,10 +16,14 @@
   <body>
 
 
-    <div class="container"><br>
+    <div class="container">
+      <h2 style="background-color:white;color:black">Hello {{session["username"] }}</h2>
+
+      
     <div class="row align-items-center justify-content-center" >
+
     <div class="col-md-4" style="background-color:grey;color:black;border-radius:10px;">
-      <form  action="" method="post" role="form">
+      <form  action="/exerciseplan" method="post" role="form">
         {{ form.csrf }}
         <h1 style="text-align:center;background-color:grey;color:black">Enter your exercise requirements</h1>
 
