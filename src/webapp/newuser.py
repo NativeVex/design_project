@@ -9,10 +9,4 @@ from webapp.data_src import DataStructures
 
 
 def createnewuser(email, username, password):
-    # Hard coded exercises for now
-    jsonnewuser = {}
-    jsonnewuser["email"] = email
-    jsonnewuser["username"] = username
-    jsonnewuser["password"] = password
-
-    return jsonnewuser
+    return {"email": email, "username": username, "password": password}

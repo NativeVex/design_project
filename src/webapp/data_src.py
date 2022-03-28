@@ -165,5 +165,4 @@ class DataStructures:
                 },
             ],
         }
-        jsonstringnew = json.dumps(jsonstring)
-        return jsonstringnew
+        return json.dumps(jsonstring)
