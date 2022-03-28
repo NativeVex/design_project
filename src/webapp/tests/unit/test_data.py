@@ -42,6 +42,7 @@ def test_meal_plan(mp):
 
 @pytest.mark.xfail(reason="testing bad nutritional values")
 class TestBadNVs:
+
     def test_good_nutritional_values(self, nv1):
         test_nutritional_values(nv1)
 
@@ -76,6 +77,7 @@ def test_delim1():
 
 @pytest.mark.xfail(reason="testing bad recipe data")
 class TestBadRDs:
+
     def test_good_recipe(self, rd1):
         test_recipe_data(rd1)
 
@@ -109,6 +111,7 @@ def test_delim2():
 
 @pytest.mark.xfail(reason="testing bad meal plan")
 class TestBadMPs:
+
     def test_good_meal_plan(self, mp):
         test_meal_plan(mp)
 
@@ -129,6 +132,7 @@ def test_delim3():
 
 
 class TestGoodData:
+
     def test_all(self, mp):
         test_meal_plan(mp)
         for i in mp:
