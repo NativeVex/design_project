@@ -4,8 +4,8 @@ import os
 import random
 import sys
 
-from flaskr import data_src
-from flaskr.data_src import DataStructures
+from webapp import data_src
+from webapp.data_src import DataStructures
 
 
 # TODO: make this actually connect to a DB and pull recipes. Might need to add inputs to do a preliminary filtering of the DB first.

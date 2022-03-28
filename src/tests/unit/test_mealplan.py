@@ -6,8 +6,8 @@ import sys
 
 import pytest
 import test_data
-from flaskr.data_src import DataStructures
-from flaskr.mealplan import MealplanGenerator
+from webapp.data_src import DataStructures
+from webapp.mealplan import MealplanGenerator
 
 
 # define what the variables are for this use case
