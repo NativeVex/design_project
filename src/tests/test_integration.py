@@ -12,8 +12,7 @@ def test_signupfornewaccountintegration(test_client):
     response = test_client.post(
         "/signup/",
         data=dict(email="any@gmail.com", username="newuser", password="some"),
-        follow_redirects=True,
-    )
+        follow_redirects=True)
     assert response.status_code == 200
 
 
@@ -25,6 +24,5 @@ def test_signintoexistingaccountintegration(test_client):
     response = test_client.post(
         "/",
         data=dict(email="any@gmail.com", username="newuser", password="some"),
-        follow_redirects=True,
-    )
+        follow_redirects=True)
     assert response.status_code == 200
