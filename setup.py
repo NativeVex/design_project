@@ -4,7 +4,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="webapp",
+    name="design_project_b23",
     version = "0.0.1",
     author = "Artur Janik, Chloe Atchabahian",
     author_email = "aj2614@nyu.edu",
