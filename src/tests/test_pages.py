@@ -24,7 +24,8 @@ def test_logintoexistingaccount(test_client):
     """
     response = test_client.post("/",
                                 data=dict(username="newuser",
-                                          password="anything"))
+                                          password="anything"),
+        follow_redirects=True)
     assert response.status_code == 200
 
 
@@ -37,8 +38,7 @@ def test_signupforaccount(test_client):
     response = test_client.post(
         "/signup/",
         data=dict(email="any@gmail.com", username="newuser", password="some"),
-        follow_redirects=True,
-    )
+        follow_redirects=True)
     assert response.status_code == 200
 
 
