@@ -5,6 +5,7 @@ import random
 import sys
 
 import pytest
+
 from webapp.data_src import DataStructures
 from webapp.mealplan import MealplanGenerator
 

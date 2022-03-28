@@ -3,9 +3,10 @@ from random import randint
 from time import strftime
 
 from flask import Flask, flash, jsonify, render_template, request
+from wtforms import Form, StringField, SubmitField, validators
+
 from webapp.data_src import DataStructures
 from webapp.mealplan import MealplanGenerator
-from wtforms import Form, StringField, SubmitField, validators
 
 app = Flask(__name__)
 

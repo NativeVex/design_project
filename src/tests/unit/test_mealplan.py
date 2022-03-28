@@ -6,6 +6,7 @@ import sys
 
 import pytest
 import test_data
+
 from webapp.data_src import DataStructures
 from webapp.mealplan import MealplanGenerator
 
