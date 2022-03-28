@@ -8,15 +8,43 @@
   </style>
     <h1 style="margin-top:10px;text-align:center;background-color:grey;color:black">{% block title %} Personal Meal Plan Recommendations{% endblock %}</h1>
     <div style="width: 50%; margin: auto">
-        
+        <form action="/diet/" method="">
+            <button name="btn" class="btn-primary btn-lg" type="submit">Generate new mealplan</button>
+        </form>    
+        {% if bestmealplan is defined %}
+
+        <br>
+        <form action="/listitems/" method="">
+            <button name="btn1" class="btn-primary btn-lg" type="submit">Generate Shopping List from mealplan</button>
+        </form>     
         <div style="padding: 15px; background-color: white; margin: 25px">
-            <p style="font-size: 24px">{{ bestmealplan }}</p>
+            {% for item in bestmealplan %}
+            Name:<span>{{ item['name'] }}</span>
+            <br>
+            Ingredients:<span>{{ item['ingredients'] }}</span>
+            <br>
+            Nutritional Values:<span>{{ item['nutritional value'] }}</span>
+            <br>
+            <br>
+    {% endfor %}
+    <form action="{{ url_for('savemealplan') }}" method="post">
+        <tbody>
+           <tr>
+          <br>
+          <th><input type="text" name="bestmealplan" value='{{ bestmealplan }}' required></th>
+          <th><input type="submit" name="button" class="btn btn-success" value="Save Mealplan"></a></th>
+          </tr>
+        </tbody>
+    </form>
         </div>
         {% for meal in mealplans %}
         <div style="padding: 15px; background-color:white; margin: 25px">
             <p style="font-size: 24px">{{ meal }}</p>
         </div>
 {% endfor %}
+
+{% endif %}
+
         
     </div>
 {% endblock %}
