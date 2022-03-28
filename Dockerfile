@@ -13,7 +13,7 @@ RUN python3.9 -m pip install pipenv
 #ADD ./src/requirements.txt /tmp/requirements.txt
 
 # Install dependencies
-#ADD Pipfile.lock Pipfile /opt/webapp/
+ADD Pipfile.lock Pipfile /opt/webapp/
 #RUN pip3 install --no-cache-dir -q -r /tmp/requirements.txt
 #ADD dkr_setup/setup.py pyproject.toml /opt/
 
@@ -25,9 +25,9 @@ ADD . /opt/
 WORKDIR /opt/
 #RUN python3.9 -m pip list install -e . # looks like chloe was right after all
 #ENV PATH="/.venv/bin:$PATH"
-ENV PORT=8080
+ENV PORT=80
 
-ENV PYTHONPATH=/opt/
+ENV PYTHONPATH=/opt/src/
 
 #this line needs to make a dir in /opt/ and needs to be root for that
 RUN python3.9 -m pipenv install -e /opt/
@@ -42,6 +42,6 @@ RUN PIPENV_VENV_IN_PROJECT=1 python3.9 -m pipenv install --deploy --ignore-pipfi
 # Run the app.  CMD is required to run on Heroku
 # $PORT is set by Heroku
 #CMD gunicorn -w 4 --bind 0.0.0.0:80 wsgi
-#USER myuser
+USER myuser
 WORKDIR /opt/src/webapp
 CMD /opt/.venv/bin/gunicorn -w 1 --bind 0.0.0.0:$PORT wsgi
