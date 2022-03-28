@@ -20,7 +20,7 @@ class DataStructures:
             DataStructures.recipe_data(),
             DataStructures.recipe_data(),
         ]
-    
+
     def get_exercises_from_db():
         # Hard coded exercises for now
         jsonstring = {
@@ -29,7 +29,7 @@ class DataStructures:
                     "Name": "Exercise 1",
                     "sets": 5,
                     "reps": 10,
-                    "targetmusclegroup": "legs"
+                    "targetmusclegroup": "legs",
                 },
                 {
                     "Name": "Exercise 2",
@@ -41,7 +41,7 @@ class DataStructures:
                     "Name": "Exercise 3",
                     "sets": 26,
                     "reps": 32,
-                    "targetmusclegroup": "quad"
+                    "targetmusclegroup": "quad",
                 },
             ],
             "Monday": [
@@ -49,7 +49,7 @@ class DataStructures:
                     "Name": "Exercise 1",
                     "sets": 5,
                     "reps": 10,
-                    "targetmusclegroup": "legs"
+                    "targetmusclegroup": "legs",
                 },
                 {
                     "Name": "Exercise 2",
@@ -61,7 +61,7 @@ class DataStructures:
                     "Name": "Exercise 3",
                     "sets": 26,
                     "reps": 32,
-                    "targetmusclegroup": "quad"
+                    "targetmusclegroup": "quad",
                 },
             ],
             "Tuesday": [
@@ -69,7 +69,7 @@ class DataStructures:
                     "Name": "Exercise 1",
                     "sets": 5,
                     "reps": 10,
-                    "targetmusclegroup": "legs"
+                    "targetmusclegroup": "legs",
                 },
                 {
                     "Name": "Exercise 2",
@@ -81,7 +81,7 @@ class DataStructures:
                     "Name": "Exercise 3",
                     "sets": 26,
                     "reps": 32,
-                    "targetmusclegroup": "quad"
+                    "targetmusclegroup": "quad",
                 },
             ],
             "Wednesday": [
@@ -89,7 +89,7 @@ class DataStructures:
                     "Name": "Exercise 1",
                     "sets": 5,
                     "reps": 10,
-                    "targetmusclegroup": "legs"
+                    "targetmusclegroup": "legs",
                 },
                 {
                     "Name": "Exercise 2",
@@ -101,7 +101,7 @@ class DataStructures:
                     "Name": "Exercise 3",
                     "sets": 26,
                     "reps": 32,
-                    "targetmusclegroup": "quad"
+                    "targetmusclegroup": "quad",
                 },
             ],
             "Thursday": [
@@ -109,7 +109,7 @@ class DataStructures:
                     "Name": "Exercise 1",
                     "sets": 5,
                     "reps": 10,
-                    "targetmusclegroup": "legs"
+                    "targetmusclegroup": "legs",
                 },
                 {
                     "Name": "Exercise 2",
@@ -121,7 +121,7 @@ class DataStructures:
                     "Name": "Exercise 3",
                     "sets": 26,
                     "reps": 32,
-                    "targetmusclegroup": "quad"
+                    "targetmusclegroup": "quad",
                 },
             ],
             "Friday": [
@@ -129,7 +129,7 @@ class DataStructures:
                     "Name": "Exercise 1",
                     "sets": 5,
                     "reps": 10,
-                    "targetmusclegroup": "legs"
+                    "targetmusclegroup": "legs",
                 },
                 {
                     "Name": "Exercise 2",
@@ -141,7 +141,7 @@ class DataStructures:
                     "Name": "Exercise 3",
                     "sets": 26,
                     "reps": 32,
-                    "targetmusclegroup": "quad"
+                    "targetmusclegroup": "quad",
                 },
             ],
             "Saturday": [
@@ -149,7 +149,7 @@ class DataStructures:
                     "Name": "Exercise 1",
                     "sets": 5,
                     "reps": 10,
-                    "targetmusclegroup": "legs"
+                    "targetmusclegroup": "legs",
                 },
                 {
                     "Name": "Exercise 2",
@@ -161,7 +161,7 @@ class DataStructures:
                     "Name": "Exercise 3",
                     "sets": 26,
                     "reps": 32,
-                    "targetmusclegroup": "quad"
+                    "targetmusclegroup": "quad",
                 },
             ],
         }
