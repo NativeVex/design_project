@@ -1,3 +1,8 @@
+Dockerfile
+.git/
+.github/
+tests/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -128,12 +133,6 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-# Vagrant
-.vagrant/
-*.log
-
 # Manually Added:
 # - Any temporary files:
 .#*
-# Any patch files
-*.patch

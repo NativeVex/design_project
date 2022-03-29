@@ -1,5 +1,0 @@
-Flask
-gunicorn
-pipenv
-pytest
-wtforms
