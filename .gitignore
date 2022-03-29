@@ -135,5 +135,3 @@ dmypy.json
 # Manually Added:
 # - Any temporary files:
 .#*
-# Any patch files
-*.patch
