@@ -12,12 +12,6 @@ from webapp.data_src import DataStructures
 # Idea for DB source: https://www.fatsecret.com/calories-nutrition/search?q=(encoded string)
 # This returns an array of JSON strings. Do we instead want one giant json string? Good question.
 def get_recipes_from_db():
-    # Hard coded recipes for now
-    recipes = []
-    recipes.append(
-        '{"name":"Chicken Parm","ingredients":["Chicken","Parmesan"],"nutritional value":{"calories":254.0,"carbs":12.18,"protein":22.83,"fat":12.38,"cholesterol":108.0,"sodium":615.0,"vitaminA":66.0,"vitaminB1":0.0,"vitaminB2":0.0,"vitaminB3":0.0,"vitaminB5":0.0,"vitaminB6":0.0,"vitaminB9":0.0,"vitaminB12":0.0,"vitaminC":4.7,"vitaminD":0.0,"vitaminE":0.0,"vitaminK":0.0,"calcium":145.0,"copper":0.0,"fluoride":0.0,"iodine":0.0,"iron":1.9,"magnesium":0.0,"manganese":0.0,"molybdenum":0.0,"phosphorus":0.0,"potassium":353.0,"selenium":0.0,"zinc":0.0}}'
-    )
-
     adobo_chicken = DataStructures.recipe_data()
     adobo_chicken["name"] = "Adobo Chicken"
     adobo_chicken["ingredients"] = ["Chicken", "Adobo Sauce"]
@@ -31,7 +25,10 @@ def get_recipes_from_db():
     adobo_chicken["nutritional value"]["calcium"] = 14.0
     adobo_chicken["nutritional value"]["iron"] = 1.05
     adobo_chicken["nutritional value"]["potassium"] = 147.0
-    recipes.append(json.dumps(adobo_chicken))
+    recipes = [
+        '{"name":"Chicken Parm","ingredients":["Chicken","Parmesan"],"nutritional value":{"calories":254.0,"carbs":12.18,"protein":22.83,"fat":12.38,"cholesterol":108.0,"sodium":615.0,"vitaminA":66.0,"vitaminB1":0.0,"vitaminB2":0.0,"vitaminB3":0.0,"vitaminB5":0.0,"vitaminB6":0.0,"vitaminB9":0.0,"vitaminB12":0.0,"vitaminC":4.7,"vitaminD":0.0,"vitaminE":0.0,"vitaminK":0.0,"calcium":145.0,"copper":0.0,"fluoride":0.0,"iodine":0.0,"iron":1.9,"magnesium":0.0,"manganese":0.0,"molybdenum":0.0,"phosphorus":0.0,"potassium":353.0,"selenium":0.0,"zinc":0.0}}',
+        json.dumps(adobo_chicken),
+    ]
 
     ice_cream_sandwich = DataStructures.recipe_data()
     ice_cream_sandwich["name"] = "Ice Cream Sandwich"

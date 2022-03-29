@@ -34,7 +34,7 @@ def nv2():
 def rd1(nv1):
     recipe = DataStructures.recipe_data()
     recipe["name"] = str(base64.b64encode(random.randbytes(20)))
-    for i in range(random.randint(3, 20)):
+    for _ in range(random.randint(3, 20)):
         recipe["ingredients"].append(
             str(base64.b64encode(random.randbytes(20))))
     recipe["nutritional value"] = nv1
@@ -45,7 +45,7 @@ def rd1(nv1):
 def rd2(nv1):
     recipe = DataStructures.recipe_data()
     recipe["name"] = str(base64.b64encode(random.randbytes(20)))
-    for i in range(random.randint(3, 20)):
+    for _ in range(random.randint(3, 20)):
         recipe["ingredients"].append(
             str(base64.b64encode(random.randbytes(20))))
     recipe["nutritional value"] = nv1
@@ -56,7 +56,7 @@ def rd2(nv1):
 def rd3(nv1):
     recipe = DataStructures.recipe_data()
     recipe["name"] = str(base64.b64encode(random.randbytes(20)))
-    for i in range(random.randint(3, 20)):
+    for _ in range(random.randint(3, 20)):
         recipe["ingredients"].append(
             str(base64.b64encode(random.randbytes(20))))
     recipe["nutritional value"] = nv1
@@ -158,7 +158,7 @@ class TestBadRDs:
         rd.pop(idx)
 
     def test_empty_recipe(self):
-        rd = dict()
+        rd = {}
         test_recipe_data(rd)
 
     def test_good_recipe(rd1, self):
