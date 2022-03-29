@@ -53,7 +53,7 @@ def diet():
                     or int(Fibers) < 0):
                 flash("Error: No negative numbers allowed")
             else:
-                flash("You entered this many calories: {}".format(Calories))
+                flash(f"You entered this many calories: {Calories}")
 
         else:
             flash("Error: All Fields are Required")
@@ -129,7 +129,7 @@ def exercises():
             if int(duration) < 0 or int(frequency) < 0:
                 flash("Error: No negative numbers allowed")
             else:
-                flash("You entered this much duration: {}".format(duration))
+                flash(f"You entered this much duration: {duration}")
 
         else:
             flash("Error: All Fields are Required")
