@@ -2,7 +2,7 @@ import json
 from random import randint
 from time import strftime
 from flask import Flask, jsonify, render_template, flash, request
-from wtforms import Form, StringField, validators, StringField, SubmitField
+from wtforms import Form, validators, StringField, SubmitField
 
 from webapp import data_src
 from webapp.mealplan import gen_meal_plan, get_recipes_from_db
