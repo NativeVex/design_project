@@ -16,7 +16,7 @@ def test_home_page():
         assert b"Login to your Health/Diet Planner Account" in response.data
 
 
-def test_logintoexistingaccount(test_client):
+def test_login_to_existing_account(test_client):
     """
     GIVEN a Flask application configured for testing
     WHEN the '/' page is posted to (POST)
@@ -29,7 +29,7 @@ def test_logintoexistingaccount(test_client):
     assert response.status_code == 200
 
 
-def test_signupforaccount(test_client):
+def test_signup_for_account(test_client):
     """
     GIVEN a Flask application configured for testing
     WHEN the '/signup/' page is posted to (POST) when the user enters signup information
@@ -42,7 +42,7 @@ def test_signupforaccount(test_client):
     )
     assert response.status_code == 200
 
-def test_invalidsignupforaccount(test_client):
+def test_invalid_signup_for_account(test_client):
     """
     GIVEN a Flask application configured for testing
     WHEN the '/login' page is posted to (POST) when the user is already logged in
@@ -53,7 +53,7 @@ def test_invalidsignupforaccount(test_client):
                                 follow_redirects=True)
     assert response.status_code != 200
     
-def test_generatemealplan(test_client):
+def test_generate_meal_plan(test_client):
     """
     GIVEN a Flask application configured for testing
     WHEN the '/mealplan' page is posted to (POST) when the user enters health requirements data
@@ -67,7 +67,7 @@ def test_generatemealplan(test_client):
     assert response.status_code == 200
 
     
-def test_invalidgeneratemealplan(test_client):
+def test_invalid_generate_mealplan(test_client):
     response = test_client.post('/mealplan',
                                 data=dict(Calories='some', Carbs='any',Proteins='6'),follow_redirects=True)
     assert response.status_code != 200
