@@ -2,7 +2,7 @@ import json
 from random import randint
 from time import strftime
 
-from flask import Flask, flash, jsonify, render_template, request
+from flask import Flask, flash, render_template, request
 from wtforms import Form, StringField, SubmitField, validators
 
 from webapp import data_src
@@ -73,10 +73,7 @@ def mealplan():
         protein = request.form.get("Proteins")
         list1 = [1, 2, 3]
 
-        jsoninfo = {}
-        jsoninfo["calories"] = Calories
-        jsoninfo["carbs"] = Carbs
-        jsoninfo["protein"] = protein
+        jsoninfo = {"calories": Calories, "carbs": Carbs, "protein": protein}
         jsonstring = json.dumps(jsoninfo)
         mealplan = gen_meal_plan(jsonstring)
         return render_template("mealplans.html", bestmealplan=mealplan)
