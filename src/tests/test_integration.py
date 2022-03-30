@@ -4,7 +4,7 @@ import sys
 from webapp import *
 
 
-def test_signupfornewaccountintegration(test_client):
+def test_signup_for_new_account_integration(test_client):
     """integration test for going to sign up page and then
     having user send form data for their email, username, and password"""
     response1 = test_client.get("/signup/",follow_redirects=True)
@@ -17,7 +17,7 @@ def test_signupfornewaccountintegration(test_client):
     assert response.status_code == 200
 
 
-def test_signintoexistingaccountintegration(test_client):
+def test_signin_to_existing_account_integration(test_client):
     """integration test for going to sign in page and then
     having user send form data for their username, and password"""
     response1 = test_client.get("/",follow_redirects=True)
@@ -29,7 +29,7 @@ def test_signintoexistingaccountintegration(test_client):
     )
     assert response.status_code == 200
 
-def test_generatemealplanintegration(test_client):
+def test_generate_mealplan_integration(test_client):
     """integration test for going to mealplanner page and then
     having user send form data for their diet health requirements of calories,carbs,proteins"""
     response1 = test_client.get("/mealplan",follow_redirects=True)
