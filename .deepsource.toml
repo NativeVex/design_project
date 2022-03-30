@@ -1,5 +1,18 @@
 version = 1
 
+test_patterns = ["src/tests/**"]
+
+[[analyzers]]
+name = "test-coverage"
+enabled = true
+
+[[analyzers]]
+name = "docker"
+enabled = true
+
+  [analyzers.meta]
+  dockerfile_paths = ["Dockerfile"]
+
 [[analyzers]]
 name = "python"
 enabled = true
