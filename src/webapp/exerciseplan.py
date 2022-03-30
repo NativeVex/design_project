@@ -152,5 +152,4 @@ def get_exercises_from_db():
             },
         ],
     }
-    jsonstringnew = json.dumps(jsonstring)
-    return jsonstringnew
+    return json.dumps(jsonstring)

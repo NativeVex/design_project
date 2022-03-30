@@ -6,8 +6,7 @@ from webapp.models import User
 
 @pytest.fixture()
 def new_user():
-    user = User("tomliuhyyd@gmail.com", "klg", "qwerty123")
-    return user
+    return User("tomliuhyyd@gmail.com", "klg", "qwerty123")
 
 
 @pytest.fixture()

@@ -54,12 +54,11 @@ def login():
 
     """
     userloginform = loginform(request.form)
-    if request.method == "POST":
-        session["username"] = request.form.get("username")
-        password = request.form.get("password")
-        return redirect(url_for("diet"))
-    else:
+    if request.method != "POST":
         return render_template("login.html")
+    session["username"] = request.form.get("username")
+    password = request.form.get("password")
+    return redirect(url_for("diet"))
 
 
 @app.route("/logout")
@@ -100,16 +99,15 @@ def signup():
 
     """
     usersignupform = signupform(request.form)
-    if request.method == "POST":
-        email = request.form["email"]
-        username = request.form["username"]
-        password = request.form["password"]
-        if '@' not in email:
-            abort(404)
-        jsonuser = createnewuser(email, username, password)
-        return render_template("signup.html", jsonnewuser=jsonuser)
-    else:
+    if request.method != "POST":
         return render_template("signup.html")
+    email = request.form["email"]
+    username = request.form["username"]
+    password = request.form["password"]
+    if '@' not in email:
+        abort(404)
+    jsonuser = createnewuser(email, username, password)
+    return render_template("signup.html", jsonnewuser=jsonuser)
 
 
 @app.route("/diet/", methods=["GET", "POST"])
