@@ -19,8 +19,8 @@ class dietform(Form):
     Carbs = StringField("Carbs:", validators=[validators.DataRequired()])
     Proteins = StringField("Proteins:", validators=[validators.DataRequired()])
     Fibers = StringField("Fibers:", validators=[validators.DataRequired()])
-    Allergies = StringField("Allergies:",
-                            validators=[validators.DataRequired()])
+    Allergies = StringField("Allergies:", validators=[
+                            validators.DataRequired()])
 
 
 @app.route("/")
@@ -49,8 +49,12 @@ def diet():
         Allergies = request.form["Allergies"]
 
         if form.validate():
-            if (int(Calories) < 0 or int(Carbs) < 0 or int(Proteins) < 0
-                    or int(Fibers) < 0):
+            if (
+                int(Calories) < 0
+                or int(Carbs) < 0
+                or int(Proteins) < 0
+                or int(Fibers) < 0
+            ):
                 flash("Error: No negative numbers allowed")
             else:
                 flash("You entered this many calories: {}".format(Calories))
@@ -109,12 +113,12 @@ def listitems():
 
 class exerciseform(Form):
     duration = StringField("duration:", validators=[validators.DataRequired()])
-    intensity = StringField("intensity:",
-                            validators=[validators.DataRequired()])
-    frequency = StringField("frequency:",
-                            validators=[validators.DataRequired()])
-    musclegroups = StringField("musclegroups:",
-                               validators=[validators.DataRequired()])
+    intensity = StringField("intensity:", validators=[
+                            validators.DataRequired()])
+    frequency = StringField("frequency:", validators=[
+                            validators.DataRequired()])
+    musclegroups = StringField("musclegroups:", validators=[
+                               validators.DataRequired()])
 
 
 @app.route("/exercises/", methods=["GET", "POST"])

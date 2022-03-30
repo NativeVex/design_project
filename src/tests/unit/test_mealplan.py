@@ -86,8 +86,12 @@ def test_calculate_meal_plan_nutrition(mp, mpg_class):
     nutrition = mpg_class._calculate_meal_plan_nutrition(mp)
 
     for i in nutrition:
-        assert (nutrition[i] == mp[0]["nutritional value"][i] +
-                mp[1]["nutritional value"][i] + mp[2]["nutritional value"][i])
+        assert (
+            nutrition[i]
+            == mp[0]["nutritional value"][i]
+            + mp[1]["nutritional value"][i]
+            + mp[2]["nutritional value"][i]
+        )
     return
 
 
@@ -97,7 +101,8 @@ def test_meal_plan_RSS(sample_health_reqs, mp, mpg_class):
     real_rss = 0
     for i in mp:
         for j in sample_health_reqs:
-            real_rss += (sample_health_reqs[j] - i["nutritional value"][j])**2
+            real_rss += (sample_health_reqs[j] -
+                         i["nutritional value"][j]) ** 2
     assert real_rss == rss
     return
 
