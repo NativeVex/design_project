@@ -104,6 +104,8 @@ def signup():
         email = request.form["email"]
         username = request.form["username"]
         password = request.form["password"]
+        if '@' not in email:
+            abort(404)
         jsonuser = createnewuser(email, username, password)
         return render_template("signup.html", jsonnewuser=jsonuser)
     else:
@@ -132,6 +134,8 @@ def mealplan():
         Carbs = request.form.get("Carbs")
         protein = request.form.get("Proteins")
         list1 = [1, 2, 3]
+        if(calories.isnumeric()==False or carbs.isnumeric()==False or protein.isnumeric()==False):
+            abort(404)
 
         jsoninfo = DataStructures.nutritional_values()
         jsoninfo["calories"] = int(Calories)
