@@ -6,15 +6,14 @@ import sys
 
 import pytest
 
+from webapp.app import app, db
 from webapp.data_src import DataStructures
 from webapp.mealplan import MealplanGenerator
+from webapp.models import User
 
 # Functions to test that a given datastructure is valid
 # Written to be used in other test code
 random.seed(0)
-
-from webapp.app import app, db
-from webapp.models import User
 
 
 @pytest.fixture()
