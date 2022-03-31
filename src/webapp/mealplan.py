@@ -73,7 +73,6 @@ class MealplanGenerator(data_src.DataStructures):
         for i in json_recipes:
             self.recipes.append(json.loads(i))
         self.user_health_requirements = json.loads(json_health_requirements)
-        return
 
     def _sum_nutritional_values(self, n1, n2):
         """Adds two nutritional value datastructures
