@@ -29,6 +29,22 @@ def test_logintoexistingaccount(test_client):
     assert response.status_code == 200
 
 
+def test_invalidsignupforaccount(test_client):
+    """
+    GIVEN a Flask application configured for testing
+    WHEN the '/login' page is posted to (POST) when the user is already logged in
+    THEN check an error message is returned to the user
+    """
+    response = test_client.post(
+        "/signup/",
+        data=dict(email="userinvalidemail",
+                  username="newuser",
+                  password="some"),
+        follow_redirects=True,
+    )
+    assert response.status_code != 200
+
+
 def test_signupforaccount(test_client):
     """
     GIVEN a Flask application configured for testing
@@ -55,6 +71,15 @@ def test_generatemealplan(test_client):
         follow_redirects=True,
     )
     assert response.status_code == 200
+
+
+def test_invalid_generate_mealplan(test_client):
+    response = test_client.post(
+        "/mealplan",
+        data=dict(Calories="some", Carbs="any", Proteins="6"),
+        follow_redirects=True,
+    )
+    assert response.status_code != 200
 
 
 def test_home_page_with_fixture(test_client):
