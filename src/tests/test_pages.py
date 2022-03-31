@@ -50,7 +50,7 @@ def test_invalid_signup_for_account(test_client):
     """
     response = test_client.post('/signup/',
                                 data=dict(email='userinvalidemail', username='newuser',password='some'),
-                                follow_redirects=True)
+                                follow_redirects=True) 
     assert response.status_code != 200
     
 def test_generate_meal_plan(test_client):
