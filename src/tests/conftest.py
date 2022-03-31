@@ -82,7 +82,6 @@ def test_nutritional_values(nv1):
     for i in template_nv:
         assert i in nv1
         assert type(nv1[i]) == type(template_nv[i])
-    return
 
 
 def test_recipe_data(rd1):
@@ -96,13 +95,11 @@ def test_recipe_data(rd1):
     for i in rd1["ingredients"]:
         assert type(i) == str
     test_nutritional_values(rd1["nutritional value"])
-    return
 
 
 def test_meal_plan(mp):
     for i in mp:
         test_recipe_data(i)
-    return
 
 
 @pytest.mark.xfail(reason="testing bad nutritional values")
@@ -114,7 +111,6 @@ class TestBadNVs:
     def test_bad_calories(self, nv2):
         nv2["calories"] = "yabba dabba doo"
         test_nutritional_values(nv2)
-        return
 
     def test_missing_something(self, nv2):
         idx = random.choice(nv2)
@@ -129,7 +125,6 @@ class TestBadNVs:
     def test_missing_item(self, nv2):
         nv2.pop("vitaminA")
         test_nutritional_values(nv2)
-        return
 
     def test_good_nutritional_values(self, nv2):
         test_nutritional_values(nv2)

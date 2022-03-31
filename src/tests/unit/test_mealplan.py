@@ -57,8 +57,6 @@ def test_sum_nutritional_values(nv1, nv2, mpg_class):
     for i in result:
         assert result[i] == nv1[i] + nv2[i]
 
-    return
-
 
 # we can mark a test as expected to fail like this:
 @pytest.mark.xfail(reason="Showcasing pytest functionality", strict=True)
@@ -78,7 +76,6 @@ def test_diff_nutritional_values(nv1, nv2, mpg_class):
     result = mpg_class._diff_nutritional_values(nv1, nv2)
     for i in result:
         assert result[i] == nv1[i] - nv2[i]
-    return
 
 
 def test_calculate_meal_plan_nutrition(mp, mpg_class):
@@ -88,7 +85,6 @@ def test_calculate_meal_plan_nutrition(mp, mpg_class):
     for i in nutrition:
         assert (nutrition[i] == mp[0]["nutritional value"][i] +
                 mp[1]["nutritional value"][i] + mp[2]["nutritional value"][i])
-    return
 
 
 def test_meal_plan_RSS(sample_health_reqs, mp, mpg_class):
@@ -99,13 +95,11 @@ def test_meal_plan_RSS(sample_health_reqs, mp, mpg_class):
         for j in sample_health_reqs:
             real_rss += (sample_health_reqs[j] - i["nutritional value"][j])**2
     assert real_rss == rss
-    return
 
 
 def test_module_integration(mpg_class):
     """Tests full functionality of mealplan generator module"""
     test_data.test_meal_plan(json.loads(mpg_class.gen_meal_plan()))
-    return
 
 
 # Module integration test: makes sure this module works as expected
