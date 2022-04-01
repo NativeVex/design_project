@@ -14,6 +14,8 @@ from flask import (
 )
 from flask_login import LoginManager
 from wtforms import Form, StringField, SubmitField, validators
+from flask_session import Session
+
 
 from webapp.data_src import DataStructures
 from webapp.mealplan import MealplanGenerator
@@ -22,8 +24,12 @@ from webapp.newuser import createnewuser
 app = Flask(__name__, instance_relative_config=True)
 
 app.config.from_object(__name__)
+app.config["SESSION_PERMANENT"] = False
+app.config["SESSION_TYPE"] = "filesystem"
+Session(app)
 
 app.config["SECRET_KEY"] = "5e4c0f48eef083bde520ef8027eb12e3f8bafcc763969d58"
+
 
 
 class signupform(Form):
@@ -55,7 +61,7 @@ def login():
     """
     userloginform = loginform(request.form)
     if request.method == "POST":
-        session["username"] = request.form.get("username")
+        session["name"] = request.form.get("username")
         password = request.form.get("password")
         return redirect(url_for("diet"))
     else:
@@ -69,7 +75,7 @@ def logout():
 
     """
 
-    session.pop("username", None)  # removes session username
+    session["name"]=None  # removes session username
     return redirect("/")
 
 
