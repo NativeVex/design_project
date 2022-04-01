@@ -17,7 +17,11 @@
 
 
     <div class="container">
-      <h2 style="background-color:white;color:black">Hello {{session["username"] }}</h2>
+	 {% if session.name %}
+
+      <h2 style="background-color:white;color:black">Hello {{session["name"] }}</h2>
+	   {% endif %}
+
 
       
     <div class="row align-items-center justify-content-center" >
