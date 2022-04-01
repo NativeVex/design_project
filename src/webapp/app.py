@@ -1,17 +1,44 @@
+from cmath import log
 import json
 from random import randint
 from time import strftime
+from models import User, db
+from werkzeug.security import generate_password_hash, check_password_hash
 
-from flask import Flask, flash, jsonify, render_template, request
+from flask import (
+    Flask,
+    flash,
+    jsonify,
+    redirect,
+    render_template,
+    request,
+    session,
+    url_for,
+)
 from wtforms import Form, StringField, SubmitField, validators
 
 from webapp.data_src import DataStructures
 from webapp.mealplan import MealplanGenerator
 
-app = Flask(__name__)
+
+app = Flask(__name__, instance_relative_config=True)
 
 app.config.from_object(__name__)
 app.config["SECRET_KEY"] = "5e4c0f48eef083bde520ef8027eb12e3f8bafcc763969d58"
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
+
+db.init_app(app)
+#db.create_all(app=app)
+
+class signupform(Form):
+    email = StringField("Email:", validators=[validators.DataRequired()])
+    username = StringField("Username:", validators=[validators.DataRequired()])
+    password = StringField("Password:", validators=[validators.DataRequired()])
+
+
+class loginform(Form):
+    email = StringField("Email:", validators=[validators.DataRequired()])
+    password = StringField("Password:", validators=[validators.DataRequired()])
 
 
 class dietform(Form):
@@ -23,46 +50,106 @@ class dietform(Form):
                             validators=[validators.DataRequired()])
 
 
-@app.route("/")
+@app.route("/", methods=["GET", "POST"])
 def login():
-    return render_template("login.html")
+    """This function uses a post request to take
+    in a username and password entered by the user to login
+    and then redirects to the page where users enter their health requirements
+
+    """
+    userloginform = loginform(request.form)
+    if request.method == "POST":
+        user = User.query.filter_by(email=userloginform.email.data).first()
+
+        # check if the user actually exists
+        # take the user-supplied password, hash it, and compare it to the hashed password in the database
+        if user and check_password_hash(user.password_hashed, userloginform.password.data):
+            flash('Welcome to your diet planner!')
+            # if the user doesn't exist or password is wrong, reload the page
+            return redirect(url_for('diet'))
+
+        #flash("Please check your login details and try again.")
+        return redirect(url_for("login"))
+    return render_template("login.html", form=userloginform)
+
+
+@app.route("/logout")
+def logout():
+    """This function logs the user out by removing
+    the session username and redirecting to the home login page
+
+    """
+
+    session.pop("username", None)  # removes session username
+    return redirect("/")
 
 
 @app.route("/points/")
 def points():
+    """This function shows a calendar of the points earned by
+    users
+
+    """
     return render_template("points.html")
 
 
-@app.route("/signup/")
+@app.route("/saveduserinfo/")
+def saveduserinfo():
+    """This function goes to the saveduserinfo page where
+    the user sees their saved meal plan and their saved
+    exercise plan
+
+    """
+    return render_template("saveduserinfo.html")
+
+
+@app.route("/signup/", methods=["GET", "POST"])
 def signup():
-    return render_template("signup.html")
+    """This function goes to the signup page where
+    the user sees a form where they can sign up using their email,
+    username, and password
+
+    """
+    usersignupform = signupform(request.form)
+    if request.method == "POST":
+        email = request.form["email"]
+        username = request.form["username"]
+        password = request.form["password"]
+
+        # if this returns a user, then the email already exists in database
+        user = User.query.filter_by(email=email).first() 
+        if user: # if a user is found, we want to redirect back to signup page so user can try again
+            flash('Email address already exists')
+            return redirect(url_for('signup'))
+
+        # create a new user with the form data.
+        new_user = User(email=email, username=username, password_plaintext=password)
+
+        db.session.add(new_user)
+        db.session.commit()
+
+        flash('Thank you for signing up!')
+        return redirect(url_for('login'))
+    return render_template("signup.html", form=usersignupform)
 
 
 @app.route("/diet/", methods=["GET", "POST"])
 def diet():
+    """This function goes to the mealplanner page where
+    the user sees a form where they can enter their diet requirements
+
+    """
     form = dietform(request.form)
-    if request.method == "POST":
-        Calories = request.form["Calories"]
-        Carbs = request.form["Carbs"]
-        Proteins = request.form["Proteins"]
-        Fibers = request.form["Fibers"]
-        Allergies = request.form["Allergies"]
-
-        if form.validate():
-            if (int(Calories) < 0 or int(Carbs) < 0 or int(Proteins) < 0
-                    or int(Fibers) < 0):
-                flash("Error: No negative numbers allowed")
-            else:
-                flash("You entered this many calories: {}".format(Calories))
-
-        else:
-            flash("Error: All Fields are Required")
-
     return render_template("mealplanner.html", form=form)
 
 
 @app.route("/mealplan", methods=["GET", "POST"])
 def mealplan():
+    """This function goes to the mealplans page where
+    the user their generated meal plan from their entered
+    diet requirements
+
+    """
     if request.method == "POST":
         Calories = request.form.get("Calories")
         Carbs = request.form.get("Carbs")
@@ -76,15 +163,64 @@ def mealplan():
         jsonstring = json.dumps(jsoninfo)
         mpg = MealplanGenerator(jsonstring)
         mealplan = mpg.gen_meal_plan()
-        return render_template("mealplans.html", bestmealplan=mealplan)
+        jsondata = json.loads(mealplan)
+        return render_template("mealplans.html", bestmealplan=jsondata)
     elif request.method == "GET":
         return render_template("mealplans.html")
 
 
-@app.route("/exerciseplan/")
+@app.route("/savemealplan", methods=["POST"])
+def savemealplan():
+    """This function goes to the saveduserinfo page where
+    the user can see their saved meal plan
+
+    """
+
+    if request.method == "POST":
+        bestmealplan = request.form["bestmealplan"]
+        mealplan = bestmealplan.replace(
+            "'", '"'
+        )  # replacing single quotes with double quotes to change string to json format
+        newmealplan = json.loads(mealplan)
+        return render_template("saveduserinfo.html", bestmealplan=newmealplan)
+
+
+@app.route("/saveexerciseplan", methods=["POST"])
+def saveexerciseplan():
+    """This function takes the generated best meal plan and saves it to
+    the userinfo page where they can see their saved meal plan.
+
+    """
+
+    if request.method == "POST":
+        bestexerciseplan = request.form["bestexerciseplan"]
+        exerciseplan = bestexerciseplan.replace(
+            "'", '"'
+        )  # replacing single quotes with double quotes to change string to json format
+        newexerciseplan = json.loads(exerciseplan)
+        return render_template("saveduserinfo.html",
+                               bestexerciseplan=newexerciseplan)
+
+
+@app.route("/exerciseplan", methods=["GET", "POST"])
 def exerciseplan():
-    exerciseplan = ["run", "jump"]  # get exerciseplan for week from database
-    return render_template("exerciseplan.html", exerciseplan=exerciseplan)
+    """This function takes in user input on user's exercise
+    requirements and uses a mock function to generate the best exercise
+    plan and show it to users
+
+    """
+    if request.method == "POST":
+        duration = request.form.get("duration")
+        intensity = request.form.get("intensity")
+        frequency = request.form.get("frequency")
+        list1 = [1, 2, 3]
+
+        jsonexercises = DataStructures.get_exercises_from_db()
+        jsonexerciseplan = json.loads(jsonexercises)
+        return render_template("exerciseplan.html",
+                               bestexerciseplan=jsonexerciseplan)
+    elif request.method == "GET":
+        return render_template("exerciseplan.html")
 
 
 class foodsform(Form):
@@ -93,18 +229,8 @@ class foodsform(Form):
 
 @app.route("/listitems/")
 def listitems():
-    foodform = dietform(request.form)
-    if request.method == "POST":
-        newfood = request.form["Food"]
-
-        if foodform.validate():
-
-            return render_template("shoppinglist.html", form=foodform)
-
-        else:
-            flash("Error: All Fields are Required")
-
-    return render_template("shoppinglist.html", form=foodform)
+    # get shopping list ingredients for meal plan from database
+    return render_template("shoppinglist.html")
 
 
 class exerciseform(Form):
@@ -119,21 +245,11 @@ class exerciseform(Form):
 
 @app.route("/exercises/", methods=["GET", "POST"])
 def exercises():
+    """This function shows the exercise requirements form
+    to users where they can enter their exercise requirements
+
+    """
     otherform = exerciseform(request.form)
-    if request.method == "POST":
-        duration = request.form["duration"]
-        intensity = request.form["intensity"]
-        frequency = request.form["frequency"]
-        musclegroups = request.form["musclegroups"]
-
-        if otherform.validate():
-            if int(duration) < 0 or int(frequency) < 0:
-                flash("Error: No negative numbers allowed")
-            else:
-                flash("You entered this much duration: {}".format(duration))
-
-        else:
-            flash("Error: All Fields are Required")
 
     return render_template("exercises.html", form=otherform)
 
