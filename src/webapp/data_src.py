@@ -20,3 +20,12 @@ class DataStructures:
             DataStructures.recipe_data(),
             DataStructures.recipe_data(),
         ]
+
+    def exercise():
+        return json.loads('{"name":"N/A","targetmusclegroups":[],"level":0,"sets":0,"reps":0}')
+
+    def exercise_plan():
+        skeleton = json.loads(
+                '{"Sunday":[],"Monday":[],"Tuesday":[],"Wednesday":[],"Thursday":[],"Friday":[],"Saturday":[]}'
+                )
+        return skeleton
