@@ -15,7 +15,11 @@
   
   </style>
   <body>
-    <h2 style="background-color:white;color:black">Hello {{session["username"] }}</h2>
+     {% if session.name %}
+
+    <h2 style="background-color:white;color:black">Hello {{session["name"] }}</h2>
+	  {% endif %}
+
     <br>
     <div class="row align-items-center justify-content-center">
     <div class="col-md-4" style="background-color:grey;color:black;border-radius:10px;width:60%">
