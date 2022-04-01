@@ -17,11 +17,11 @@ body { background-color:lightblue; }
 <body>
 
 
-  <div style="padding: 15px; background-color: white; margin: 10px">
+  <div>
     <h2>Saved Weekly Meal Plan</h2>
     {% if bestmealplan is defined %}
 
-    <table class="table table-bordered">
+    <table class="table table-bordered" style="background-color:white;border-color:black">
       <tbody>
         <tr>
           {% for item in bestmealplan %}
@@ -38,7 +38,7 @@ body { background-color:lightblue; }
     <h2>Saved Weekly Exercise Plan</h2>
     {% if bestexerciseplan is defined %}
 
-    <table class="table table-bordered">
+    <table class="table table-bordered" style="background-color:white;border-color:black">
       <tbody>
         <tr>
           <td><h5 class="card-title"> Sunday</h5></td>
