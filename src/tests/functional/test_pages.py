@@ -10,7 +10,7 @@ def test_signup(test_client):
     """
     response = test_client.post(
         "/signup/",
-        data=dict(email="any@gmail.com", username="newuser", password="some"),
+        data=dict(email="anyone@gmail.com", username="newuser", password="some"),
         follow_redirects=True,
     )
     assert response.status_code == 200
@@ -25,13 +25,13 @@ def test_dupe_signup(test_client):
     """
     test_client.post(
         "/signup/",
-        data=dict(email="any@gmail.com", username="newuser", password="some"),
+        data=dict(email="anything@gmail.com", username="newuser", password="some"),
         follow_redirects=True,
     )
 
     response = test_client.post(
         "/signup/",
-        data=dict(email="any@gmail.com", username="newuser", password="some"),
+        data=dict(email="anything@gmail.com", username="newuser", password="some"),
         follow_redirects=True,
     )
     assert response.status_code == 200
@@ -57,7 +57,7 @@ def test_login_success(test_client):
     """
     response = test_client.post(
         "/",
-        data=dict(email="any@gmail.com", password="some"),
+        data=dict(email="anything@gmail.com", password="some"),
         follow_redirects=True)
     assert response.status_code == 200
     assert b"Welcome to your diet planner!" in response.data

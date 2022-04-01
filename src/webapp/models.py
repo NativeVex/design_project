@@ -18,10 +18,10 @@ class User(db.Model):
     __tablename__ = "users"
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    email = db.Column(db.String, unique=True, nullable=False)
-    username = db.Column(db.String, unique=True, nullable=False)
-    password_hashed = db.Column(db.String(128), nullable=False)
-    registered_on = db.Column(db.DateTime, nullable=True)
+    email = db.Column(db.String, unique=True)
+    username = db.Column(db.String)
+    password_hashed = db.Column(db.String(128))
+    registered_on = db.Column(db.DateTime)
 
     def __init__(self, email: str, username: str, password_plaintext: str):
         """Create a new User object using the email address and hashing the

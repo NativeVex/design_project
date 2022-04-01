@@ -2,7 +2,7 @@ from cmath import log
 import json
 from random import randint
 from time import strftime
-from models import User, db
+from webapp.models import User, db
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from flask import (
@@ -28,7 +28,7 @@ app.config["SECRET_KEY"] = "5e4c0f48eef083bde520ef8027eb12e3f8bafcc763969d58"
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
 
 db.init_app(app)
-#db.create_all(app=app)
+db.create_all(app=app)
 
 class signupform(Form):
     email = StringField("Email:", validators=[validators.DataRequired()])
@@ -57,20 +57,22 @@ def login():
     and then redirects to the page where users enter their health requirements
 
     """
-    userloginform = loginform(request.form)
     if request.method == "POST":
-        user = User.query.filter_by(email=userloginform.email.data).first()
+        email = request.form["email"]
+        password = request.form["password"]
+
+        user = User.query.filter_by(email=email).first()
 
         # check if the user actually exists
         # take the user-supplied password, hash it, and compare it to the hashed password in the database
-        if user and check_password_hash(user.password_hashed, userloginform.password.data):
-            flash('Welcome to your diet planner!')
-            # if the user doesn't exist or password is wrong, reload the page
-            return redirect(url_for('diet'))
-
-        #flash("Please check your login details and try again.")
-        return redirect(url_for("login"))
-    return render_template("login.html", form=userloginform)
+        if user and check_password_hash(user.password_hashed, password):
+            message = "Welcome to your diet planner!"
+            # if the user exists go to mealplanner page
+            return render_template("mealplanner.html", message=message)
+        else:
+            message = "Please check your login details and try again."
+            return render_template("login.html", message=message)
+    return render_template("login.html")
 
 
 @app.route("/logout")
@@ -117,10 +119,10 @@ def signup():
         password = request.form["password"]
 
         # if this returns a user, then the email already exists in database
-        user = User.query.filter_by(email=email).first() 
+        user = User.query.filter_by(email=email).first()
         if user: # if a user is found, we want to redirect back to signup page so user can try again
-            flash('Email address already exists')
-            return redirect(url_for('signup'))
+            message = 'Email address already exists'
+            return render_template("signup.html", message=message)
         else:
             # create a new user with the form data.
             new_user = User(email=email, username=username, password_plaintext=password)
@@ -128,9 +130,9 @@ def signup():
             db.session.add(new_user)
             db.session.commit()
 
-            flash('Thank you for signing up!')
-            
-        return redirect(url_for('login'))
+            message = "Thank you for signing up!"
+            return render_template("login.html", message = message)
+
     return render_template("signup.html", form=usersignupform)
 
 
