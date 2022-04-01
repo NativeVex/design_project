@@ -121,14 +121,15 @@ def signup():
         if user: # if a user is found, we want to redirect back to signup page so user can try again
             flash('Email address already exists')
             return redirect(url_for('signup'))
+        else:
+            # create a new user with the form data.
+            new_user = User(email=email, username=username, password_plaintext=password)
 
-        # create a new user with the form data.
-        new_user = User(email=email, username=username, password_plaintext=password)
+            db.session.add(new_user)
+            db.session.commit()
 
-        db.session.add(new_user)
-        db.session.commit()
-
-        flash('Thank you for signing up!')
+            flash('Thank you for signing up!')
+            
         return redirect(url_for('login'))
     return render_template("signup.html", form=usersignupform)
 
