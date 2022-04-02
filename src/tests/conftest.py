@@ -15,9 +15,9 @@ from webapp.models import User
 # Written to be used in other test code
 random.seed(0)
 
-
 # Put db.init_app(app) and db.create_all(app=app) in here.
 # Drop all tables as a fixure and then create database.
+
 
 @pytest.fixture()
 def new_user():
