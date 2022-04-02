@@ -5,6 +5,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 
 db = SQLAlchemy()
 
+
 class User(db.Model):
     """
     Class that represents a user of the application

@@ -1,5 +1,6 @@
 from urllib import response
-from webapp.app import app, db, User
+
+from webapp.app import User, app, db
 
 
 def test_signup(test_client):
@@ -12,10 +13,12 @@ def test_signup(test_client):
 
     response = test_client.post(
         "/signup/",
-        data=dict(email="anyone@gmail.com", username="newuser", password="some"),
+        data=dict(email="anyone@gmail.com",
+                  username="newuser",
+                  password="some"),
         follow_redirects=True,
     )
-    if user: 
+    if user:
         assert b"Email address already exists" in response.data
     else:
         assert response.status_code == 200
@@ -30,17 +33,21 @@ def test_dupe_signup(test_client):
     """
     test_client.post(
         "/signup/",
-        data=dict(email="anything@gmail.com", username="newuser", password="some"),
+        data=dict(email="anything@gmail.com",
+                  username="newuser",
+                  password="some"),
         follow_redirects=True,
     )
 
     response = test_client.post(
         "/signup/",
-        data=dict(email="anything@gmail.com", username="newuser", password="some"),
+        data=dict(email="anything@gmail.com",
+                  username="newuser",
+                  password="some"),
         follow_redirects=True,
     )
     assert response.status_code == 200
-    assert b'Email address already exists' in response.data
+    assert b"Email address already exists" in response.data
 
 
 def test_login_page(test_client):
@@ -63,7 +70,8 @@ def test_login_success(test_client):
     response = test_client.post(
         "/",
         data=dict(email="anything@gmail.com", password="some"),
-        follow_redirects=True)
+        follow_redirects=True,
+    )
     assert response.status_code == 200
     assert b"Enter your Diet/Nutrition Preferences" in response.data
 
@@ -74,10 +82,10 @@ def test_login_failed(test_client):
     WHEN the '/' page is requested (POST)
     THEN check that the response is valid
     """
-    response = test_client.post(
-        "/",
-        data=dict(email="any@gmail.com", password="notsome"),
-        follow_redirects=True)
+    response = test_client.post("/",
+                                data=dict(email="any@gmail.com",
+                                          password="notsome"),
+                                follow_redirects=True)
     assert response.status_code == 200
     assert b"Please check your login details and try again." in response.data
 
