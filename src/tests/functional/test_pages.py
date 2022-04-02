@@ -1,5 +1,5 @@
 from urllib import response
-from webapp.app import app, db
+from webapp.app import app, db, User
 
 
 def test_signup(test_client):
@@ -8,13 +8,18 @@ def test_signup(test_client):
     WHEN the '/signup/' page is posted to (POST) when the user enters signup information
 
     """
+    user = User.query.filter_by(email="anyone@gmail.com").first()
+
     response = test_client.post(
         "/signup/",
         data=dict(email="anyone@gmail.com", username="newuser", password="some"),
         follow_redirects=True,
     )
-    assert response.status_code == 200
-    assert b"Thank you for signing up!" in response.data
+    if user: 
+        assert b"Email address already exists" in response.data
+    else:
+        assert response.status_code == 200
+        assert b"Login to your Health/Diet Planner Account" in response.data
 
 
 def test_dupe_signup(test_client):
@@ -60,7 +65,7 @@ def test_login_success(test_client):
         data=dict(email="anything@gmail.com", password="some"),
         follow_redirects=True)
     assert response.status_code == 200
-    assert b"Welcome to your diet planner!" in response.data
+    assert b"Enter your Diet/Nutrition Preferences" in response.data
 
 
 def test_login_failed(test_client):

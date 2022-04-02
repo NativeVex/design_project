@@ -68,7 +68,7 @@ def login():
         if user and check_password_hash(user.password_hashed, password):
             message = "Welcome to your diet planner!"
             # if the user exists go to mealplanner page
-            return render_template("mealplanner.html", message=message)
+            return redirect(url_for("diet"))
             """ 
             
             return redirect(url_for('diet'),message=message))
@@ -141,12 +141,11 @@ def signup():
             db.session.commit()
 
             message = "Thank you for signing up!"
-            return render_template("login.html", message = message)
+            return redirect(url_for("login"))
             """
               return redirect(url_for('login', message = message))
 
             """
-
     return render_template("signup.html", form=usersignupform)
 
 
