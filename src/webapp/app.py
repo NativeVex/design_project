@@ -1,9 +1,7 @@
-from cmath import log
 import json
+from cmath import log
 from random import randint
 from time import strftime
-from webapp.models import User, db
-from werkzeug.security import generate_password_hash, check_password_hash
 
 from flask import (
     Flask,
@@ -15,20 +13,22 @@ from flask import (
     session,
     url_for,
 )
+from werkzeug.security import check_password_hash, generate_password_hash
 from wtforms import Form, StringField, SubmitField, validators
 
 from webapp.data_src import DataStructures
 from webapp.mealplan import MealplanGenerator
-
+from webapp.models import User, db
 
 app = Flask(__name__, instance_relative_config=True)
 
 app.config.from_object(__name__)
 app.config["SECRET_KEY"] = "5e4c0f48eef083bde520ef8027eb12e3f8bafcc763969d58"
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///db.sqlite"
 
 db.init_app(app)
 db.create_all(app=app)
+
 
 class signupform(Form):
     email = StringField("Email:", validators=[validators.DataRequired()])
@@ -76,7 +76,6 @@ def login():
         else:
             message = "Please check your login details and try again."
             return render_template("login.html", message=message)
-        
     """
     message=request.args['message']
     return render_template("login.html",message=message)
@@ -130,12 +129,16 @@ def signup():
 
         # if this returns a user, then the email already exists in database
         user = User.query.filter_by(email=email).first()
-        if user: # if a user is found, we want to redirect back to signup page so user can try again
-            message = 'Email address already exists'
+        if (
+                user
+        ):  # if a user is found, we want to redirect back to signup page so user can try again
+            message = "Email address already exists"
             return render_template("signup.html", message=message)
         else:
             # create a new user with the form data.
-            new_user = User(email=email, username=username, password_plaintext=password)
+            new_user = User(email=email,
+                            username=username,
+                            password_plaintext=password)
 
             db.session.add(new_user)
             db.session.commit()
