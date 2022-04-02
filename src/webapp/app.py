@@ -69,6 +69,10 @@ def login():
             message = "Welcome to your diet planner!"
             # if the user exists go to mealplanner page
             return render_template("mealplanner.html", message=message)
+            """ 
+            
+            return redirect(url_for('diet'),message=message))
+            """
         else:
             message = "Please check your login details and try again."
             return render_template("login.html", message=message)
@@ -141,6 +145,13 @@ def diet():
     """This function goes to the mealplanner page where
     the user sees a form where they can enter their diet requirements
 
+    """
+    """
+    message=request.args['message']
+    return render_template("mealplanner.html", message=message)
+
+    
+    
     """
     form = dietform(request.form)
     return render_template("mealplanner.html", form=form)
