@@ -17,6 +17,9 @@ from webapp.app import app, db
 from webapp.models import User
 
 
+# Put db.init_app(app) and db.create_all(app=app) in here.
+# Drop all tables as a fixure and then create database.
+
 @pytest.fixture()
 def new_user():
     user = User("tomliuhyyd@gmail.com", "klg", "qwerty123")
