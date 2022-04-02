@@ -250,7 +250,7 @@ class foodsform(Form):
     newfood = StringField("Food:", validators=[validators.DataRequired()])
 
 
-@app.route("/listitems/")
+@app.route("/listitems")
 def listitems():
     # get shopping list ingredients for meal plan from database
     return render_template("shoppinglist.html")

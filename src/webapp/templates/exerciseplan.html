@@ -18,62 +18,156 @@
 
     <div class="container-fluid" style="margin-top:10px;width:70%">
       <div>
+        <form action="/exercises/" method="">
+          <button name="btn" class="btn-primary btn-lg" type="submit">Generate new exercise plan</button>
+      </form> 
         <div class="card">
+          {% if bestexerciseplan is defined %}
+
             <h5 class="card-header" style="background-color:black;color:white;">Sunday Exercises</h5>
             <div class="card-body">
-              <h5 class="card-title">Exercise 1</h5>
-              <h5 class="card-title">Exercise 6</h5>
+              <h5 class="card-title">Sunday</h5>
+              <h5 class="card-title"> Name: {{bestexerciseplan['Sunday'][0]['Name']}}</h5>
+              <h5 class="card-title"> Sets: {{bestexerciseplan['Sunday'][0]['sets']}}</h5>
+              <h5 class="card-title"> Reps: {{bestexerciseplan['Sunday'][0]['reps']}}</h5>
+              <h5 class="card-title"> Target Muscle Group: {{bestexerciseplan['Sunday'][0]['targetmusclegroup']}}</h5>
+              <h5 class="card-title"> Name: {{bestexerciseplan['Sunday'][1]['Name']}}</h5>
+              <h5 class="card-title"> Sets: {{bestexerciseplan['Sunday'][1]['sets']}}</h5>
+              <h5 class="card-title"> Reps: {{bestexerciseplan['Sunday'][1]['reps']}}</h5>
+              <h5 class="card-title"> Target Muscle Group: {{bestexerciseplan['Sunday'][1]['targetmusclegroup']}}</h5>
+              <h5 class="card-title"> Name: {{bestexerciseplan['Sunday'][2]['Name']}}</h5>
+              <h5 class="card-title"> Sets: {{bestexerciseplan['Sunday'][2]['sets']}}</h5>
+              <h5 class="card-title"> Reps: {{bestexerciseplan['Sunday'][2]['reps']}}</h5>
+              <h5 class="card-title"> Target Muscle Group: {{bestexerciseplan['Sunday'][2]['targetmusclegroup']}}</h5>
+
 
             </div>
           </div>
           <div class="card" style="margin-top:10px;">
             <h5 class="card-header" style="background-color:black;color:white;">Monday Exercises</h5>
             <div class="card-body">
-              <h5 class="card-title">Exercise 1</h5>
-              <h5 class="card-title">Exercise 6</h5>
+              <h5 class="card-title">Monday</h5>
+              <h5 class="card-title"> Name: {{bestexerciseplan['Monday'][0]['Name']}}</h5>
+              <h5 class="card-title"> Sets: {{bestexerciseplan['Monday'][0]['sets']}}</h5>
+              <h5 class="card-title"> Reps: {{bestexerciseplan['Monday'][0]['reps']}}</h5>
+              <h5 class="card-title"> Target Muscle Group: {{bestexerciseplan['Monday'][0]['targetmusclegroup']}}</h5>
+              <h5 class="card-title"> Name: {{bestexerciseplan['Monday'][1]['Name']}}</h5>
+              <h5 class="card-title"> Sets: {{bestexerciseplan['Monday'][1]['sets']}}</h5>
+              <h5 class="card-title"> Reps: {{bestexerciseplan['Monday'][1]['reps']}}</h5>
+              <h5 class="card-title"> Target Muscle Group: {{bestexerciseplan['Monday'][1]['targetmusclegroup']}}</h5>
+              <h5 class="card-title"> Name: {{bestexerciseplan['Monday'][2]['Name']}}</h5>
+              <h5 class="card-title"> Sets: {{bestexerciseplan['Monday'][2]['sets']}}</h5>
+              <h5 class="card-title"> Reps: {{bestexerciseplan['Monday'][2]['reps']}}</h5>
+              <h5 class="card-title"> Target Muscle Group: {{bestexerciseplan['Monday'][2]['targetmusclegroup']}}</h5>
 
             </div>
           </div>
           <div class="card" style="margin-top:10px;">
             <h5 class="card-header" style="background-color:black;color:white;">Tuesday Exercises</h5>
             <div class="card-body">
-              <h5 class="card-title">Exercise 1</h5>
-              <h5 class="card-title">Exercise 6</h5>
+              <h5 class="card-title">Tuesday</h5>
+              <h5 class="card-title"> Name: {{bestexerciseplan['Tuesday'][0]['Name']}}</h5>
+              <h5 class="card-title"> Sets: {{bestexerciseplan['Tuesday'][0]['sets']}}</h5>
+              <h5 class="card-title"> Reps: {{bestexerciseplan['Tuesday'][0]['reps']}}</h5>
+              <h5 class="card-title"> Target Muscle Group: {{bestexerciseplan['Tuesday'][0]['targetmusclegroup']}}</h5>
+              <h5 class="card-title"> Name: {{bestexerciseplan['Tuesday'][1]['Name']}}</h5>
+              <h5 class="card-title"> Sets: {{bestexerciseplan['Tuesday'][1]['sets']}}</h5>
+              <h5 class="card-title"> Reps: {{bestexerciseplan['Tuesday'][1]['reps']}}</h5>
+              <h5 class="card-title"> Target Muscle Group: {{bestexerciseplan['Tuesday'][1]['targetmusclegroup']}}</h5>
+              <h5 class="card-title"> Name: {{bestexerciseplan['Tuesday'][2]['Name']}}</h5>
+              <h5 class="card-title"> Sets: {{bestexerciseplan['Tuesday'][2]['sets']}}</h5>
+              <h5 class="card-title"> Reps: {{bestexerciseplan['Tuesday'][2]['reps']}}</h5>
+              <h5 class="card-title"> Target Muscle Group: {{bestexerciseplan['Tuesday'][2]['targetmusclegroup']}}</h5>
 
             </div>
           </div>
           <div class="card" style="margin-top:10px;">
             <h5 class="card-header" style="background-color:black;color:white;">Wednesday Exercises</h5>
             <div class="card-body">
-              <h5 class="card-title">Exercise 1</h5>
-              <h5 class="card-title">Exercise 6</h5>
+              <h5 class="card-title">Wednesday</h5>
+              <h5 class="card-title"> Name: {{bestexerciseplan['Wednesday'][0]['Name']}}</h5>
+              <h5 class="card-title"> Sets: {{bestexerciseplan['Wednesday'][0]['sets']}}</h5>
+              <h5 class="card-title"> Reps: {{bestexerciseplan['Wednesday'][0]['reps']}}</h5>
+              <h5 class="card-title"> Target Muscle Group: {{bestexerciseplan['Wednesday'][0]['targetmusclegroup']}}</h5>
+              <h5 class="card-title"> Name: {{bestexerciseplan['Wednesday'][1]['Name']}}</h5>
+              <h5 class="card-title"> Sets: {{bestexerciseplan['Wednesday'][1]['sets']}}</h5>
+              <h5 class="card-title"> Reps: {{bestexerciseplan['Wednesday'][1]['reps']}}</h5>
+              <h5 class="card-title"> Target Muscle Group: {{bestexerciseplan['Wednesday'][1]['targetmusclegroup']}}</h5>
+              <h5 class="card-title"> Name: {{bestexerciseplan['Wednesday'][2]['Name']}}</h5>
+              <h5 class="card-title"> Sets: {{bestexerciseplan['Wednesday'][2]['sets']}}</h5>
+              <h5 class="card-title"> Reps: {{bestexerciseplan['Wednesday'][2]['reps']}}</h5>
+              <h5 class="card-title"> Target Muscle Group: {{bestexerciseplan['Wednesday'][2]['targetmusclegroup']}}</h5>
 
             </div>
           </div>
           <div class="card" style="margin-top:10px;">
             <h5 class="card-header" style="background-color:black;color:white;">Thursday Exercises</h5>
             <div class="card-body">
-              <h5 class="card-title">Exercise 1</h5>
-              <h5 class="card-title">Exercise 6</h5>
+              <h5 class="card-title">Thursday</h5>
+              <h5 class="card-title"> Name: {{bestexerciseplan['Thursday'][0]['Name']}}</h5>
+              <h5 class="card-title"> Sets: {{bestexerciseplan['Thursday'][0]['sets']}}</h5>
+              <h5 class="card-title"> Reps: {{bestexerciseplan['Thursday'][0]['reps']}}</h5>
+              <h5 class="card-title"> Target Muscle Group: {{bestexerciseplan['Thursday'][0]['targetmusclegroup']}}</h5>
+              <h5 class="card-title"> Name: {{bestexerciseplan['Thursday'][1]['Name']}}</h5>
+              <h5 class="card-title"> Sets: {{bestexerciseplan['Thursday'][1]['sets']}}</h5>
+              <h5 class="card-title"> Reps: {{bestexerciseplan['Thursday'][1]['reps']}}</h5>
+              <h5 class="card-title"> Target Muscle Group: {{bestexerciseplan['Thursday'][1]['targetmusclegroup']}}</h5>
+              <h5 class="card-title"> Name: {{bestexerciseplan['Thursday'][2]['Name']}}</h5>
+              <h5 class="card-title"> Sets: {{bestexerciseplan['Thursday'][2]['sets']}}</h5>
+              <h5 class="card-title"> Reps: {{bestexerciseplan['Thursday'][2]['reps']}}</h5>
+              <h5 class="card-title"> Target Muscle Group: {{bestexerciseplan['Thursday'][2]['targetmusclegroup']}}</h5>
 
             </div>
           </div>
           <div class="card" style="margin-top:10px;">
             <h5 class="card-header" style="background-color:black;color:white;">Friday Exercises</h5>
             <div class="card-body">
-              <h5 class="card-title">Exercise 1</h5>
-              <h5 class="card-title">Exercise 6</h5>
+              <h5 class="card-title">Friday</h5>
+              <h5 class="card-title"> Name: {{bestexerciseplan['Friday'][0]['Name']}}</h5>
+              <h5 class="card-title"> Sets: {{bestexerciseplan['Friday'][0]['sets']}}</h5>
+              <h5 class="card-title"> Reps: {{bestexerciseplan['Friday'][0]['reps']}}</h5>
+              <h5 class="card-title"> Target Muscle Group: {{bestexerciseplan['Friday'][0]['targetmusclegroup']}}</h5>
+              <h5 class="card-title"> Name: {{bestexerciseplan['Friday'][1]['Name']}}</h5>
+              <h5 class="card-title"> Sets: {{bestexerciseplan['Friday'][1]['sets']}}</h5>
+              <h5 class="card-title"> Reps: {{bestexerciseplan['Friday'][1]['reps']}}</h5>
+              <h5 class="card-title"> Target Muscle Group: {{bestexerciseplan['Friday'][1]['targetmusclegroup']}}</h5>
+              <h5 class="card-title"> Name: {{bestexerciseplan['Friday'][2]['Name']}}</h5>
+              <h5 class="card-title"> Sets: {{bestexerciseplan['Friday'][2]['sets']}}</h5>
+              <h5 class="card-title"> Reps: {{bestexerciseplan['Friday'][2]['reps']}}</h5>
+              <h5 class="card-title"> Target Muscle Group: {{bestexerciseplan['Friday'][2]['targetmusclegroup']}}</h5>
 
             </div>
           </div>
           <div class="card" style="margin-top:10px;">
             <h5 class="card-header" style="background-color:black;color:white;">Saturday Exercises</h5>
             <div class="card-body">
-              <h5 class="card-title">Exercise 1</h5>
-              <h5 class="card-title">Exercise 6</h5>
+              <h5 class="card-title">Saturday</h5>
+              <h5 class="card-title"> Name: {{bestexerciseplan['Saturday'][0]['Name']}}</h5>
+              <h5 class="card-title"> Sets: {{bestexerciseplan['Saturday'][0]['sets']}}</h5>
+              <h5 class="card-title"> Reps: {{bestexerciseplan['Saturday'][0]['reps']}}</h5>
+              <h5 class="card-title"> Target Muscle Group: {{bestexerciseplan['Saturday'][0]['targetmusclegroup']}}</h5>
+              <h5 class="card-title"> Name: {{bestexerciseplan['Saturday'][1]['Name']}}</h5>
+              <h5 class="card-title"> Sets: {{bestexerciseplan['Saturday'][1]['sets']}}</h5>
+              <h5 class="card-title"> Reps: {{bestexerciseplan['Saturday'][1]['reps']}}</h5>
+              <h5 class="card-title"> Target Muscle Group: {{bestexerciseplan['Saturday'][1]['targetmusclegroup']}}</h5>
+              <h5 class="card-title"> Name: {{bestexerciseplan['Saturday'][2]['Name']}}</h5>
+              <h5 class="card-title"> Sets: {{bestexerciseplan['Saturday'][2]['sets']}}</h5>
+              <h5 class="card-title"> Reps: {{bestexerciseplan['Saturday'][2]['reps']}}</h5>
+              <h5 class="card-title"> Target Muscle Group: {{bestexerciseplan['Saturday'][2]['targetmusclegroup']}}</h5>
 
             </div>
           </div>
+          <form action="{{ url_for('saveexerciseplan') }}" method="post">
+            <tbody>
+               <tr>
+              <br>
+              <th><input type="text" name="bestexerciseplan" value='{{ bestexerciseplan }}' required></th>
+              <th><input type="submit" name="button" class="btn btn-success" value="Save Exerciseplan"></a></th>
+              </tr>
+            </tbody>
+        </form>
+        {% endif %}
+
         
 
       </div>
