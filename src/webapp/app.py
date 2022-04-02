@@ -76,6 +76,12 @@ def login():
         else:
             message = "Please check your login details and try again."
             return render_template("login.html", message=message)
+        
+    """
+    message=request.args['message']
+    return render_template("login.html",message=message)
+
+    """
     return render_template("login.html")
 
 
@@ -136,6 +142,10 @@ def signup():
 
             message = "Thank you for signing up!"
             return render_template("login.html", message = message)
+            """
+              return redirect(url_for('login', message = message))
+
+            """
 
     return render_template("signup.html", form=usersignupform)
 
