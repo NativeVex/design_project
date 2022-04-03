@@ -6,12 +6,54 @@ import sys
 
 import pytest
 
+from webapp.app import app, db
 from webapp.data_src import DataStructures
 from webapp.mealplan import MealplanGenerator
+from webapp.models import User
 
 # Functions to test that a given datastructure is valid
 # Written to be used in other test code
 random.seed(0)
+
+# Put db.init_app(app) and db.create_all(app=app) in here.
+# Drop all tables as a fixure and then create database.
+
+
+@pytest.fixture()
+def new_user():
+    user = User("tomliuhyyd@gmail.com", "klg", "qwerty123")
+    return user
+
+
+@pytest.fixture()
+def test_client():
+    flask_app = app
+
+    # Create a test client using the Flask application configured for testing
+    with flask_app.test_client() as testing_client:
+        # Establish an application context
+        with flask_app.app_context():
+            yield testing_client
+
+
+@pytest.fixture()
+def init_database(test_client):
+    # Create the database and the database table
+    db.drop_all()
+    db.init_app(app)
+    db.create_all(app=app)
+    yield
+
+
+@pytest.fixture()
+def login_default_user(test_client):
+    test_client.post(
+        "/login",
+        data=dict(email="tomliuhyyd@gmail.com", password="qwerty123"),
+        follow_redirects=True,
+    )
+    yield
+    test_client.get("/logout", follow_redirects=True)
 
 
 @pytest.fixture
@@ -82,6 +124,7 @@ def test_nutritional_values(nv1):
     for i in template_nv:
         assert i in nv1
         assert type(nv1[i]) == type(template_nv[i])
+    return
 
 
 def test_recipe_data(rd1):
@@ -95,11 +138,13 @@ def test_recipe_data(rd1):
     for i in rd1["ingredients"]:
         assert type(i) == str
     test_nutritional_values(rd1["nutritional value"])
+    return
 
 
 def test_meal_plan(mp):
     for i in mp:
         test_recipe_data(i)
+    return
 
 
 @pytest.mark.xfail(reason="testing bad nutritional values")
@@ -111,6 +156,7 @@ class TestBadNVs:
     def test_bad_calories(self, nv2):
         nv2["calories"] = "yabba dabba doo"
         test_nutritional_values(nv2)
+        return
 
     def test_missing_something(self, nv2):
         idx = random.choice(nv2)
@@ -125,6 +171,7 @@ class TestBadNVs:
     def test_missing_item(self, nv2):
         nv2.pop("vitaminA")
         test_nutritional_values(nv2)
+        return
 
     def test_good_nutritional_values(self, nv2):
         test_nutritional_values(nv2)

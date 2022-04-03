@@ -1,26 +1,28 @@
 from datetime import datetime
 
-from project import db
+from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import check_password_hash, generate_password_hash
+
+db = SQLAlchemy()
 
 
 class User(db.Model):
     """
     Class that represents a user of the application
-
     The following attributes of a user are stored in this table:
         * email - email address of the user
         * hashed password - hashed password (using werkzeug.security)
         * registered_on - date & time that the user registered
-
     REMEMBER: Never store the plaintext password in a database!
     """
 
     __tablename__ = "users"
 
-    email = None
-    username = None
-    password_hashed = None
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    email = db.Column(db.String, unique=True)
+    username = db.Column(db.String)
+    password_hashed = db.Column(db.String(128))
+    registered_on = db.Column(db.DateTime)
 
     def __init__(self, email: str, username: str, password_plaintext: str):
         """Create a new User object using the email address and hashing the
