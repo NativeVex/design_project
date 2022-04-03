@@ -24,15 +24,15 @@ jobs:
 
       - name: Install our code as a package
         run: |
-          python3.9 -m pipenv install -e . 
+          python3.9 -m pipenv install -e .
 
       - name: Install requirements
         run: |
-          python3.9 -m pipenv install --deploy --ignore-pipfile --dev
+          python3.9 -m pipenv install --deploy --ignore-pipfile
 #      - name: Install pytest
 #        run: |
 #          python -m pip install pytest
 
       - name: Run pytest
         run: |
-          python3.9 -m pipenv run pytest src/webapp/tests/
+          python3.9 -m pipenv run pytest 
