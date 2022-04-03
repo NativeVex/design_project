@@ -39,19 +39,10 @@ def test_client():
 @pytest.fixture()
 def init_database(test_client):
     # Create the database and the database table
-    db.create_all()
-
-    # Insert user data
-    user1 = User(email="tomliuhyyd@gmail.com", password_plaintext="qwerty123")
-    user2 = User(email="tomliuhyyd1@gmail.com",
-                 password_plaintext="qwerty1234")
-    db.session.add(user1)
-    db.session.add(user2)
-
-    # Commit the changes for the users
-    db.session.commit()
-    yield
     db.drop_all()
+    db.init_app(app)
+    db.create_all(app=app)
+    yield
 
 
 @pytest.fixture()
