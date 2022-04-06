@@ -6,49 +6,34 @@ import sys
 
 from webapp import data_src
 from webapp.data_src import DataStructures
+from webapp.models import Recipes
 
 
 # TODO: make this actually connect to a DB and pull recipes. Might need to add inputs to do a preliminary filtering of the DB first.
 # Idea for DB source: https://www.fatsecret.com/calories-nutrition/search?q=(encoded string)
 # This returns an array of JSON strings. Do we instead want one giant json string? Good question.
-def get_recipes_from_db():
-    # Hard coded recipes for now
+def get_recipes_from_db(Calories_max=9999, Calories_min=0, Carbs_max=9999, Carbs_min=0, Proteins_max=9999, Proteins_min=0):
     recipes = []
-    recipes.append(
-        '{"name":"Chicken Parm","ingredients":["Chicken","Parmesan"],"nutritional value":{"calories":254.0,"carbs":12.18,"protein":22.83,"fat":12.38,"cholesterol":108.0,"sodium":615.0,"vitaminA":66.0,"vitaminB1":0.0,"vitaminB2":0.0,"vitaminB3":0.0,"vitaminB5":0.0,"vitaminB6":0.0,"vitaminB9":0.0,"vitaminB12":0.0,"vitaminC":4.7,"vitaminD":0.0,"vitaminE":0.0,"vitaminK":0.0,"calcium":145.0,"copper":0.0,"fluoride":0.0,"iodine":0.0,"iron":1.9,"magnesium":0.0,"manganese":0.0,"molybdenum":0.0,"phosphorus":0.0,"potassium":353.0,"selenium":0.0,"zinc":0.0}}'
-    )
 
-    adobo_chicken = DataStructures.recipe_data()
-    adobo_chicken["name"] = "Adobo Chicken"
-    adobo_chicken["ingredients"] = ["Chicken", "Adobo Sauce"]
-    adobo_chicken["nutritional value"]["calories"] = 107.0
-    adobo_chicken["nutritional value"]["fat"] = 4.93
-    adobo_chicken["nutritional value"]["carbs"] = 2.48
-    adobo_chicken["nutritional value"]["protein"] = 11.88
-    adobo_chicken["nutritional value"]["sodium"] = 392.0
-    adobo_chicken["nutritional value"]["vitaminA"] = 9.0
-    adobo_chicken["nutritional value"]["vitaminC"] = 0.5
-    adobo_chicken["nutritional value"]["calcium"] = 14.0
-    adobo_chicken["nutritional value"]["iron"] = 1.05
-    adobo_chicken["nutritional value"]["potassium"] = 147.0
-    recipes.append(json.dumps(adobo_chicken))
+    queried_recipes = Recipes.query.filter(Recipes.Calories > Calories_min, Recipes.Calories < Calories_max,
+                                  Recipes.Carbs > Carbs_min, Recipes.Carbs < Carbs_max,
+                                  Recipes.Proteins > Proteins_min, Recipes.Proteins < Proteins_max,)
 
-    ice_cream_sandwich = DataStructures.recipe_data()
-    ice_cream_sandwich["name"] = "Ice Cream Sandwich"
-    ice_cream_sandwich["ingredients"] = ["Ice", "Cream", "Sandwich"]
-    ice_cream_sandwich["nutritional value"]["calories"] = 143.0
-    ice_cream_sandwich["nutritional value"]["fat"] = 5.6
-    ice_cream_sandwich["nutritional value"]["carbs"] = 21.75
-    ice_cream_sandwich["nutritional value"]["protein"] = 2.61
-    ice_cream_sandwich["nutritional value"]["cholesterol"] = 20.0
-    ice_cream_sandwich["nutritional value"]["sodium"] = 37.0
-    ice_cream_sandwich["nutritional value"]["vitaminA"] = 53.0
-    ice_cream_sandwich["nutritional value"]["vitaminC"] = 0.3
-    ice_cream_sandwich["nutritional value"]["calcium"] = 60.0
-    ice_cream_sandwich["nutritional value"]["iron"] = 0.28
-    ice_cream_sandwich["nutritional value"]["potassium"] = 122.0
-    ice_cream_sandwich["nutritional value"]
-    recipes.append(json.dumps(ice_cream_sandwich))
+    for recipe in queried_recipes:
+        skeleton = DataStructures.recipe_data()
+        skeleton["name"] = recipe.name
+        skeleton["nutritional value"]["calories"] = recipe.Calories
+        skeleton["nutritional value"]["fat"] = recipe.fat
+        skeleton["nutritional value"]["carbs"] = recipe.Carbs
+        skeleton["nutritional value"]["protein"] = recipe.Proteins
+        skeleton["nutritional value"]["cholesterol"] = recipe.Cholesterol
+        skeleton["nutritional value"]["sodium"] = recipe.Sodium
+        skeleton["nutritional value"]["vitaminA"] = recipe.Vitamina
+        skeleton["nutritional value"]["vitaminC"] = recipe.Vitaminc
+        skeleton["nutritional value"]["calcium"] = recipe.Calcium
+        skeleton["nutritional value"]["iron"] = recipe.Iron
+        skeleton["nutritional value"]["potassium"] = recipe.Potassium
+        recipes.append(json.dumps(skeleton))
 
     the_void = DataStructures.recipe_data()
     the_void["name"] = "The Void"

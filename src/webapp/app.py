@@ -14,11 +14,11 @@ from flask import (
     url_for,
 )
 from werkzeug.security import check_password_hash, generate_password_hash
-from wtforms import Form, StringField, SubmitField, validators
+from wtforms import Form, StringField, DecimalField, SubmitField, validators
 
 from webapp.data_src import DataStructures
 from webapp.mealplan import MealplanGenerator
-from webapp.models import User, db
+from webapp.models import User, Recipes, db
 
 app = Flask(__name__, instance_relative_config=True)
 
@@ -44,13 +44,25 @@ class loginform(Form):
 
 
 class dietform(Form):
-    Calories = StringField("Calories:", validators=[validators.DataRequired()])
-    Carbs = StringField("Carbs:", validators=[validators.DataRequired()])
-    Proteins = StringField("Proteins:", validators=[validators.DataRequired()])
-    Fibers = StringField("Fibers:", validators=[validators.DataRequired()])
-    Allergies = StringField("Allergies:",
-                            validators=[validators.DataRequired()])
-
+    Calories = DecimalField("Calories:", validators=[validators.InputRequired()])
+    Carbs = DecimalField("Carbs:", validators=[validators.InputRequired()])
+    Proteins = DecimalField("Proteins:", validators=[validators.InputRequired()])
+    fat = DecimalField("Fat:",[validators.Optional()])
+    Cholesterol=DecimalField("Cholesterol:",[validators.Optional()])
+    Sodium=DecimalField("Sodium:",[validators.Optional()])
+    Vitamina=DecimalField("Vitamina:",[validators.Optional()])
+    Calcium=DecimalField("Calcium:",[validators.Optional()])
+    Copper=DecimalField("Copper:",[validators.Optional()])
+    Fluoride=DecimalField("Fluoride:",[validators.Optional()])
+    Iodine=DecimalField("Iodine:",[validators.Optional()])
+    Iron=DecimalField("Iron:",[validators.Optional()])
+    Magnesium=DecimalField("Magnesium:",[validators.Optional()])
+    Manganese=DecimalField("Manganese:",[validators.Optional()])
+    Molybdenum=DecimalField("Molybdenum:",[validators.Optional()])
+    Phosphorus=DecimalField("Phosphorus:",[validators.Optional()])
+    Potassium=DecimalField("Potassium:",[validators.Optional()])
+    Selenium=DecimalField("Selenium:",[validators.Optional()])
+    Zinc=DecimalField("Zinc:",[validators.Optional()])
 
 @app.route("/", methods=["GET", "POST"])
 def login():
@@ -176,25 +188,62 @@ def mealplan():
     """This function goes to the mealplans page where
     the user their generated meal plan from their entered
     diet requirements
-
     """
+    form = dietform(request.form)
+
     if request.method == "POST":
-        Calories = request.form.get("Calories")
-        Carbs = request.form.get("Carbs")
-        protein = request.form.get("Proteins")
+        Calories = form.Calories.data
+        Carbs = form.Carbs.data
+        protein = form.Proteins.data
         list1 = [1, 2, 3]
 
         jsoninfo = DataStructures.nutritional_values()
-        jsoninfo["calories"] = int(Calories)
-        jsoninfo["carbs"] = int(Carbs)
-        jsoninfo["protein"] = int(protein)
+        jsoninfo["calories"] = float(Calories)
+        jsoninfo["carbs"] = float(Carbs)
+        jsoninfo["protein"] = float(protein)
+        if(form.fat.data!=None):
+            jsoninfo["fat"]=float(form.fat.data)
+        if(form.Cholesterol.data!=None):
+            jsoninfo["cholesterol"]=float(form.Cholesterol.data)
+        if(form.Sodium.data!=None):
+            jsoninfo["sodium"]=float(form.Sodium.data)
+        if(form.Vitamina.data!=None):
+            jsoninfo["vitaminA"]=float(form.Vitamina.data)
+        if(form.Calcium.data!=None):
+            jsoninfo["calcium"]=float(form.Calcium.data)
+        if(form.Copper.data!=None):
+            jsoninfo["copper"]=float(form.Copper.data)
+        if(form.Fluoride.data!=None):
+            jsoninfo["fluoride"]=float(form.Fluoride.data)
+        if(form.Iodine.data!=None):
+            jsoninfo["iodine"]=float(form.Iodine.data)
+        if(form.Iron.data!=None):
+            jsoninfo["iron"]=float(form.Iron.data)
+        if(form.Magnesium.data!=None):
+            jsoninfo["magnesium"]=float(form.Magnesium.data)
+        if(form.Manganese.data!=None):
+            jsoninfo["manganese"]=float(form.Manganese.data)
+        if(form.Molybdenum.data!=None):
+            jsoninfo["molybdenum"]=float(form.Molybdenum.data)
+        if(form.Phosphorus.data!=None):
+            jsoninfo["phosphorus"]=float(form.Phosphorus.data)
+        if(form.Potassium.data!=None):
+            jsoninfo["potassium"]=float(form.Potassium.data)
+        if(form.Selenium.data!=None):
+            jsoninfo["selenium"]=float(form.Selenium.data)
+        if(form.Zinc.data!=None):
+            jsoninfo["zinc"]=float(form.Zinc.data)
+    
+        
         jsonstring = json.dumps(jsoninfo)
         mpg = MealplanGenerator(jsonstring)
         mealplan = mpg.gen_meal_plan()
         jsondata = json.loads(mealplan)
+        session["tempmealplan"]=jsondata
         return render_template("mealplans.html", bestmealplan=jsondata)
     elif request.method == "GET":
         return render_template("mealplans.html")
+
 
 
 @app.route("/savemealplan", methods=["POST"])
