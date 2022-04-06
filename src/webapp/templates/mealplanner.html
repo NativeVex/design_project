@@ -11,35 +11,119 @@
   </head>
   <style>
     body { background-color:lightblue; } 
-  
-  
-  </style>
+    
+</style>
   <body>
-
+    {% if session.name %}
+    <h2 style="background-color:white;color:black">Hello {{session["name"] }}</h2>
+    {% endif %}
     <br>
     <div class="row align-items-center justify-content-center">
     <div class="col-md-4" style="background-color:grey;color:black;border-radius:10px;width:60%">
-      <h1>{{message}}</h1>
       <form  action="/mealplan" method="POST" role="form" id="formElem">
+        {{ form.csrf }}
         <h1 style="text-align:center;background-color:grey;color:black">Enter your Diet/Nutrition Preferences</h1>
 
         <div class="form-group">
 
-          <label for="Calories">Calories:</label>
-          <input type="number" class="form-control" id="Calories" name="Calories" placeholder="Calories?">
+          <label for="Calories">{{form.Calories.label}}</label>
+          {{form.Calories()}}
             <br>
-          <label for="Carbs">Carbs:</label>
-          <input type="number" class="form-control" id="Carbs" name="Carbs" placeholder="Carbs?">
+          <label for="Carbs">{{form.Carbs.label}}</label>
+          {{form.Carbs()}}
 	    <br>
-	  <label for="Proteins">Proteins:</label>
-	  <input type="number" class="form-control" id="Proteins" name="Proteins" placeholder="Proteins?">
-	    <br>
-	  <label for="Fibers">Fibers:</label>
-	  <input type="number" class="form-control" id="Fibers" name="Fibers" placeholder="Fibers?">
-    <br> 
-    <label for="Allergies">Allergies:</label>
-    <input type="text" class="form-control" id="Allergies" name="Allergies" placeholder="Allergies?">
-    
+	  <label for="Proteins">{{form.Proteins.label}}</label>
+          {{form.Proteins()}}
+    <br>
+      <div style="display:inline-block">
+        <div style="background-color:white;" onmouseover="myFunction()">Choose other diet requirements</div>
+        <div id="dietdetails" style="display:none;background-color:lightblue;color:black;padding:20px;">
+        <a onclick="showfats()">Fat</a>
+          <a onclick="showcholesterol()">Cholesterol</a>
+          <a onclick="showsodium()">sodium</a>
+          <a onclick="showvitamina()">vitamina</a>
+          <a onclick="showcalcium()">calcium</a>
+          <a onclick="showcopper()">Copper</a>
+          <a onclick="showfluoride()">fluoride</a>
+          <a onclick="showiodine()">iodine</a>
+          <a onclick="showiron()">iron</a>
+          <a onclick="showmagnesium()">magnesium</a>
+          <a onclick="showmanganese()">manganese</a>
+          <a onclick="showmolybdenum()">molybdenum</a>
+          <a onclick="showphosphorus()">Phosphorus</a>
+          <a onclick="showpotassium()">Potassium</a>
+          <a onclick="showselenium()">Selenium</a>
+          <a onclick="showzinc()">Zinc</a>
+
+
+        </div>
+      </div>
+      <br>
+      <div id="fats" style="display:none;">
+      <label for="fat">{{form.fat.label}}</label>
+      {{form.fat()}}  </div>
+  <br>
+  <div id="cholesterols" style="display:none;">
+    <label for="Proteins">{{form.Cholesterol.label}}</label>
+    {{form.Cholesterol()}}</div>
+<br>
+  <div id="sodiums" style="display:none;">
+    <label for="sodiums">{{form.Sodium.label}}</label>
+    {{form.Sodium()}}</div>
+<br>
+  <div id="vitamina" style="display:none;">
+    <label for="vitamina">{{form.Vitamina.label}}</label>
+    {{form.Vitamina()}}</div>
+<br>
+  <div id="calciums" style="display:none;">
+    <label for="calcium">{{form.Calcium.label}}</label>
+    {{form.Calcium()}}</div>
+<br>
+  <div id="coppers" style="display:none;">
+    <label for="Copper">{{form.Copper.label}}</label>
+    {{form.Copper()}}</div>
+<br>
+  <div id="fluorides" style="display:none;">
+    <label for="fluoride">{{form.Fluoride.label}}</label>
+    {{form.Fluoride()}}</div>
+<br>
+  <div id="iodines" style="display:none;">
+    <label for="iodine">{{form.Iodine.label}}</label>
+    {{form.Iodine()}}</div>
+<br>
+  <div id="irons" style="display:none;">
+    <label for="iron">{{form.Iron.label}}</label>
+    {{form.Iron()}}</div>
+<br>
+  <div id="magnesiums" style="display:none;">
+    <label for="magnesium">{{form.Magnesium.label}}</label>
+    {{form.Magnesium()}}</div>
+<br>
+  <div id="mangeneses" style="display:none;">
+    <label for="manganese">{{form.Manganese.label}}</label>
+    {{form.Manganese()}}</div>
+<br>
+  <div id="molybdenums" style="display:none;">
+    <label for="molybdenum">{{form.Molybdenum.label}}</label>
+  {{form.Molybdenum()}}</div>
+<br>
+  <div id="phosphoruses" style="display:none;">
+    <label for="phosphorus">{{form.Phosphorus.label}}</label>
+    {{form.Phosphorus()}}</div>
+<br>
+  <div id="potassiums" style="display:none;">
+    <label for="potassium">{{form.Potassium.label}}</label>
+    {{form.Potassium()}}</div>
+<br>
+  <div id="seleniums" style="display:none;">
+    <label for="selenium">{{form.Selenium.label}}</label>
+    {{form.Selenium()}}</div>
+<br>
+  <div id="zincs" style="display:none;">
+    <label for="zinc">{{form.Zinc.label}}</label>
+    {{form.Zinc()}}</div>
+
+	  
 	</div>
 
         <br>													   
@@ -48,11 +132,63 @@
       </form>
 
       <br>
+      <script>
+        function showfats() {
+          document.getElementById("fats").style.display="block";
+        }
+        function showcholesterol() {
+          document.getElementById("cholesterols").style.display="block";
+        }
+        function showsodium() {
+          document.getElementById("sodiums").style.display="block";
+        }
+        function showvitamina() {
+          document.getElementById("vitamina").style.display="block";
+        }
+        function showcalcium() {
+          document.getElementById("calciums").style.display="block";
+        }
+        function showcopper() {
+          document.getElementById("coppers").style.display="block";
+        }
+        function showfluoride() {
+          document.getElementById("fluorides").style.display="block";
+        }
+        function showiodine() {
+          document.getElementById("iodines").style.display="block";
+        }
+        function showiron() {
+          document.getElementById("irons").style.display="block";
+        }
+        function showmagnesium() {
+          document.getElementById("magnesiums").style.display="block";
+        }
+        function showmanganese() {
+          document.getElementById("mangeneses").style.display="block";
+        }
+        function showmolybdenum() {
+          document.getElementById("molybdenums").style.display="block";
+        }
+        function showphosphorus() {
+          document.getElementById("phosphoruses").style.display="block";
+        }
+        function showpotassium() {
+          document.getElementById("potassiums").style.display="block";
+        }
+        function showselenium() {
+          document.getElementById("seleniums").style.display="block";
+        }
+        function showzinc() {
+          document.getElementById("zincs").style.display="block";
+        }
 
-      
-
-
-
+        function myFunction() {
+          document.getElementById("dietdetails").style.display="block";       
+          }
+                 
+        
+        </script>
+    
     </div>
     <br>
   </body>
