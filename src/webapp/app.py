@@ -14,7 +14,7 @@ from flask import (
     url_for,
 )
 from werkzeug.security import check_password_hash, generate_password_hash
-from wtforms import Form, StringField, SubmitField, validators
+from wtforms import Form, StringField, IntegerField,DecimalField,SubmitField, validators
 
 from webapp.data_src import DataStructures
 from webapp.mealplan import MealplanGenerator
@@ -44,12 +44,26 @@ class loginform(Form):
 
 
 class dietform(Form):
-    Calories = StringField("Calories:", validators=[validators.DataRequired()])
-    Carbs = StringField("Carbs:", validators=[validators.DataRequired()])
-    Proteins = StringField("Proteins:", validators=[validators.DataRequired()])
-    Fibers = StringField("Fibers:", validators=[validators.DataRequired()])
-    Allergies = StringField("Allergies:",
-                            validators=[validators.DataRequired()])
+    Calories = DecimalField("Calories:", validators=[validators.InputRequired()])
+    Carbs = DecimalField("Carbs:", validators=[validators.InputRequired()])
+    Proteins = DecimalField("Proteins:", validators=[validators.InputRequired()])
+    fat = DecimalField("Fat:",[validators.Optional()])
+    Cholesterol=DecimalField("Cholesterol:",[validators.Optional()])
+    Sodium=DecimalField("Sodium:",[validators.Optional()])
+    Vitamina=DecimalField("Vitamina:",[validators.Optional()])
+    Calcium=DecimalField("Calcium:",[validators.Optional()])
+    Copper=DecimalField("Copper:",[validators.Optional()])
+    Fluoride=DecimalField("Fluoride:",[validators.Optional()])
+    Iodine=DecimalField("Iodine:",[validators.Optional()])
+    Iron=DecimalField("Iron:",[validators.Optional()])
+    Magnesium=DecimalField("Magnesium:",[validators.Optional()])
+    Manganese=DecimalField("Manganese:",[validators.Optional()])
+    Molybdenum=DecimalField("Molybdenum:",[validators.Optional()])
+    Phosphorus=DecimalField("Phosphorus:",[validators.Optional()])
+    Potassium=DecimalField("Potassium:",[validators.Optional()])
+    Selenium=DecimalField("Selenium:",[validators.Optional()])
+    Zinc=DecimalField("Zinc:",[validators.Optional()])
+
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -94,6 +108,10 @@ def logout():
     """
 
     session.pop("username", None)  # removes session username
+    session.pop("tempmealplan", None)  # removes temporary session mealplan
+    session.pop("tempexerciseplan", None)  # removes temporary session exerciseplan
+    session.pop("savedmealplan", None)  # removes saved session mealplan
+    session.pop("savedexerciseplan", None)  # removes saved session exerciseplan
     return redirect("/")
 
 
@@ -113,6 +131,7 @@ def saveduserinfo():
     exercise plan
 
     """
+    
     return render_template("saveduserinfo.html")
 
 
@@ -131,9 +150,7 @@ def signup():
 
         # if this returns a user, then the email already exists in database
         user = User.query.filter_by(email=email).first()
-        if (
-                user
-        ):  # if a user is found, we want to redirect back to signup page so user can try again
+        if (user):  # if a user is found, we want to redirect back to signup page so user can try again
             message = "Email address already exists"
             return render_template("signup.html", message=message)
         else:
@@ -178,56 +195,89 @@ def mealplan():
     diet requirements
 
     """
+    form = dietform(request.form)
+
     if request.method == "POST":
-        Calories = request.form.get("Calories")
-        Carbs = request.form.get("Carbs")
-        protein = request.form.get("Proteins")
+        Calories = form.Calories.data
+        Carbs = form.Carbs.data
+        protein = form.Proteins.data
         list1 = [1, 2, 3]
 
         jsoninfo = DataStructures.nutritional_values()
-        jsoninfo["calories"] = int(Calories)
-        jsoninfo["carbs"] = int(Carbs)
-        jsoninfo["protein"] = int(protein)
+        jsoninfo["calories"] = float(Calories)
+        jsoninfo["carbs"] = float(Carbs)
+        jsoninfo["protein"] = float(protein)
+        if(form.fat.data!=None):
+            jsoninfo["fat"]=float(form.fat.data)
+        if(form.Cholesterol.data!=None):
+            jsoninfo["cholesterol"]=float(form.Cholesterol.data)
+        if(form.Sodium.data!=None):
+            jsoninfo["sodium"]=float(form.Sodium.data)
+        if(form.Vitamina.data!=None):
+            jsoninfo["vitaminA"]=float(form.Vitamina.data)
+        if(form.Calcium.data!=None):
+            jsoninfo["calcium"]=float(form.Calcium.data)
+        if(form.Copper.data!=None):
+            jsoninfo["copper"]=float(form.Copper.data)
+        if(form.Fluoride.data!=None):
+            jsoninfo["fluoride"]=float(form.Fluoride.data)
+        if(form.Iodine.data!=None):
+            jsoninfo["iodine"]=float(form.Iodine.data)
+        if(form.Iron.data!=None):
+            jsoninfo["iron"]=float(form.Iron.data)
+        if(form.Magnesium.data!=None):
+            jsoninfo["magnesium"]=float(form.Magnesium.data)
+        if(form.Manganese.data!=None):
+            jsoninfo["manganese"]=float(form.Manganese.data)
+        if(form.Molybdenum.data!=None):
+            jsoninfo["molybdenum"]=float(form.Molybdenum.data)
+        if(form.Phosphorus.data!=None):
+            jsoninfo["phosphorus"]=float(form.Phosphorus.data)
+        if(form.Potassium.data!=None):
+            jsoninfo["potassium"]=float(form.Potassium.data)
+        if(form.Selenium.data!=None):
+            jsoninfo["selenium"]=float(form.Selenium.data)
+        if(form.Zinc.data!=None):
+            jsoninfo["zinc"]=float(form.Zinc.data)
+    
+        
         jsonstring = json.dumps(jsoninfo)
         mpg = MealplanGenerator(jsonstring)
         mealplan = mpg.gen_meal_plan()
         jsondata = json.loads(mealplan)
+        session["tempmealplan"]=jsondata
         return render_template("mealplans.html", bestmealplan=jsondata)
     elif request.method == "GET":
         return render_template("mealplans.html")
 
 
-@app.route("/savemealplan", methods=["POST"])
+@app.route("/savemealplan", methods=["GET"])
 def savemealplan():
     """This function goes to the saveduserinfo page where
     the user can see their saved meal plan
 
     """
-
-    if request.method == "POST":
-        bestmealplan = request.form["bestmealplan"]
-        mealplan = bestmealplan.replace(
-            "'", '"'
-        )  # replacing single quotes with double quotes to change string to json format
-        newmealplan = json.loads(mealplan)
-        return render_template("saveduserinfo.html", bestmealplan=newmealplan)
+    session["savedmealplan"]=session["tempmealplan"]
+    if request.method == "GET":
+         # replacing single quotes with double quotes to change string to json format
+        return redirect(url_for('saveduserinfo'))
 
 
-@app.route("/saveexerciseplan", methods=["POST"])
+class exerciseform(Form):
+    sets = IntegerField("Sets:", validators=[validators.InputRequired()])
+    reps = IntegerField("Reps:",validators=[validators.InputRequired()])
+    level = IntegerField("Level:",validators=[validators.InputRequired()])
+    musclegroups = StringField("Target Muscle Groups:",validators=[validators.InputRequired()])
+
+@app.route("/saveexerciseplan", methods=["GET"])
 def saveexerciseplan():
     """This function takes the generated best meal plan and saves it to
     the userinfo page where they can see their saved meal plan.
 
     """
-
-    if request.method == "POST":
-        bestexerciseplan = request.form["bestexerciseplan"]
-        exerciseplan = bestexerciseplan.replace(
-            "'", '"'
-        )  # replacing single quotes with double quotes to change string to json format
-        newexerciseplan = json.loads(exerciseplan)
-        return render_template("saveduserinfo.html",
-                               bestexerciseplan=newexerciseplan)
+    session["savedexerciseplan"]=session["tempexerciseplan"]
+    if request.method == "GET":
+        return redirect(url_for('saveduserinfo'))
 
 
 @app.route("/exerciseplan", methods=["GET", "POST"])
@@ -237,14 +287,17 @@ def exerciseplan():
     plan and show it to users
 
     """
+    form=exerciseform(request.form)
     if request.method == "POST":
-        duration = request.form.get("duration")
-        intensity = request.form.get("intensity")
-        frequency = request.form.get("frequency")
+        sets = form.sets.data
+        reps = form.reps.data
+        level = form.level.data
+        musclegroup=form.musclegroups.data
         list1 = [1, 2, 3]
 
         jsonexercises = DataStructures.get_exercises_from_db()
         jsonexerciseplan = json.loads(jsonexercises)
+        session["tempexerciseplan"]=jsonexerciseplan
         return render_template("exerciseplan.html",
                                bestexerciseplan=jsonexerciseplan)
     elif request.method == "GET":
@@ -261,14 +314,7 @@ def listitems():
     return render_template("shoppinglist.html")
 
 
-class exerciseform(Form):
-    duration = StringField("duration:", validators=[validators.DataRequired()])
-    intensity = StringField("intensity:",
-                            validators=[validators.DataRequired()])
-    frequency = StringField("frequency:",
-                            validators=[validators.DataRequired()])
-    musclegroups = StringField("musclegroups:",
-                               validators=[validators.DataRequired()])
+
 
 
 @app.route("/exercises/", methods=["GET", "POST"])
