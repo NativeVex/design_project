@@ -15,62 +15,43 @@
 </style>
 
    <br>
-   <div class="row align-items-center justify-content-center">
+   <div class="row align-items-center justify-content-center" style="text-align:center;">
    <div class="col-md-4" style="background-color:grey;color:black;border-radius:10px;width:80%">
      <form  action="" method="post" role="form">
-       <h1 style="text-align:center;background-color:grey;color:black">Enter your foods for your personal shopping list</h1>
+       <h1 style="text-align:center;background-color:grey;color:black">Add a Exercise, Meal, or Food item</h1>
 
        <div class="form-group">
 
-         <label for="newfood">Enter new food:</label>
-         <input type="text" class="form-control" id="newfood" name="newfood" placeholder="newfood?">
+         <label for="newexercise">Add new Exercise</label>
+         <input type="text" class="form-control" id="newexercise" name="newexercise" placeholder=" New exercise?">
+         <label for="newmeal">Add new Meal</label>
+         <input type="text" class="form-control" id="newmeal" name="newmeal" placeholder="New meal?">
+         <label for="newfood">Add new Food</label>
+         <input type="text" class="form-control" id="newfood" name="newfood" placeholder="New food?">
           </div>
        <br>													   
 
-       <center>
          <button type="submit" class="btn btn-success">Submit</button>
-       </center>
      </form>
 
      <br>
-     <div class="list-group">
+     <div class="list-group" style="margin-bottom:10px;">
       <div class="list-group-item ">
         <div>
+          <h5 class="mb-1">Meals</h5>
+          <p >Meal</p>
+          <p >Meal</p>
+          <h5 class="mb-1">Exercises</h5>
+          <p >Exercise</p>
+          <p >Exercise</p>
           <h5 class="mb-1">Foods</h5>
+          <p >Food</p>
+          <p >Food</p>
         </div>
-        <p class="mb-1">Recipe</p>
         </div>
-        <div class="list-group-item ">
-         <div>
-           <h5 class="mb-1">Foods</h5>
-         </div>
-         <p class="mb-1">Recipe</p>
-         </div>
-         <div class="list-group-item ">
-            <div>
-              <h5 class="mb-1">Foods</h5>
-            </div>
-            <p class="mb-1">Recipe</p>
-            </div>
-            <div class="list-group-item">
-               <div>
-                 <h5 class="mb-1">Foods</h5>
-               </div>
-               <p class="mb-1">Recipe</p>
-               </div>
-               <div class="list-group-item ">
-                  <div>
-                    <h5 class="mb-1">Foods</h5>
-                  </div>
-                  <p class="mb-1">Recipe</p>
-                  </div>
-                  <div class="list-group-item ">
-                     <div>
-                       <h5 class="mb-1">Foods</h5>
-                     </div>
-                     <p class="mb-1">Recipe of the food</p>
-                     </div>
+        
     </div>
    </div>
+  </div>
  
 {% endblock %}
