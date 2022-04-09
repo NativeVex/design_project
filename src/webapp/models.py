@@ -5,6 +5,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 
 db = SQLAlchemy()
 
+
 class User(db.Model):
     """
     Class that represents a user of the application
@@ -64,6 +65,7 @@ class User(db.Model):
         """Return the user ID as a unicode string (`str`)."""
         return str(self.id)
 
+
 class Recipes(db.Model):
     __tablename__ = "recipes"
 
@@ -90,13 +92,30 @@ class Recipes(db.Model):
     Zinc = db.Column(db.Float)
     Vitaminc = db.Column(db.Float)
 
-    def __init__(self, name: str, Calories: float, Carbs: float, Proteins: float, 
-                fat=0.0, Cholesterol=0.0, Sodium=0.0, 
-                Vitamina=0.0, Calcium=0.0, Copper=0.0, 
-                Fluoride=0.0, Iodine=0.0, Iron=0.0, 
-                Magnesium=0.0, Manganese=0.0, Molybdenum=0.0, 
-                Phosphorus=0.0, Potassium=0.0, Selenium=0.0, 
-                Zinc=0.0, Vitaminc=0.0):
+    def __init__(
+        self,
+        name: str,
+        Calories: float,
+        Carbs: float,
+        Proteins: float,
+        fat=0.0,
+        Cholesterol=0.0,
+        Sodium=0.0,
+        Vitamina=0.0,
+        Calcium=0.0,
+        Copper=0.0,
+        Fluoride=0.0,
+        Iodine=0.0,
+        Iron=0.0,
+        Magnesium=0.0,
+        Manganese=0.0,
+        Molybdenum=0.0,
+        Phosphorus=0.0,
+        Potassium=0.0,
+        Selenium=0.0,
+        Zinc=0.0,
+        Vitaminc=0.0,
+    ):
         """Create a new Mealplan object using the email address and hashing the
         plaintext password using Werkzeug.Security.
         """

@@ -7,9 +7,9 @@ import sys
 import pytest
 import test_data
 
+from webapp.app import app, db
 from webapp.data_src import DataStructures
 from webapp.mealplan import MealplanGenerator
-from webapp.app import app, db
 
 
 # test functions
