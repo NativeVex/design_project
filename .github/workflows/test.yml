@@ -35,4 +35,4 @@ jobs:
 
       - name: Run pytest
         run: |
-          python3.9 -m pipenv run pytest 
+          python3.9 -m pipenv run pytest tests --ignore=tests/TODO
