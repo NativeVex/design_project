@@ -129,6 +129,7 @@ class MealplanGenerator(data_src.DataStructures):
         lowest RSS
         """
         best_meal_plan: DataStructures.meal_plan
+        best_meal_plan = DataStructures.meal_plan()
 
         # n choose k reqs. For this proof of concept n is number of recipes and k is 3. Thus there are
         # n! / (k!(n-k)!) answers. This is obviously impossible to compute for any significant number of recipes.
@@ -141,7 +142,7 @@ class MealplanGenerator(data_src.DataStructures):
             self.recipes, meals_per_meal_plan)
 
         # print all possible meal plans
-        lowest_RSS = 1000000000000
+        lowest_RSS = 10000000000000
         for i in possible_meal_plans_iterator:
             current_meal_plan_RSS = self._meal_plan_RSS(
                 self.user_health_requirements, i)
