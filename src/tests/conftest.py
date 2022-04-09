@@ -1,17 +1,16 @@
 import base64
-from curses.ascii import SO
 import itertools
 import json
 import random
 import sys
+from curses.ascii import SO
 
 import pytest
 
 from webapp.app import app, db
 from webapp.data_src import DataStructures
 from webapp.mealplan import MealplanGenerator
-from webapp.models import User
-from webapp.models import Recipes
+from webapp.models import Recipes, User
 
 # Functions to test that a given datastructure is valid
 # Written to be used in other test code
@@ -21,9 +20,11 @@ random.seed(0)
 # Drop all tables as a fixure and then create database.
 # define what the variables are for this use case
 
+
 @pytest.fixture
 def health_reqs():
     return sample_health_reqs()
+
 
 @pytest.fixture
 def json_recipe_list(recipe_list):
@@ -72,9 +73,32 @@ def init_database_recipes(test_client):
     db.init_app(app)
     db.create_all(app=app)
 
-    adobo_chicken = Recipes(name="Adobo Chicken", Calories=107.0, Carbs=2.48, Proteins=11.88, fat=4.93, Sodium=392.0, Vitamina=9.0, Calcium=14.0, Iron=1.05, Potassium=147.0)
-    ice_cream_sandwich = Recipes(name="Ice Cream Sandwich", Calories=143.0, Carbs=21.75, Proteins=2.61, fat=5.6, Cholesterol=20.0, Sodium=37.0, Vitamina=53.0, Calcium=60.0, Iron=0.28, Potassium=122.0)
-    
+    adobo_chicken = Recipes(
+        name="Adobo Chicken",
+        Calories=107.0,
+        Carbs=2.48,
+        Proteins=11.88,
+        fat=4.93,
+        Sodium=392.0,
+        Vitamina=9.0,
+        Calcium=14.0,
+        Iron=1.05,
+        Potassium=147.0,
+    )
+    ice_cream_sandwich = Recipes(
+        name="Ice Cream Sandwich",
+        Calories=143.0,
+        Carbs=21.75,
+        Proteins=2.61,
+        fat=5.6,
+        Cholesterol=20.0,
+        Sodium=37.0,
+        Vitamina=53.0,
+        Calcium=60.0,
+        Iron=0.28,
+        Potassium=122.0,
+    )
+
     db.session.add(adobo_chicken)
     db.session.add(ice_cream_sandwich)
     db.session.commit()

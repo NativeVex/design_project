@@ -12,12 +12,24 @@ from webapp.models import Recipes
 # TODO: make this actually connect to a DB and pull recipes. Might need to add inputs to do a preliminary filtering of the DB first.
 # Idea for DB source: https://www.fatsecret.com/calories-nutrition/search?q=(encoded string)
 # This returns an array of JSON strings. Do we instead want one giant json string? Good question.
-def get_recipes_from_db(Calories_max=9999, Calories_min=0, Carbs_max=9999, Carbs_min=0, Proteins_max=9999, Proteins_min=0):
+def get_recipes_from_db(
+    Calories_max=9999,
+    Calories_min=0,
+    Carbs_max=9999,
+    Carbs_min=0,
+    Proteins_max=9999,
+    Proteins_min=0,
+):
     recipes = []
 
-    queried_recipes = Recipes.query.filter(Recipes.Calories > Calories_min, Recipes.Calories < Calories_max,
-                                  Recipes.Carbs > Carbs_min, Recipes.Carbs < Carbs_max,
-                                  Recipes.Proteins > Proteins_min, Recipes.Proteins < Proteins_max,)
+    queried_recipes = Recipes.query.filter(
+        Recipes.Calories > Calories_min,
+        Recipes.Calories < Calories_max,
+        Recipes.Carbs > Carbs_min,
+        Recipes.Carbs < Carbs_max,
+        Recipes.Proteins > Proteins_min,
+        Recipes.Proteins < Proteins_max,
+    )
 
     for recipe in queried_recipes:
         skeleton = DataStructures.recipe_data()

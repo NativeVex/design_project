@@ -1,6 +1,8 @@
+import json
+
 from webapp.app import Recipes, app, db
 from webapp.mealplan import get_recipes_from_db
-import json
+
 
 def test_getRecipes(test_client, init_database_recipes):
     """
@@ -14,7 +16,7 @@ def test_getRecipes(test_client, init_database_recipes):
     assert type(recipes[0]) == type({"": str, "": [], "": {}})
     assert recipes[0]["nutritional value"]["calories"] == 107.0
     assert recipes[1]["nutritional value"]["calories"] == 143.0
-    
+
     recipes = get_recipes_from_db(Proteins_max=5)
     for i in range(len(recipes)):
         recipes[i] = json.loads(recipes[i])
