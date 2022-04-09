@@ -6,16 +6,16 @@
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.
 Vagrant.configure("2") do |config|
-  config.vm.box = "ubuntu/bionic64"
-  config.vm.network "forwarded_port", guest: 8080, host: 8080
+  config.vm.box = "bento/ubuntu-20.04"
   config.vm.provider "virtualbox" do |v|
     v.memory = 8192
     v.cpus = 4
-    v.gui = true
   end
+  config.vm.synced_folder ".", "/vagrant", disabled: true
 
   config.vm.provision "shell", inline: <<-SHELL
     apt-get update
+    apt-get upgrade -y
     apt-get install -y ca-certificates curl gnupg lsb-release
     curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
     echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
@@ -26,26 +26,10 @@ Vagrant.configure("2") do |config|
     add-apt-repository ppa:deadsnakes/ppa
     apt install -y magic-wormhole git python3-pip python3.9
     echo "\nexport PATH=\'/home/vagrant/.local/bin:$PATH\'" >> /home/vagrant/.bashrc
-    curl https://cli-assets.heroku.com/install.sh | sh
-    curl -s https://install.zerotier.com | sudo bash
-    zerotier-cli join 6ab565387aafde26
-    cp -r /vagrant .
-    pip3 install pipenv
+    python3.9 -m pip install pipenv
   SHELL
 
-  config.vm.provision "build", type: "shell", run: "never", inline: <<-SHELL
-    bash -c "su vagrant &&\
-             cd /vagrant &&\
-             pipenv install --dev"
-
-    which pipenv
-    bash -c "su vagrant &&\
-             cd /vagrant &&\
-             pipenv run dkr-bld &&\
-             pipenv run dkr-run &"
-  SHELL
-
-  config.vm.provision "comfort", type: "shell", run: "never", inline: <<-SHELL
+  config.vm.provision "comfort", type: "shell", inline: <<-SHELL
     # a shell I like
     pip install xonsh --no-input
     su vagrant chsh -s $(which xonsh)
@@ -57,4 +41,7 @@ Vagrant.configure("2") do |config|
     sudo apt install gh -y
   SHELL
 
+  config.vm.provision "xpra", type: "shell", inline: <<-SHELL
+    sudo apt install xpra xterm firefox -y
+  SHELL
 end
