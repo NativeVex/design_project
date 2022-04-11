@@ -106,7 +106,6 @@ def test_generate_exercise_plan(test_client):
     """
     GIVEN a Flask application configured for testing
     WHEN the '/mealplan' page is posted to (POST) when the user enters health requirements data
-
     """
     response = test_client.post(
         "/exerciseplan",
