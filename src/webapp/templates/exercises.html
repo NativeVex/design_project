@@ -45,8 +45,23 @@
           {{form.intensity}}
           <br>
           <div>
-            {{form.targetmusclegroup.label}}
-            {{form.targetmusclegroup()}}
+           <!-- {{form.targetmusclegroup.label}} 
+            {{form.targetmusclegroup()}} -->
+            {{form.back(checked=True)}} {{form.back.label}}
+            <br>
+            {{form.shoulders()}} {{form.shoulders.label}}
+            <br>
+            {{form.arms()}} {{form.arms.label}}
+            <br>
+            {{form.core()}} {{form.core.label}}
+            <br>
+            {{form.chest()}} {{form.chest.label}}
+            <br>
+            {{form.thighs()}} {{form.thighs.label}}
+            <br>
+            {{form.hamstrings()}} {{form.hamstrings.label}}
+            <br>
+            {{form.glutes()}} {{form.glutes.label}}
 
         </div>
         </div>

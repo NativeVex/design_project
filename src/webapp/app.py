@@ -259,6 +259,14 @@ class exerciseform(Form):
     saturday = BooleanField('Saturday')
     intensity = IntegerField("Intensity:",validators=[validators.InputRequired()])
     targetmusclegroup = SelectField('Choose Target Muscle Group', choices=[('back'), ('shoulders'), ('arms'),('core'),('chest'),('thighs'),('hamstrings'),('glutes')],validators=[validators.InputRequired()],validate_choice=True)
+    back=BooleanField('Back')
+    shoulders=BooleanField('Shoulders')
+    arms=BooleanField('Arms')
+    core=BooleanField('Core')
+    chest=BooleanField('Chest')
+    thighs=BooleanField('Thighs')
+    hamstrings=BooleanField('Hamstrings')
+    glutes=BooleanField('Glutes')
 
 
 @app.route("/saveexerciseplan", methods=["GET"])
@@ -299,17 +307,35 @@ def exerciseplan():
             daysofweek.append("Saturday")
 
         intensity=form.intensity.data
-        selectedtargetmuscles= form.targetmusclegroup.data
 
+        #selectedtargetmuscles= form.targetmusclegroup.data
+        targetmusclegroups=[]
+        if(form.back.data!=False):
+            targetmusclegroups.append("back")
+        if(form.shoulders.data!=False):
+            targetmusclegroups.append("shoulders")
+        if(form.arms.data!=False):
+            targetmusclegroups.append("arms")
+        if(form.core.data!=False):
+            targetmusclegroups.append("core")
+        if(form.chest.data!=False):
+            targetmusclegroups.append("chest")
+        if(form.thighs.data!=False):
+            targetmusclegroups.append("thighs")
+        if(form.hamstrings.data!=False):
+            targetmusclegroups.append("hamstrings")
+        if(form.glutes.data!=False):
+            targetmusclegroups.append("glutes")
+        
         list1 = [1, 2, 3]
-    
+
         jsonexercises = DataStructures.get_exercises_from_db()
         jsonexerciseplan = json.loads(jsonexercises)
         session["tempexerciseplan"]=jsonexerciseplan
-        print("hello")
         #daysofweek.clear()     need to empty days of week list for future requests
+        #targetmusclegroups.clear()
         return render_template("exerciseplan.html",
-                               bestexerciseplan=jsonexerciseplan,days=daysofweek,intensity=intensity,muscles=selectedtargetmuscles)
+                               bestexerciseplan=jsonexerciseplan,days=daysofweek,intensity=intensity,muscles=targetmusclegroups)
         
     elif request.method == "GET":
         return render_template("exerciseplan.html")
@@ -344,10 +370,9 @@ def addfood():
 @app.route("/addexercise", methods=["GET", "POST"])
 def addexercise():
     if request.method == "POST":
-        dayschecked=request.form.getlist("checkboxes")   #getting new exericse to add to database
+        dayschecked=request.form.getlist("days")   #getting new exericse to add to database
         intensity=request.form["intensity"]
-        selectedtargetmuscles = request.form.get("targetmuscledropdown")
-        
+        selectedtargetmuscles = request.form.getlist("muscles")
         return render_template("shoppinglist.html",days=dayschecked,intensity=intensity,muscles=selectedtargetmuscles)
 
 
@@ -355,7 +380,7 @@ def addexercise():
 @app.route("/listitems", methods=["GET", "POST"])
 def listitems():
     if request.method == "POST":
-        mealplan=[]                                     #getting new mealplan to add to database
+        mealplan=DataStructures.meal_plan()                                     #getting new mealplan to add to database
         newfoodname1=request.form.get("newfoodname1")
         newfoodingredients1=request.form.get("newfoodingredients1")
         newfoodcalories1=request.form.get("Calories1")
@@ -365,12 +390,12 @@ def listitems():
         newfood1["name"]=newfoodname1
         newfood1["ingredients"]=[newfoodingredients1]
         if(newfoodcalories1!=None and newfoodcalories1!=''):
-            newfood1["nutritional value"]["calories"] = newfoodcalories1
+            newfood1["nutritional value"]["calories"] = float(newfoodcalories1)
         if(newfoodcarbs1!=None and newfoodcarbs1!=''):
-            newfood1["nutritional value"]["carbs"] = newfoodcarbs1
+            newfood1["nutritional value"]["carbs"] = float(newfoodcarbs1)
         if(newfoodproteins1!=None and newfoodproteins1!=''):
-            newfood1["nutritional value"]["protein"] = newfoodproteins1
-        mealplan.append(json.dumps(newfood1))
+            newfood1["nutritional value"]["protein"] = float(newfoodproteins1)
+        mealplan[0]=json.dumps(newfood1)
         newfoodname2=request.form.get("newfoodname2")
         newfoodingredients2=request.form.get("newfoodingredients2")
         newfoodcalories2=request.form.get("Calories2")
@@ -380,12 +405,12 @@ def listitems():
         newfood2["name"]=newfoodname2
         newfood2["ingredients"]=[newfoodingredients2]
         if(newfoodcalories2!=None and newfoodcalories2!=''):
-            newfood2["nutritional value"]["calories"] = newfoodcalories2
+            newfood2["nutritional value"]["calories"] = float(newfoodcalories2)
         if(newfoodcarbs2!=None and newfoodcarbs2!=''):
-            newfood2["nutritional value"]["carbs"] = newfoodcarbs2
+            newfood2["nutritional value"]["carbs"] = float(newfoodcarbs2)
         if(newfoodproteins2!=None and newfoodproteins2!=''):
-            newfood2["nutritional value"]["protein"] = newfoodproteins2
-        mealplan.append(json.dumps(newfood2))
+            newfood2["nutritional value"]["protein"] = float(newfoodproteins2)
+        mealplan[1]=json.dumps(newfood2)
         newfoodname3=request.form.get("newfoodname3")
         newfoodingredients3=request.form.get("newfoodingredients3")
         newfoodcalories3=request.form.get("Calories3")
@@ -395,13 +420,13 @@ def listitems():
         newfood3["name"]=newfoodname3
         newfood3["ingredients"]=[newfoodingredients3]
         if(newfoodcalories3!=None and newfoodcalories3!=''):
-            newfood3["nutritional value"]["calories"] = newfoodcalories3
+            newfood3["nutritional value"]["calories"] = float(newfoodcalories3)
         if(newfoodcarbs3!=None and newfoodcarbs3!=''):
-            newfood3["nutritional value"]["carbs"] = newfoodcarbs3
+            newfood3["nutritional value"]["carbs"] = float(newfoodcarbs3)
         if(newfoodproteins3!=None and newfoodproteins3!=''):
-            newfood3["nutritional value"]["protein"] = newfoodproteins3
-        mealplan.append(json.dumps(newfood3))
-        
+            newfood3["nutritional value"]["protein"] = float(newfoodproteins3)
+        mealplan[2]=json.dumps(newfood3)
+    
     
         
         
