@@ -6,9 +6,74 @@
      <title>Health Planner</title>
      <link rel="stylesheet" media="screen" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+     <link rel = "stylesheet" href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css">
+     <script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
+     <script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <script>
+      $(function() {
+         $( "#caloriesslider" ).slider({
+            min: 0,
+            max: 1,
+            values: [.2, .6 ],
+            step:.1,
+            slide: function(event, ui) {
+               $( "#caloriesbreakfastamount" ).val(ui.values[0]); //changing calories breakfast amount value
+               $( "#caloriesbreakfastnumber" ).text(ui.values[0]); //changing calories breakfast amount value
+               $( "#calorieslunchamount" ).val(ui.values[1]); //changing calories breakfast amount value
+               $( "#calorieslunchnumber" ).text(ui.values[1]); //changing calories breakfast amount value
 
-  </head>
+            }
+         });
+         $( "#caloriesbreakfastamount" ).val($( "#caloriesslider" ).slider( "values", 0 )); //initial calories breakfastamount value
+         $( "#caloriesbreakfastnumber" ).text($( "#caloriesslider" ).slider( "values", 0 )); //initial calories breakfastamount value
+         $( "#calorieslunchamount" ).val($( "#caloriesslider" ).slider( "values", 1 )); //initial calories lunch value
+         $( "#calorieslunchnumber" ).text($( "#caloriesslider" ).slider( "values", 1 )); //initial calories breakfastamount value
+
+      });
+      $(function() {
+        $( "#carbsslider" ).slider({
+            min: 0,
+            max: 1,
+            values: [.2, .6 ],
+            step:.1,
+            slide: function(event, ui) {
+               $( "#carbsbreakfastamount" ).val(ui.values[0]); //changing calories breakfast amount value
+               $( "#carbsbreakfastnumber" ).text(ui.values[0]); //changing calories breakfast amount value
+               $( "#carbslunchamount" ).val(ui.values[1]); //changing calories breakfast amount value
+               $( "#carbslunchnumber" ).text(ui.values[1]); //changing calories breakfast amount value
+
+            }
+         });
+         $( "#carbsbreakfastamount" ).val($( "#carbsslider" ).slider( "values", 0 )); //initial calories breakfastamount value
+         $( "#carbsbreakfastnumber" ).text($( "#carbsslider" ).slider( "values", 0 )); //initial calories breakfastamount value
+         $( "#carbslunchamount" ).val($( "#carbsslider" ).slider( "values", 1 )); //initial calories lunch value
+         $( "#carbslunchnumber" ).text($( "#carbsslider" ).slider( "values", 1 )); //initial calories breakfastamount value
+
+      });
+      $(function() {
+        $( "#proteinsslider" ).slider({
+            min: 0,
+            max: 1,
+            values: [.2, .6 ],
+            step:.1,
+            slide: function(event, ui) {
+               $( "#proteinsbreakfastamount" ).val(ui.values[0]); //changing calories breakfast amount value
+               $( "#proteinsbreakfastnumber" ).text(ui.values[0]); //changing calories breakfast amount value
+               $( "#proteinslunchamount" ).val(ui.values[1]); //changing calories breakfast amount value
+               $( "#proteinslunchnumber" ).text(ui.values[1]); //changing calories breakfast amount value
+
+            }
+         });
+         $( "#proteinsbreakfastamount" ).val($( "#proteinsslider" ).slider( "values", 0 )); //initial calories breakfastamount value
+         $( "#proteinsbreakfastnumber" ).text($( "#proteinsslider" ).slider( "values", 0 )); //initial calories breakfastamount value
+         $( "#proteinslunchamount" ).val($( "#proteinsslider" ).slider( "values", 1 )); //initial calories lunch value
+         $( "#proteinslunchnumber" ).text($( "#proteinsslider" ).slider( "values", 1 )); //initial calories breakfastamount value
+
+      });
+   </script>
+     </head>
+     
   <style>
     body { background-color:lightblue; } 
     
@@ -18,174 +83,141 @@
     <h2 style="background-color:white;color:black">Hello {{session["name"] }}</h2>
     {% endif %}
     <br>
+    <div class="my-js-slider"></div>
+
     <div class="row align-items-center justify-content-center">
     <div class="col-md-4" style="background-color:grey;color:black;border-radius:10px;width:60%">
-      <form  action="/mealplan" method="POST" role="form" id="formElem">
+      <form  action="/mealplan" method="POST" role="form" id="info">
         {{ form.csrf }}
         <h1 style="text-align:center;background-color:grey;color:black">Enter your Diet/Nutrition Preferences</h1>
-
+        <br>
+        <br>
         <div class="form-group">
+          <label style="font-size:20px">Calories</label>
+          <div style="display:flex;">
+          <h5>Calories Breakfast Value: </h5>
+          <h5  id = "caloriesbreakfastnumber" style="margin-left:5%"
+          ></h5></div>
+          <div style="display:flex;">
+            <h5>Calories Lunch Value: </h5>
+            <h5  id = "calorieslunchnumber" style="margin-left:5%"
+            ></h5></div>
+          <input type = "hidden" id = "caloriesbreakfastamount" name="caloriesbreakfastamount">
+          <input type = "hidden" id="calorieslunchamount" name="calorieslunchamount">
+          <br>
+          <br>
 
-          <label for="Calories">{{form.Calories.label}}</label>
-          {{form.Calories()}}
-            <br>
-          <label for="Carbs">{{form.Carbs.label}}</label>
-          {{form.Carbs()}}
+          <div style="background-color:black;" id = "caloriesslider"></div>
+          <ul style="display:flex;">
+            <li style="display:inline-block;margin-left:7%;">breakfast</li>
+            <li style="display:inline-block;margin-left:7%;">lunch</li>
+            <li style="display:inline-block;margin-left:10%;">Dinner</li>
+          </ul>
+    
+          
+
+          <br>
+          <br>
+          <label style="font-size:20px">Carbs</label>
+          <div style="display:flex;">
+          <h5>Carbs Breakfast Value: </h5>
+          <h5  id = "carbsbreakfastnumber" style="margin-left:5%"
+          ></h5></div>
+          <div style="display:flex;">
+            <h5>Carbs Lunch Value: </h5>
+            <h5  id = "carbslunchnumber" style="margin-left:5%"
+            ></h5></div>
+          <input type = "hidden"  id="carbsbreakfastamount" name="carbsbreakfastamount">
+          <input type = "hidden"  id="carbslunchamount" name="carbslunchamount">
+          <br>
+          <br>
+
+          <div style="background-color:black;" id = "carbsslider"></div>
+          <ul style="display:flex;">
+            <li style="display:inline-block;margin-left:7%;">breakfast</li>
+            <li style="display:inline-block;margin-left:7%;">lunch</li>
+            <li style="display:inline-block;margin-left:10%;">Dinner</li>
+          </ul>
+          
 	    <br>
-	  <label for="Proteins">{{form.Proteins.label}}</label>
-          {{form.Proteins()}}
-    <br>
-      <div style="display:inline-block">
-        <div style="background-color:white;" onmouseover="myFunction()">Choose other diet requirements</div>
-        <div id="dietdetails" style="display:none;background-color:lightblue;color:black;padding:20px;">
-        <a onclick="showfats()">Fat</a>
-          <a onclick="showcholesterol()">Cholesterol</a>
-          <a onclick="showsodium()">sodium</a>
-          <a onclick="showvitamina()">vitamina</a>
-          <a onclick="showcalcium()">calcium</a>
-          <a onclick="showcopper()">Copper</a>
-          <a onclick="showfluoride()">fluoride</a>
-          <a onclick="showiodine()">iodine</a>
-          <a onclick="showiron()">iron</a>
-          <a onclick="showmagnesium()">magnesium</a>
-          <a onclick="showmanganese()">manganese</a>
-          <a onclick="showmolybdenum()">molybdenum</a>
-          <a onclick="showphosphorus()">Phosphorus</a>
-          <a onclick="showpotassium()">Potassium</a>
-          <a onclick="showselenium()">Selenium</a>
-          <a onclick="showzinc()">Zinc</a>
-
-
-        </div>
-      </div>
       <br>
-      <div id="fats" style="display:none;">
-      <label for="fat">{{form.fat.label}}</label>
-      {{form.fat()}}  </div>
-  <br>
-  <div id="cholesterols" style="display:none;">
-    <label for="Proteins">{{form.Cholesterol.label}}</label>
-    {{form.Cholesterol()}}</div>
-<br>
-  <div id="sodiums" style="display:none;">
-    <label for="sodiums">{{form.Sodium.label}}</label>
-    {{form.Sodium()}}</div>
-<br>
-  <div id="vitamina" style="display:none;">
-    <label for="vitamina">{{form.Vitamina.label}}</label>
-    {{form.Vitamina()}}</div>
-<br>
-  <div id="calciums" style="display:none;">
-    <label for="calcium">{{form.Calcium.label}}</label>
-    {{form.Calcium()}}</div>
-<br>
-  <div id="coppers" style="display:none;">
-    <label for="Copper">{{form.Copper.label}}</label>
-    {{form.Copper()}}</div>
-<br>
-  <div id="fluorides" style="display:none;">
-    <label for="fluoride">{{form.Fluoride.label}}</label>
-    {{form.Fluoride()}}</div>
-<br>
-  <div id="iodines" style="display:none;">
-    <label for="iodine">{{form.Iodine.label}}</label>
-    {{form.Iodine()}}</div>
-<br>
-  <div id="irons" style="display:none;">
-    <label for="iron">{{form.Iron.label}}</label>
-    {{form.Iron()}}</div>
-<br>
-  <div id="magnesiums" style="display:none;">
-    <label for="magnesium">{{form.Magnesium.label}}</label>
-    {{form.Magnesium()}}</div>
-<br>
-  <div id="mangeneses" style="display:none;">
-    <label for="manganese">{{form.Manganese.label}}</label>
-    {{form.Manganese()}}</div>
-<br>
-  <div id="molybdenums" style="display:none;">
-    <label for="molybdenum">{{form.Molybdenum.label}}</label>
-  {{form.Molybdenum()}}</div>
-<br>
-  <div id="phosphoruses" style="display:none;">
-    <label for="phosphorus">{{form.Phosphorus.label}}</label>
-    {{form.Phosphorus()}}</div>
-<br>
-  <div id="potassiums" style="display:none;">
-    <label for="potassium">{{form.Potassium.label}}</label>
-    {{form.Potassium()}}</div>
-<br>
-  <div id="seleniums" style="display:none;">
-    <label for="selenium">{{form.Selenium.label}}</label>
-    {{form.Selenium()}}</div>
-<br>
-  <div id="zincs" style="display:none;">
-    <label for="zinc">{{form.Zinc.label}}</label>
-    {{form.Zinc()}}</div>
+      <label style="font-size:20px">Proteins</label>
+          <div style="display:flex;">
+          <h5>Proteins Breakfast Value: </h5>
+          <h5  id = "proteinsbreakfastnumber" style="margin-left:5%"
+          ></h5></div>
+          <div style="display:flex;">
+            <h5>Proteins Lunch Value: </h5>
+            <h5  id = "proteinslunchnumber" style="margin-left:5%"
+            ></h5></div>
+          <input type = "hidden" id="proteinsbreakfastamount" name="proteinsbreakfastamount">
+          <input type = "hidden" id="proteinslunchamount" name="proteinslunchamount">
+          <br>
+          <br>
+          
+
+          <div style="background-color:black;" id = "proteinsslider"></div>
+          <ul style="display:flex;">
+            <li style="display:inline-block;margin-left:7%;">breakfast</li>
+            <li style="display:inline-block;margin-left:7%;">lunch</li>
+            <li style="display:inline-block;margin-left:10%;">Dinner</li>
+          </ul>
+    <br>
+      <br>
 
 	  
 	</div>
 
         <br>													   
         <center>
-          <button type="submit" id="button" form="formElem">Submit</button>         </center>
+          <button type="submit" id="button" form="info">Submit</button>         </center>
       </form>
 
       <br>
       <script>
-        function showfats() {
-          document.getElementById("fats").style.display="block";
-        }
-        function showcholesterol() {
-          document.getElementById("cholesterols").style.display="block";
-        }
-        function showsodium() {
-          document.getElementById("sodiums").style.display="block";
-        }
-        function showvitamina() {
-          document.getElementById("vitamina").style.display="block";
-        }
-        function showcalcium() {
-          document.getElementById("calciums").style.display="block";
-        }
-        function showcopper() {
-          document.getElementById("coppers").style.display="block";
-        }
-        function showfluoride() {
-          document.getElementById("fluorides").style.display="block";
-        }
-        function showiodine() {
-          document.getElementById("iodines").style.display="block";
-        }
-        function showiron() {
-          document.getElementById("irons").style.display="block";
-        }
-        function showmagnesium() {
-          document.getElementById("magnesiums").style.display="block";
-        }
-        function showmanganese() {
-          document.getElementById("mangeneses").style.display="block";
-        }
-        function showmolybdenum() {
-          document.getElementById("molybdenums").style.display="block";
-        }
-        function showphosphorus() {
-          document.getElementById("phosphoruses").style.display="block";
-        }
-        function showpotassium() {
-          document.getElementById("potassiums").style.display="block";
-        }
-        function showselenium() {
-          document.getElementById("seleniums").style.display="block";
-        }
-        function showzinc() {
-          document.getElementById("zincs").style.display="block";
-        }
+        (function () {
+            'use strict';
+            var init = function () {                
+                var caloriesslider = new rSlider({
+                    target: '#caloriesslider',
+                    values: {min: 0, max: 100},
+                    step: 10,
+                    set: [20, 60],
+                    scale: true,
+                    labels: false,
+                    onChange: function (vals) {
+                        document.getElementById("caloriesvalues").innerHTML=caloriesslider.getValue();
+                    }
+                });
+                var carbsslider = new rSlider({
+                    target: '#carbsslider',
+                    values: {min: 0, max: 100},
+                    step: 10,
+                    range: true,
+                    set: [20, 60],
+                    scale: true,
+                    labels: false,
+                    onChange: function (vals) {
+                        document.getElementById("carbsvalues").innerHTML=carbsslider.getValue();
+                    }
+                });
+                var proteinsslider = new rSlider({
+                    target: '#proteinsslider',
+                    values: {min: 0, max: 100},
+                    step: 10,
+                    range: true,
+                    set: [20, 60],
+                    scale: true,
+                    labels: false,
+                    onChange: function (vals) {
+                        document.getElementById("proteinsvalues").innerHTML=proteinsslider.getValue();
+                    }
+                });
 
-        function myFunction() {
-          document.getElementById("dietdetails").style.display="block";       
-          }
-                 
+            };
+            window.onload = init;
+        })();
+
         
         </script>
     

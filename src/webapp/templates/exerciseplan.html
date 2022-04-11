@@ -15,9 +15,16 @@
  
   </style>
   <body>
+    <h1 style="margin-top:10px;text-align:center;color:black">{% block title %} Personal Exercise Plan Recommendations{% endblock %}</h1>
 
     <div class="container-fluid" style="margin-top:10px;width:70%">
       <div>
+        {{days}}
+        <br>
+        {{intensity}}
+        <br>
+        {{muscles}}
+
         <form action="/exercises/" method="">
           <button name="btn" class="btn-primary btn-lg" type="submit">Generate new exercise plan</button>
       </form> 

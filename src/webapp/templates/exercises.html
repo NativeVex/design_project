@@ -24,19 +24,30 @@
         <h1 style="text-align:center;background-color:grey;color:black">Enter your exercise requirements</h1>
 
         <div class="form-group">
+          <br>
+          <br>
+          {{form.sunday(checked=True)}}{{form.sunday.label}}<br>
+          {{form.monday()}}{{form.monday.label}}
+          <br>
+          {{form.tuesday()}}{{form.tuesday.label}}
+          <br>
+          {{form.wednesday()}}{{form.wednesday.label}}
+          <br>
+          {{form.thursday()}}{{form.thursday.label}}
+          <br>
+          {{form.friday()}}{{form.friday.label}}
+          <br>
+          {{form.saturday()}}{{form.saturday.label}}
 
-          <label for="duration">{{form.sets.label}}</label>
-          {{form.sets()}}            
+  <br>
           <br>
-          <label for="intensity">{{form.reps.label}}</label>
-          {{form.reps()}}	    
+          {{form.intensity.label}}
+          {{form.intensity}}
           <br>
-	        <label for="frequency">{{form.level.label}}</label>
-          {{form.level()}}	   
-          <br>
-          <div style="display:flex;">
-	        <label for="musclegroups">{{form.musclegroups.label}}</label>
-          {{form.musclegroups()}}	
+          <div>
+            {{form.targetmusclegroup.label}}
+            {{form.targetmusclegroup()}}
+
         </div>
         </div>
 

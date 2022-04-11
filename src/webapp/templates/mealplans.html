@@ -6,8 +6,11 @@
   
   
   </style>
-    <h1 style="margin-top:10px;text-align:center;background-color:grey;color:black">{% block title %} Personal Meal Plan Recommendations{% endblock %}</h1>
+
+    <h1 style="margin-top:10px;text-align:center;color:black">{% block title %} Personal Meal Plan Recommendations{% endblock %}</h1>
     <div style="width: 50%; margin: auto">
+        {{calories}}
+        {{jsoninfo}}
         <form action="/diet/" method="">
             <button name="btn" class="btn-primary btn-lg" type="submit">Generate new mealplan</button>
         </form>    
