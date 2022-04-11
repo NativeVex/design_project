@@ -109,7 +109,7 @@ def test_generate_exercise_plan(test_client):
     """
     response = test_client.post(
         "/exerciseplan",
-        data=dict(sunday=True, thursday=True,friday=True,intensity="8",selectedtargetmuscles="thighs"),
+        data=dict(sunday=True,friday=True,intensity="8",selectedtargetmuscles="thighs"),
         follow_redirects=True,
     )
     assert b"Personal Exercise Plan Recommendations" in response.data
