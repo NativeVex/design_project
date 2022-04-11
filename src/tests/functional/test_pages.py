@@ -110,7 +110,7 @@ def test_generate_exercise_plan(test_client):
     """
     response = test_client.post(
         "/exerciseplan",
-        data=dict(sunday=True, thursday=True,friday=True,intensity="8",selectedtargetmuscles="thighs"),
+        data=dict(sunday=True,friday=True,intensity="8",glutes=True,thighs=True,chest=True),
         follow_redirects=True,
     )
     assert b"Personal Exercise Plan Recommendations" in response.data
@@ -124,7 +124,7 @@ def test_add_exercise(test_client):
     """
     response = test_client.post(
         "/addexercise",
-        data=dict(dayschecked=["Thursday","Tuesday","Friday"], intensity="5",selectedtargetmuscles="chest"),
+        data=dict(dayschecked=["Thursday","Tuesday","Friday"], intensity="5",selectedtargetmuscles=["hamstrings","core","arms","chest"]),
         follow_redirects=True,
     )
     assert b"Add a Exercise, Meal, or Food item" in response.data
