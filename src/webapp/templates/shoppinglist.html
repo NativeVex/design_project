@@ -25,24 +25,41 @@
     <form action="/addexercise" method="post" role="form">
       <label for="newexercise">Add new Exercise</label>
       <br>
-      <input type="checkbox" id="Sunday" name="checkboxes" value="Sunday">
+      <input type="checkbox" id="Sunday" name="days" value="Sunday">
        <label for="Sunday">Sunday</label><br>
-       <input type="checkbox" id="Monday" name="checkboxes" value="Monday">
+       <input type="checkbox" id="Monday" name="days" value="Monday">
        <label for="Monday">Monday</label><br>
-       <input type="checkbox" id="Tuesday" name="checkboxes" value="Tuesday">
+       <input type="checkbox" id="Tuesday" name="days" value="Tuesday">
        <label for="Tuesday">Tuesday</label><br>
-       <input type="checkbox" id="Wednesday" name="checkboxes" value="Wednesday">
+       <input type="checkbox" id="Wednesday" name="days" value="Wednesday">
        <label for="Wednesday">Wednesday</label><br>
-       <input type="checkbox" id="Thursday" name="checkboxes" value="Thursday">
+       <input type="checkbox" id="Thursday" name="days" value="Thursday">
        <label for="Thursday">Thursday</label><br>
-       <input type="checkbox" id="Friday" name="checkboxes" value="Friday">
+       <input type="checkbox" id="Friday" name="days" value="Friday">
        <label for="Friday">Friday</label><br>
-       <input type="checkbox" id="Saturday" name="checkboxes" value="Saturday">
+       <input type="checkbox" id="Saturday" name="days" value="Saturday">
        <label for="Saturday">Saturday</label>
        <br>
        <label for="intensity">Intensity</label>
        <input type="number" id="intensity" name="intensity" >
-       <div>
+       <br>
+      <input type="checkbox" id="back" name="muscles" value="back">
+       <label for="back">back</label><br>
+       <input type="checkbox" id="shoulders" name="muscles" value="shoulders">
+       <label for="shoulders">shoulders</label><br>
+       <input type="checkbox" id="arms" name="muscles" value="arms">
+       <label for="arms">arms</label><br>
+       <input type="checkbox" id="core" name="muscles" value="core">
+       <label for="core">core</label><br>
+       <input type="checkbox" id="chest" name="muscles" value="chest">
+       <label for="chest">chest</label><br>
+       <input type="checkbox" id="thighs" name="muscles" value="thighs">
+       <label for="thighs">thighs</label><br>
+       <input type="checkbox" id="hamstrings" name="muscles" value="hamstrings">
+       <label for="hamstrings">hamstrings</label><br>
+       <input type="checkbox" id="glutes" name="muscles" value="glutes">
+       <label for="glutes">glutes</label>
+       <!-- <div>
          <select name="targetmuscledropdown" > 
            <option value="">Choose Target Muscle Group</option>
            <option value="back">Back</option>
@@ -54,7 +71,7 @@
            <option value="hamstrings">Hamstring</option>
            <option value="glutess">Glutes</option>
        </select>
-      </div>
+      </div> -->
       <br>
      <button type="submit" class="btn btn-success">Add Exercise</button>
 
@@ -106,7 +123,7 @@
       <div class="list-group-item ">
         <div>
           <h5 class="mb-1">Meals</h5>
-          <p>{{bestrecipe}}></p>
+          <p>{{bestrecipe}}</p>
           <p >Meal</p>
           <h5 class="mb-1">Exercises</h5>
           <p >Exercise</p>
