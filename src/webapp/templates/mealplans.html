@@ -6,8 +6,11 @@
   
   
   </style>
-    <h1 style="margin-top:10px;text-align:center;background-color:grey;color:black">{% block title %} Personal Meal Plan Recommendations{% endblock %}</h1>
+
+    <h1 style="margin-top:10px;text-align:center;color:black">{% block title %} Personal Meal Plan Recommendations{% endblock %}</h1>
     <div style="width: 50%; margin: auto">
+        {{calories}}
+        {{jsoninfo}}
         <form action="/diet/" method="">
             <button name="btn" class="btn-primary btn-lg" type="submit">Generate new mealplan</button>
         </form>    
@@ -19,19 +22,59 @@
         </form>     
         <div style="padding: 15px; background-color: white; margin: 25px">
             {% for item in bestmealplan %}
-            Name:<span>{{ item['name'] }}</span>
+            Name: <span>{{ item['name'] }}</span>
             <br>
-            Ingredients:<span>{{ item['ingredients'] }}</span>
+            Ingredients: <span>{% for food in item['ingredients'] %}
+                                {{food}}
+                                {% endfor %}
+
+            </span>
             <br>
-            Nutritional Values:<span>{{ item['nutritional value'] }}</span>
+            Calories: <span>{{ item['nutritional value']['calories'] }}</span>
+            <br>
+            Carbs: <span>{{ item['nutritional value']['carbs'] }}</span>
+            <br>
+            Protein: <span>{{ item['nutritional value']['protein'] }}</span>
+            <br>
+            Fat: <span>{{ item['nutritional value']['fat'] }}</span>
+            <br>
+            Cholesterol: <span>{{ item['nutritional value']['cholesterol'] }}</span>
+            <br>
+            Sodium: <span>{{ item['nutritional value']['sodium'] }}</span>
+            <br>
+            Vitamina: <span>{{ item['nutritional value']['vitaminA'] }}</span>
+            <br>
+            Calcium: <span>{{ item['nutritional value']['calcium'] }}</span>
+            <br>
+            Copper: <span>{{ item['nutritional value']['copper'] }}</span>
+            <br>
+            Fluoride: <span>{{ item['nutritional value']['fluoride'] }}</span>
+            <br>
+            Iodine: <span>{{ item['nutritional value']['iodine'] }}</span>
+            <br>
+            Iron: <span>{{ item['nutritional value']['iron'] }}</span>
+            <br>
+            Magnesium: <span>{{ item['nutritional value']['magnesium'] }}</span>
+            <br>
+            Manganese: <span>{{ item['nutritional value']['manganese'] }}</span>
+            <br>
+            Molybdenum: <span>{{ item['nutritional value']['molybdenum'] }}</span>
+            <br>
+            Phosphorus: <span>{{ item['nutritional value']['phosphorus'] }}</span>
+            <br>
+            Potassium: <span>{{ item['nutritional value']['potassium'] }}</span>
+            <br>
+            Selenium: <span>{{ item['nutritional value']['selenium'] }}</span>
+            <br>
+            Zinc: <span>{{ item['nutritional value']['zinc'] }}</span>
+            <br>
             <br>
             <br>
     {% endfor %}
-    <form action="{{ url_for('savemealplan') }}" method="post">
+    <form action="{{ url_for('savemealplan') }}" method="get">
         <tbody>
            <tr>
           <br>
-          <th><input type="text" name="bestmealplan" value='{{ bestmealplan }}' required></th>
           <th><input type="submit" name="button" class="btn btn-success" value="Save Mealplan"></a></th>
           </tr>
         </tbody>

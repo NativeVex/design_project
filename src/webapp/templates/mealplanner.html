@@ -6,53 +6,221 @@
      <title>Health Planner</title>
      <link rel="stylesheet" media="screen" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+     <link rel = "stylesheet" href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css">
+     <script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
+     <script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <script>
+      $(function() {
+         $( "#caloriesslider" ).slider({
+            min: 0,
+            max: 1,
+            values: [.2, .6 ],
+            step:.1,
+            slide: function(event, ui) {
+               $( "#caloriesbreakfastamount" ).val(ui.values[0]); //changing calories breakfast amount value
+               $( "#caloriesbreakfastnumber" ).text(ui.values[0]); //changing calories breakfast amount value
+               $( "#calorieslunchamount" ).val(ui.values[1]); //changing calories breakfast amount value
+               $( "#calorieslunchnumber" ).text(ui.values[1]); //changing calories breakfast amount value
 
-  </head>
+            }
+         });
+         $( "#caloriesbreakfastamount" ).val($( "#caloriesslider" ).slider( "values", 0 )); //initial calories breakfastamount value
+         $( "#caloriesbreakfastnumber" ).text($( "#caloriesslider" ).slider( "values", 0 )); //initial calories breakfastamount value
+         $( "#calorieslunchamount" ).val($( "#caloriesslider" ).slider( "values", 1 )); //initial calories lunch value
+         $( "#calorieslunchnumber" ).text($( "#caloriesslider" ).slider( "values", 1 )); //initial calories breakfastamount value
+
+      });
+      $(function() {
+        $( "#carbsslider" ).slider({
+            min: 0,
+            max: 1,
+            values: [.2, .6 ],
+            step:.1,
+            slide: function(event, ui) {
+               $( "#carbsbreakfastamount" ).val(ui.values[0]); //changing calories breakfast amount value
+               $( "#carbsbreakfastnumber" ).text(ui.values[0]); //changing calories breakfast amount value
+               $( "#carbslunchamount" ).val(ui.values[1]); //changing calories breakfast amount value
+               $( "#carbslunchnumber" ).text(ui.values[1]); //changing calories breakfast amount value
+
+            }
+         });
+         $( "#carbsbreakfastamount" ).val($( "#carbsslider" ).slider( "values", 0 )); //initial calories breakfastamount value
+         $( "#carbsbreakfastnumber" ).text($( "#carbsslider" ).slider( "values", 0 )); //initial calories breakfastamount value
+         $( "#carbslunchamount" ).val($( "#carbsslider" ).slider( "values", 1 )); //initial calories lunch value
+         $( "#carbslunchnumber" ).text($( "#carbsslider" ).slider( "values", 1 )); //initial calories breakfastamount value
+
+      });
+      $(function() {
+        $( "#proteinsslider" ).slider({
+            min: 0,
+            max: 1,
+            values: [.2, .6 ],
+            step:.1,
+            slide: function(event, ui) {
+               $( "#proteinsbreakfastamount" ).val(ui.values[0]); //changing calories breakfast amount value
+               $( "#proteinsbreakfastnumber" ).text(ui.values[0]); //changing calories breakfast amount value
+               $( "#proteinslunchamount" ).val(ui.values[1]); //changing calories breakfast amount value
+               $( "#proteinslunchnumber" ).text(ui.values[1]); //changing calories breakfast amount value
+
+            }
+         });
+         $( "#proteinsbreakfastamount" ).val($( "#proteinsslider" ).slider( "values", 0 )); //initial calories breakfastamount value
+         $( "#proteinsbreakfastnumber" ).text($( "#proteinsslider" ).slider( "values", 0 )); //initial calories breakfastamount value
+         $( "#proteinslunchamount" ).val($( "#proteinsslider" ).slider( "values", 1 )); //initial calories lunch value
+         $( "#proteinslunchnumber" ).text($( "#proteinsslider" ).slider( "values", 1 )); //initial calories breakfastamount value
+
+      });
+   </script>
+     </head>
+     
   <style>
     body { background-color:lightblue; } 
-  
-  
-  </style>
+    
+</style>
   <body>
-
+    {% if session.name %}
+    <h2 style="background-color:white;color:black">Hello {{session["name"] }}</h2>
+    {% endif %}
     <br>
+    <div class="my-js-slider"></div>
+
     <div class="row align-items-center justify-content-center">
     <div class="col-md-4" style="background-color:grey;color:black;border-radius:10px;width:60%">
-      <h1>{{message}}</h1>
-      <form  action="/mealplan" method="POST" role="form" id="formElem">
+      <form  action="/mealplan" method="POST" role="form" id="info">
+        {{ form.csrf }}
         <h1 style="text-align:center;background-color:grey;color:black">Enter your Diet/Nutrition Preferences</h1>
-
+        <br>
+        <br>
         <div class="form-group">
+          <label style="font-size:20px">Calories</label>
+          <div style="display:flex;">
+          <h5>Calories Breakfast Value: </h5>
+          <h5  id = "caloriesbreakfastnumber" style="margin-left:5%"
+          ></h5></div>
+          <div style="display:flex;">
+            <h5>Calories Lunch Value: </h5>
+            <h5  id = "calorieslunchnumber" style="margin-left:5%"
+            ></h5></div>
+          <input type = "hidden" id = "caloriesbreakfastamount" name="caloriesbreakfastamount">
+          <input type = "hidden" id="calorieslunchamount" name="calorieslunchamount">
+          <br>
+          <br>
 
-          <label for="Calories">Calories:</label>
-          <input type="number" class="form-control" id="Calories" name="Calories" placeholder="Calories?">
-            <br>
-          <label for="Carbs">Carbs:</label>
-          <input type="number" class="form-control" id="Carbs" name="Carbs" placeholder="Carbs?">
-	    <br>
-	  <label for="Proteins">Proteins:</label>
-	  <input type="number" class="form-control" id="Proteins" name="Proteins" placeholder="Proteins?">
-	    <br>
-	  <label for="Fibers">Fibers:</label>
-	  <input type="number" class="form-control" id="Fibers" name="Fibers" placeholder="Fibers?">
-    <br> 
-    <label for="Allergies">Allergies:</label>
-    <input type="text" class="form-control" id="Allergies" name="Allergies" placeholder="Allergies?">
+          <div style="background-color:black;" id = "caloriesslider"></div>
+          <ul style="display:flex;">
+            <li style="display:inline-block;margin-left:7%;">breakfast</li>
+            <li style="display:inline-block;margin-left:7%;">lunch</li>
+            <li style="display:inline-block;margin-left:10%;">Dinner</li>
+          </ul>
     
+          
+
+          <br>
+          <br>
+          <label style="font-size:20px">Carbs</label>
+          <div style="display:flex;">
+          <h5>Carbs Breakfast Value: </h5>
+          <h5  id = "carbsbreakfastnumber" style="margin-left:5%"
+          ></h5></div>
+          <div style="display:flex;">
+            <h5>Carbs Lunch Value: </h5>
+            <h5  id = "carbslunchnumber" style="margin-left:5%"
+            ></h5></div>
+          <input type = "hidden"  id="carbsbreakfastamount" name="carbsbreakfastamount">
+          <input type = "hidden"  id="carbslunchamount" name="carbslunchamount">
+          <br>
+          <br>
+
+          <div style="background-color:black;" id = "carbsslider"></div>
+          <ul style="display:flex;">
+            <li style="display:inline-block;margin-left:7%;">breakfast</li>
+            <li style="display:inline-block;margin-left:7%;">lunch</li>
+            <li style="display:inline-block;margin-left:10%;">Dinner</li>
+          </ul>
+          
+	    <br>
+      <br>
+      <label style="font-size:20px">Proteins</label>
+          <div style="display:flex;">
+          <h5>Proteins Breakfast Value: </h5>
+          <h5  id = "proteinsbreakfastnumber" style="margin-left:5%"
+          ></h5></div>
+          <div style="display:flex;">
+            <h5>Proteins Lunch Value: </h5>
+            <h5  id = "proteinslunchnumber" style="margin-left:5%"
+            ></h5></div>
+          <input type = "hidden" id="proteinsbreakfastamount" name="proteinsbreakfastamount">
+          <input type = "hidden" id="proteinslunchamount" name="proteinslunchamount">
+          <br>
+          <br>
+          
+
+          <div style="background-color:black;" id = "proteinsslider"></div>
+          <ul style="display:flex;">
+            <li style="display:inline-block;margin-left:7%;">breakfast</li>
+            <li style="display:inline-block;margin-left:7%;">lunch</li>
+            <li style="display:inline-block;margin-left:10%;">Dinner</li>
+          </ul>
+    <br>
+      <br>
+
+	  
 	</div>
 
         <br>													   
         <center>
-          <button type="submit" id="button" form="formElem">Submit</button>         </center>
+          <button type="submit" id="button" form="info">Submit</button>         </center>
       </form>
 
       <br>
+      <script>
+        (function () {
+            'use strict';
+            var init = function () {                
+                var caloriesslider = new rSlider({
+                    target: '#caloriesslider',
+                    values: {min: 0, max: 100},
+                    step: 10,
+                    set: [20, 60],
+                    scale: true,
+                    labels: false,
+                    onChange: function (vals) {
+                        document.getElementById("caloriesvalues").innerHTML=caloriesslider.getValue();
+                    }
+                });
+                var carbsslider = new rSlider({
+                    target: '#carbsslider',
+                    values: {min: 0, max: 100},
+                    step: 10,
+                    range: true,
+                    set: [20, 60],
+                    scale: true,
+                    labels: false,
+                    onChange: function (vals) {
+                        document.getElementById("carbsvalues").innerHTML=carbsslider.getValue();
+                    }
+                });
+                var proteinsslider = new rSlider({
+                    target: '#proteinsslider',
+                    values: {min: 0, max: 100},
+                    step: 10,
+                    range: true,
+                    set: [20, 60],
+                    scale: true,
+                    labels: false,
+                    onChange: function (vals) {
+                        document.getElementById("proteinsvalues").innerHTML=proteinsslider.getValue();
+                    }
+                });
 
-      
+            };
+            window.onload = init;
+        })();
 
-
-
+        
+        </script>
+    
     </div>
     <br>
   </body>

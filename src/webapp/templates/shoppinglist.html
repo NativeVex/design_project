@@ -15,62 +15,110 @@
 </style>
 
    <br>
-   <div class="row align-items-center justify-content-center">
+   <div class="row align-items-center justify-content-center" style="text-align:center;">
+{{jsonrecipe}}<br>
+{{mealplan}}<br>
+{{days}}{{intensity}}{{muscles}}
    <div class="col-md-4" style="background-color:grey;color:black;border-radius:10px;width:80%">
-     <form  action="" method="post" role="form">
-       <h1 style="text-align:center;background-color:grey;color:black">Enter your foods for your personal shopping list</h1>
+    <h1 style="text-align:center;background-color:grey;color:black">Add a Exercise, Meal, or Food item</h1>
+
+    <form action="/addexercise" method="post" role="form">
+      <label for="newexercise">Add new Exercise</label>
+      <br>
+      <input type="checkbox" id="Sunday" name="checkboxes" value="Sunday">
+       <label for="Sunday">Sunday</label><br>
+       <input type="checkbox" id="Monday" name="checkboxes" value="Monday">
+       <label for="Monday">Monday</label><br>
+       <input type="checkbox" id="Tuesday" name="checkboxes" value="Tuesday">
+       <label for="Tuesday">Tuesday</label><br>
+       <input type="checkbox" id="Wednesday" name="checkboxes" value="Wednesday">
+       <label for="Wednesday">Wednesday</label><br>
+       <input type="checkbox" id="Thursday" name="checkboxes" value="Thursday">
+       <label for="Thursday">Thursday</label><br>
+       <input type="checkbox" id="Friday" name="checkboxes" value="Friday">
+       <label for="Friday">Friday</label><br>
+       <input type="checkbox" id="Saturday" name="checkboxes" value="Saturday">
+       <label for="Saturday">Saturday</label>
+       <br>
+       <label for="intensity">Intensity</label>
+       <input type="number" id="intensity" name="intensity" >
+       <div>
+         <select name="targetmuscledropdown" > 
+           <option value="">Choose Target Muscle Group</option>
+           <option value="back">Back</option>
+           <option value="shoulders">Shoulders</option>
+           <option value="arms">Arms</option>
+           <option value="core">Core</option>
+           <option value="chest">chest</option>
+           <option value="thighs">Thighs</option>
+           <option value="hamstrings">Hamstring</option>
+           <option value="glutess">Glutes</option>
+       </select>
+      </div>
+      <br>
+     <button type="submit" class="btn btn-success">Add Exercise</button>
+
+
+    </form>
+    <br>
+    <form action="/addfood" method="post" role="form">
+      <label for="newfood">Add new Food</label>
+      <input type="text" class="form-control" id="newfood" name="newrecipename" placeholder="Food name?">
+      <input type="text" class="form-control" id="newfood" name="newrecipeingredients" placeholder="Food Ingredients?">
+      <input type="number" class="form-control" step="0.1" id="Calories" min="0" name="newrecipecalories" placeholder="Calories?">
+      <input type="number" class="form-control" step="0.1" id="Carbs" min="0" name="newrecipecarbs" placeholder="Carbs?">
+      <input type="number" class="form-control" step="0.1" id="Proteins" min="0" name="protein" placeholder="Proteins?">
+      <br>
+      <button type="submit" class="btn btn-success">Add Food Recipe</button>
+
+      </form>
+      <br>
+     <form  action="/listitems" method="post" role="form">
 
        <div class="form-group">
+        <br>
+         <label for="newmeal">Add new Meal</label>
+         <input type="text" class="form-control" id="newmeal" name="newfoodname1" placeholder="First Recipe name?">
+         <input type="text" class="form-control" id="newfood" name="newfoodingredients1" placeholder="First Recipe Ingredients?">
+         <input type="number" class="form-control" step="0.1" id="Calories" min="0" name="Calories1" placeholder="First Recipe Calories?">
+         <input type="number" class="form-control" step="0.1"id="Carbs" min="0" name="Carbs1" placeholder="First Recipe Carbs?">
+         <input type="number" class="form-control" step="0.1" id="Proteins" min="0" name="Proteins1" placeholder="First Recipe Proteins?">
+         <input type="text" class="form-control" id="newfood" name="newfoodname2" placeholder="Second Recipe name?">
+         <input type="text" class="form-control" id="newfood" name="newfoodingredients2" placeholder="Second Recipe Ingredients?">
+         <input type="number" class="form-control" step="0.1" id="Calories" min="0" name="Calories2" placeholder="Second Recipe Calories?">
+         <input type="number" class="form-control" step="0.1" id="Carbs" min="0" name="Carbs2" placeholder="Second Recipe Carbs?">
+         <input type="number" class="form-control" step="0.1" id="Proteins" min="0" name="Proteins2" placeholder="Second Recipe Proteins?">
+         <input type="text" class="form-control" id="newfood" name="newfoodname3" placeholder="Third Recipe name?">
+         <input type="text" class="form-control" id="newfood" name="newfoodingredients3" placeholder="Third Recipe Ingredients?">
+         <input type="number" class="form-control" step="0.1" id="Calories" min="0" name="Calories3" placeholder="Third Recipe Calories?">
+         <input type="number" class="form-control" step="0.1" id="Carbs" min="0" name="Carbs3" placeholder="Third Recipe Carbs?">
+         <input type="number" class="form-control" step="0.1" id="Proteins" min="0" name="Proteins3" placeholder="Third Recipe Proteins?">
+        
 
-         <label for="newfood">Enter new food:</label>
-         <input type="text" class="form-control" id="newfood" name="newfood" placeholder="newfood?">
           </div>
        <br>													   
 
-       <center>
-         <button type="submit" class="btn btn-success">Submit</button>
-       </center>
+         <button type="submit" class="btn btn-success">Add Mealplan</button>
      </form>
 
      <br>
-     <div class="list-group">
+     <div class="list-group" style="margin-bottom:10px;">
       <div class="list-group-item ">
         <div>
+          <h5 class="mb-1">Meals</h5>
+          <p>{{bestrecipe}}></p>
+          <p >Meal</p>
+          <h5 class="mb-1">Exercises</h5>
+          <p >Exercise</p>
+          <p >Exercise</p>
           <h5 class="mb-1">Foods</h5>
+          <p >Food</p>
+          <p >Food</p>
         </div>
-        <p class="mb-1">Recipe</p>
         </div>
-        <div class="list-group-item ">
-         <div>
-           <h5 class="mb-1">Foods</h5>
-         </div>
-         <p class="mb-1">Recipe</p>
-         </div>
-         <div class="list-group-item ">
-            <div>
-              <h5 class="mb-1">Foods</h5>
-            </div>
-            <p class="mb-1">Recipe</p>
-            </div>
-            <div class="list-group-item">
-               <div>
-                 <h5 class="mb-1">Foods</h5>
-               </div>
-               <p class="mb-1">Recipe</p>
-               </div>
-               <div class="list-group-item ">
-                  <div>
-                    <h5 class="mb-1">Foods</h5>
-                  </div>
-                  <p class="mb-1">Recipe</p>
-                  </div>
-                  <div class="list-group-item ">
-                     <div>
-                       <h5 class="mb-1">Foods</h5>
-                     </div>
-                     <p class="mb-1">Recipe of the food</p>
-                     </div>
+        
     </div>
    </div>
+  </div>
  
 {% endblock %}
