@@ -147,19 +147,19 @@ class MealplanGenerator(data_src.DataStructures):
             n3[i] -= n2[i]
         return n3
 
-    def _div_nutritional_values(self, n1, n2):
-        """Divide a nutritional value datastructure by a scalar value
+    def _mul_nutritional_values(self, n1, n2):
+        """Multiply a nutritional value datastructure by a scalar value
 
-        This function divides all values in a dict containing nutritional values by a scalar value
+        This function multiplies all values in a dict containing nutritional values by a scalar value
         Paramaters:
         n1 (dict): nutritional values
-        n2 (int/float): scalar to divide
+        n2 (int/float): scalar to multipy by 
         Returns:
-        dict: n1/n2
+        dict: n1*n2
         """
         n3 = dict(n1)
         for i in n1:
-            n3[i] /= n2
+            n3[i] *= n2
         return n3
 
     def _calculate_meal_plan_nutrition(self, recipes):
@@ -189,7 +189,7 @@ class MealplanGenerator(data_src.DataStructures):
                                                    i["nutritional_values"])
             for j in offset:
                 RSS += offset[j]**2
-        return RSS
+        return (RSS/len(meal_plan))/len(meal_plan[0]["nutritional_values"])
         # if we want some randomness so it doesn't always spit out the same meal plan we can uncomment and/or change the following line
         # RSS += random.random() * 2
 
@@ -199,7 +199,7 @@ class MealplanGenerator(data_src.DataStructures):
             health_requirements, recipe_data["nutritional_values"])
         for j in offset:
             RSS += offset[j]**2
-        return RSS
+        return RSS/len(recipe_data["nutritional_values"])
 
     def _nutritional_values_RSS(self, health_requirements, nutritional_values):
         RSS = 0
@@ -207,7 +207,7 @@ class MealplanGenerator(data_src.DataStructures):
                                                nutritional_values)
         for j in offset:
             RSS += offset[j]**2
-        return RSS
+        return RSS/len(nutritional_values)
 
     # this is the "head" of the code
     def gen_meal_plan(self) -> DataStructures.meal_plan:
@@ -227,35 +227,47 @@ class MealplanGenerator(data_src.DataStructures):
         # OK so this works but makes really bad suggestions. Like REALLY bad. I think the issue is that the meals are too small and so even with 4 of them we get like 1/4 of the daily values
         # solution to this would proably be find the meal plan that has the best *shape* then multiply meal servings to get something that seems right. Not 100% sure what the best way to do this is though...
 
-        breakfast_reqs = self._div_nutritional_values(
-            self.user_health_requirements, self.nutrition_split[0])
-        lunch_reqs = self._div_nutritional_values(
-            self.user_health_requirements, self.nutrition_split[1])
-        dinner_reqs = self._div_nutritional_values(
-            self.user_health_requirements, self.nutrition_split[2])
+        #OK so this works but makes really bad suggestions. Like REALLY bad. I think the issue is that the meals are too small and so even with 4 of them we get like 1/4 of the daily values
+        #solution to this would proably be find the meal plan that has the best *shape* then multiply meal servings to get something that seems right. Not 100% sure what the best way to do this is though...
 
+        breakfast_reqs = self._mul_nutritional_values(self.user_health_requirements, self.nutrition_split[0])
+        lunch_reqs = self._mul_nutritional_values(self.user_health_requirements, self.nutrition_split[1])
+        dinner_reqs = self._mul_nutritional_values(self.user_health_requirements, self.nutrition_split[2])
+
+        #TODO: check for 1-4 servings the RSS and pick the lowest out of those
+        #Figure out how to store both servings that recipe makes and how many of those to eat
         lowest_RSS = math.inf
         for i in self.breakfasts:
-            cur_RSS = self._recipe_RSS(breakfast_reqs, i)
-            if cur_RSS < lowest_RSS:
-                best_meal_plan[0] = i
+            for n in range(1, 5):
+                cur_RSS = self._nutritional_values_RSS(breakfast_reqs, self._mul_nutritional_values(i["nutritional_values"], n))
+                if cur_RSS < lowest_RSS:
+                    lowest_RSS = cur_RSS
+                    i["number_of_servings"] /= n
+                    i["nutritional_values"] = self._mul_nutritional_values(i["nutritional_values"], n)
+                    best_meal_plan[0] = i
 
         lowest_RSS = math.inf
         for i in self.lunches:
-            cur_RSS = self._recipe_RSS(lunch_reqs, i)
-            if cur_RSS < lowest_RSS:
-                best_meal_plan[1] = i
+            for n in range(1, 5):
+                cur_RSS = self._nutritional_values_RSS(lunch_reqs, self._mul_nutritional_values(i["nutritional_values"], n))
+                if cur_RSS < lowest_RSS:
+                    lowest_RSS = cur_RSS
+                    i["number_of_servings"] /= n
+                    i["nutritional_values"] = self._mul_nutritional_values(i["nutritional_values"], n)
+                    best_meal_plan[1] = i
 
         lowest_RSS = math.inf
         for i in self.main_dishes:
             for j in self.side_dishes:
-                cur_RSS = self._nutritional_values_RSS(
-                    dinner_reqs,
-                    self._sum_nutritional_values(i["nutritional_values"],
-                                                 j["nutritional_values"]),
-                )
-                if cur_RSS < lowest_RSS:
-                    best_meal_plan[2] = i
-                    best_meal_plan[3] = j
+                for n in range(1, 5):
+                    cur_RSS = self._nutritional_values_RSS(dinner_reqs, self._mul_nutritional_values(self._sum_nutritional_values(i["nutritional_values"], j["nutritional_values"]), n))
+                    if cur_RSS < lowest_RSS:
+                        lowest_RSS = cur_RSS
+                        i["number_of_servings"] /= n
+                        j["number_of_servings"] /= n
+                        i["nutritional_values"] = self._mul_nutritional_values(i["nutritional_values"], n)
+                        j["nutritional_values"] = self._mul_nutritional_values(j["nutritional_values"], n)
+                        best_meal_plan[2] = i
+                        best_meal_plan[3] = j
 
         return json.dumps(best_meal_plan)
