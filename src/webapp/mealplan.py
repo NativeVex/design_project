@@ -1,9 +1,9 @@
 import itertools
 import json
+import math
 import os
 import random
 import sys
-import math
 
 from webapp import data_src
 from webapp.data_src import DataStructures
@@ -69,11 +69,15 @@ class MealplanGenerator(data_src.DataStructures):
     lunches = []
     main_dishes = []
     side_dishes = []
-    snacks = [] #leave for now
+    snacks = []  # leave for now
     user_health_requirements = None
     nutrition_split = [0.25, 0.25, 0.5]
 
-    def __init__(self, json_health_requirements, breakfast = 0.25, lunch = 0.25, dinner = 0.5):
+    def __init__(self,
+                 json_health_requirements,
+                 breakfast=0.25,
+                 lunch=0.25,
+                 dinner=0.5):
         """Plan Meals for Week Usecase
 
         Big paragraph
@@ -82,7 +86,7 @@ class MealplanGenerator(data_src.DataStructures):
 
         queries recipes from DB
         """
-        #Can be done in get_recipes_from_db()
+        # Can be done in get_recipes_from_db()
         json_recipes = get_recipes_from_db()
         for i in json_recipes:
             j = json.loads(i)
@@ -138,7 +142,7 @@ class MealplanGenerator(data_src.DataStructures):
         This function divides all values in a dict containing nutritional values by a scalar value
         Paramaters:
         n1 (dict): nutritional values
-        n2 (dict): scalar to divide 
+        n2 (dict): scalar to divide
         Returns:
         dict: n1/n2
         """
@@ -170,25 +174,29 @@ class MealplanGenerator(data_src.DataStructures):
         # TODO: data scaling; otherwise an error in calories will matter a lot more than an error in vitamin A
         RSS = 0
         for i in meal_plan:
-            offset = self._diff_nutritional_values(health_requirements, i["nutritional_values"])
+            offset = self._diff_nutritional_values(health_requirements,
+                                                   i["nutritional_values"])
             for j in offset:
                 RSS += offset[j]**2
         return RSS
         # if we want some randomness so it doesn't always spit out the same meal plan we can uncomment and/or change the following line
         # RSS += random.random() * 2
+
     def _recipe_RSS(self, health_requirements, recipe_data):
         RSS = 0
-        offset = self._diff_nutritional_values(health_requirements, recipe_data["nutritional_values"])
-        for j in offset:
-            RSS += offset[j]**2
-        return RSS
-    def _nutritional_values_RSS(self, health_requirements, nutritional_values):
-        RSS = 0
-        offset = self._diff_nutritional_values(health_requirements, nutritional_values)
+        offset = self._diff_nutritional_values(
+            health_requirements, recipe_data["nutritional_values"])
         for j in offset:
             RSS += offset[j]**2
         return RSS
 
+    def _nutritional_values_RSS(self, health_requirements, nutritional_values):
+        RSS = 0
+        offset = self._diff_nutritional_values(health_requirements,
+                                               nutritional_values)
+        for j in offset:
+            RSS += offset[j]**2
+        return RSS
 
     # this is the "head" of the code
     def gen_meal_plan(self) -> DataStructures.meal_plan:
@@ -208,9 +216,12 @@ class MealplanGenerator(data_src.DataStructures):
         # We can assess the quality of a meal plan given the RSS of the meal plan wrt the reqs. With this we can compare
         # two meal plans and pick the better one.
 
-        breakfast_reqs = _div_nutritional_values(self.health_requirements, nutrition_split[0])
-        lunch_reqs = _div_nutritional_values(self.health_requirements, nutrition_split[1])
-        dinner_reqs = _div_nutritional_values(self.health_requirements, nutrition_split[2])
+        breakfast_reqs = _div_nutritional_values(self.health_requirements,
+                                                 nutrition_split[0])
+        lunch_reqs = _div_nutritional_values(self.health_requirements,
+                                             nutrition_split[1])
+        dinner_reqs = _div_nutritional_values(self.health_requirements,
+                                              nutrition_split[2])
 
         lowest_RSS = math.inf
         for i in breakfasts:
@@ -227,24 +238,26 @@ class MealplanGenerator(data_src.DataStructures):
         lowest_RSS = math.inf
         for i in main_dishes:
             for j in side_dishes:
-                cur_RSS = _nutritional_values_RSS(dinner_reqs, _sum_nutritional_values(i["nutritional_values"], j["nutritional_values"]))
+                cur_RSS = _nutritional_values_RSS(
+                    dinner_reqs,
+                    _sum_nutritional_values(i["nutritional_values"],
+                                            j["nutritional_values"]),
+                )
                 if cur_RSS < lowest_RSS:
                     best_meal_plan[2] = i
                     best_meal_plan[3] = j
 
-        
-        
-#       meals_per_meal_plan = 3
-#       possible_meal_plans_iterator = itertools.combinations(
-#           self.recipes, meals_per_meal_plan)
+        #       meals_per_meal_plan = 3
+        #       possible_meal_plans_iterator = itertools.combinations(
+        #           self.recipes, meals_per_meal_plan)
 
-#       # print all possible meal plans
-#       lowest_RSS = 10000000000000
-#       for i in possible_meal_plans_iterator:
-#           current_meal_plan_RSS = self._meal_plan_RSS(
-#               self.user_health_requirements, i)
-#           if current_meal_plan_RSS < lowest_RSS:
-#               lowest_RSS = current_meal_plan_RSS
-#               best_meal_plan = i
+        #       # print all possible meal plans
+        #       lowest_RSS = 10000000000000
+        #       for i in possible_meal_plans_iterator:
+        #           current_meal_plan_RSS = self._meal_plan_RSS(
+        #               self.user_health_requirements, i)
+        #           if current_meal_plan_RSS < lowest_RSS:
+        #               lowest_RSS = current_meal_plan_RSS
+        #               best_meal_plan = i
 
         return json.dumps(best_meal_plan)
