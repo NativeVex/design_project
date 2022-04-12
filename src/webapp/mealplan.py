@@ -82,13 +82,15 @@ class MealplanGenerator(data_src.DataStructures):
     side_dishes = []
     snacks = []  # leave for now
     user_health_requirements = None
-    nutrition_split = [0.25, 0.25, 0.5]
+    calorie_split = [0.25, 0.25, 0.5]
+    protein_split = [0.25, 0.25, 0.5]
+    carbs_split = [0.25, 0.25, 0.5]
 
     def __init__(self,
                  json_health_requirements,
-                 breakfast=0.25,
-                 lunch=0.25,
-                 dinner=0.5):
+                 calorie_split = [0.25, 0.25, 0.5],
+                 protein_split = [0.25, 0.25, 0.5],
+                 carbs_split =[0.25, 0.25, 0.5]):
         """Plan Meals for Week Usecase
 
         Big paragraph
@@ -115,7 +117,9 @@ class MealplanGenerator(data_src.DataStructures):
                     self.snacks.append(j)
 
         self.user_health_requirements = json.loads(json_health_requirements)
-        self.nutrition_split = [breakfast, lunch, dinner]
+        self.calorie_split = calorie_split
+        self.protein_split = protein_split
+        self.carbs_split = carbs_split
 
     def _sum_nutritional_values(self, n1, n2):
         """Adds two nutritional value datastructures
@@ -209,6 +213,36 @@ class MealplanGenerator(data_src.DataStructures):
             RSS += offset[j]**2
         return RSS/len(nutritional_values)
 
+    def _balance_health_requirements(self, calorie_split, protein_split, carbs_split, health_requirements):
+        hr_breakfast = self._mul_nutritional_values(health_requirements, carbs_split[0])
+        hr_lunch = self._mul_nutritional_values(health_requirements, carbs_split[1])
+        hr_dinner = self._mul_nutritional_values(health_requirements, carbs_split[2])
+        avg_split = [
+                (calorie_split[0] + protein_split[0] + carbs_split[0]) / 3,
+                (calorie_split[1] + protein_split[1] + carbs_split[1]) / 3,
+                (calorie_split[2] + protein_split[2] + carbs_split[2]) / 3
+                ]
+
+        hr_breakfast["calories"] = health_requirements["calories"] * calorie_split[0]
+        hr_breakfast["protein"] = health_requirements["protein"] * calorie_split[0]
+        hr_breakfast["iron"] = health_requirements["iron"] * avg_split[0]
+        hr_breakfast["vitamin_a"] = health_requirements["vitamin_a"] * avg_split[0]
+        hr_breakfast["vitamin_c"] = health_requirements["vitamin_c"] * avg_split[0]
+
+        hr_lunch["calories"] = health_requirements["calories"] * calorie_split[1]
+        hr_lunch["protein"] = health_requirements["protein"] * calorie_split[1]
+        hr_lunch["iron"] = health_requirements["iron"] * avg_split[0]
+        hr_lunch["vitamin_a"] = health_requirements["vitamin_a"] * avg_split[0]
+        hr_lunch["vitamin_c"] = health_requirements["vitamin_c"] * avg_split[0]
+
+        hr_dinner["calories"] = health_requirements["calories"] * calorie_split[2]
+        hr_dinner["protein"] = health_requirements["protein"] * calorie_split[2]
+        hr_dinner["iron"] = health_requirements["iron"] * avg_split[0]
+        hr_dinner["vitamin_a"] = health_requirements["vitamin_a"] * avg_split[0]
+        hr_dinner["vitamin_c"] = health_requirements["vitamin_c"] * avg_split[0]
+
+        return hr_breakfast, hr_lunch, hr_dinner
+
     # this is the "head" of the code
     def gen_meal_plan(self) -> DataStructures.meal_plan:
         """Generates a mealplan based on the health requirements that the class was created with
@@ -230,9 +264,7 @@ class MealplanGenerator(data_src.DataStructures):
         #OK so this works but makes really bad suggestions. Like REALLY bad. I think the issue is that the meals are too small and so even with 4 of them we get like 1/4 of the daily values
         #solution to this would proably be find the meal plan that has the best *shape* then multiply meal servings to get something that seems right. Not 100% sure what the best way to do this is though...
 
-        breakfast_reqs = self._mul_nutritional_values(self.user_health_requirements, self.nutrition_split[0])
-        lunch_reqs = self._mul_nutritional_values(self.user_health_requirements, self.nutrition_split[1])
-        dinner_reqs = self._mul_nutritional_values(self.user_health_requirements, self.nutrition_split[2])
+        breakfast_reqs, lunch_reqs, dinner_reqs = self._balance_health_requirements(self.calorie_split, self.protein_split, self.carbs_split, self.user_health_requirements)
 
         #TODO: check for 1-4 servings the RSS and pick the lowest out of those
         #Figure out how to store both servings that recipe makes and how many of those to eat
