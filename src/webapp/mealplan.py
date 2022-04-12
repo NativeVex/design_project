@@ -34,17 +34,24 @@ def get_recipes_from_db(
     for recipe in queried_recipes:
         skeleton = DataStructures.recipe_data()
         skeleton["name"] = recipe.name
-        skeleton["nutritional value"]["calories"] = recipe.Calories
+        skeleton["nutritional value"]["calcium"] = recipe.calcium
+        skeleton["nutritional value"]["calories"] = recipe.calories
+        skeleton["nutritional value"]["carbohydrate"] = recipe.carbohydrate
+        skeleton["nutritional value"]["cholesterol"] = recipe.cholesterol
         skeleton["nutritional value"]["fat"] = recipe.fat
-        skeleton["nutritional value"]["carbs"] = recipe.Carbs
-        skeleton["nutritional value"]["protein"] = recipe.Proteins
-        skeleton["nutritional value"]["cholesterol"] = recipe.Cholesterol
-        skeleton["nutritional value"]["sodium"] = recipe.Sodium
-        skeleton["nutritional value"]["vitaminA"] = recipe.Vitamina
-        skeleton["nutritional value"]["vitaminC"] = recipe.Vitaminc
-        skeleton["nutritional value"]["calcium"] = recipe.Calcium
-        skeleton["nutritional value"]["iron"] = recipe.Iron
-        skeleton["nutritional value"]["potassium"] = recipe.Potassium
+        skeleton["nutritional value"]["fiber"] = recipe.fiber
+        skeleton["nutritional value"]["iron"] = recipe.iron
+        skeleton["nutritional value"]["monounsaturated_fat"] = recipe.monounsaturated_fat
+        skeleton["nutritional value"]["polyunsaturated_fat"] = recipe.polyunsaturated_fat
+        skeleton["nutritional value"]["potassium"] = recipe.potassium
+        skeleton["nutritional value"]["protein"] = recipe.protein
+        skeleton["nutritional value"]["saturated_fat"] = recipe.saturated_fat
+        skeleton["nutritional value"]["sodium"] = recipe.sodium
+        skeleton["nutritional value"]["sugar"] = recipe.sugar
+        skeleton["nutritional value"]["trans_fat"] = recipe.trans_fat
+        skeleton["nutritional value"]["vitamin_a"] = recipe.vitamin_a
+        skeleton["nutritional value"]["vitamin_c"] = recipe.vitamin_c
+        skeleton["nutritional value"]["type"] = recipe.type
         recipes.append(json.dumps(skeleton))
 
     the_void = DataStructures.recipe_data()

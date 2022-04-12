@@ -71,75 +71,69 @@ class Recipes(db.Model):
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(100), unique=True)
-    Calories = db.Column(db.Float)
-    Carbs = db.Column(db.Float)
-    Proteins = db.Column(db.Float)
+    calcium = db.Column(db.Float)
+    calories = db.Column(db.Float)
+    carbohydrate = db.Column(db.Float)
+    cholesterol = db.Column(db.Float)
     fat = db.Column(db.Float)
-    Cholesterol = db.Column(db.Float)
-    Sodium = db.Column(db.Float)
-    Vitamina = db.Column(db.Float)
-    Calcium = db.Column(db.Float)
-    Copper = db.Column(db.Float)
-    Fluoride = db.Column(db.Float)
-    Iodine = db.Column(db.Float)
-    Iron = db.Column(db.Float)
-    Magnesium = db.Column(db.Float)
-    Manganese = db.Column(db.Float)
-    Molybdenum = db.Column(db.Float)
-    Phosphorus = db.Column(db.Float)
-    Potassium = db.Column(db.Float)
-    Selenium = db.Column(db.Float)
-    Zinc = db.Column(db.Float)
-    Vitaminc = db.Column(db.Float)
+    fiber = db.Column(db.Float)
+    iron = db.Column(db.Float)
+    monounsaturated_fat = db.Column(db.Float)
+    polyunsaturated_fat = db.Column(db.Float)
+    potassium = db.Column(db.Float)
+    protein = db.Column(db.Float)
+    saturated_fat = db.Column(db.Float)
+    sodium = db.Column(db.Float)
+    sugar = db.Column(db.Float)
+    trans_fat = db.Column(db.Float)
+    vitamin_a = db.Column(db.Float)
+    vitamin_c = db.Column(db.Float)
+    type = db.Column(db.String)
 
     def __init__(
         self,
         name: str,
-        Calories: float,
-        Carbs: float,
-        Proteins: float,
+        calories: float,
+        carbohydrate: float,
+        protein: float,
+        cholesterol=0.0,
         fat=0.0,
-        Cholesterol=0.0,
-        Sodium=0.0,
-        Vitamina=0.0,
-        Calcium=0.0,
-        Copper=0.0,
-        Fluoride=0.0,
-        Iodine=0.0,
-        Iron=0.0,
-        Magnesium=0.0,
-        Manganese=0.0,
-        Molybdenum=0.0,
-        Phosphorus=0.0,
-        Potassium=0.0,
-        Selenium=0.0,
-        Zinc=0.0,
-        Vitaminc=0.0,
+        fiber=0.0,
+        iron=0.0,
+        monounsaturated_fat=0.0,
+        polyunsaturated_fat=0.0,
+        potassium=0.0,
+        calcium = 0.0,
+        saturated_fat=0.0,
+        sodium=0.0,
+        sugar=0.0,
+        trans_fat=0.0,
+        vitamin_a=0.0,
+        vitamin_c=0.0,
+        type = ""
     ):
         """Create a new Mealplan object using the email address and hashing the
         plaintext password using Werkzeug.Security.
         """
         self.name = name
-        self.Calories = Calories
-        self.Carbs = Carbs
+        self.calories = calories
+        self.carbohydrate = carbohydrate
+        self.protein = protein
+        self.cholesterol = cholesterol
         self.fat = fat
-        self.Proteins = Proteins
-        self.Cholesterol = Cholesterol
-        self.Sodium = Sodium
-        self.Vitamina = Vitamina
-        self.Calcium = Calcium
-        self.Copper = Copper
-        self.Fluoride = Fluoride
-        self.Iodine = Iodine
-        self.Iron = Iron
-        self.Magnesium = Magnesium
-        self.Manganese = Manganese
-        self.Molybdenum = Molybdenum
-        self.Phosphorus = Phosphorus
-        self.Potassium = Potassium
-        self.Selenium = Selenium
-        self.Zinc = Zinc
-        self.Vitaminc = Vitaminc
+        self.fiber = fiber
+        self.iron = iron
+        self.monounsaturated_fat = monounsaturated_fat
+        self.polyunsaturated_fat = polyunsaturated_fat
+        self.potassium = potassium
+        self.calcium = calcium
+        self.saturated_fat = saturated_fat
+        self.sodium = sodium
+        self.sugar = sugar
+        self.trans_fat = trans_fat
+        self.vitamin_a = vitamin_a
+        self.vitamin_c = vitamin_c
+        self.type = type
 
     def get_id(self):
         """Return the user ID as a unicode string (`str`)."""
