@@ -7,52 +7,15 @@ import sys
 import pytest
 import test_data
 
+from webapp.app import app, db
 from webapp.data_src import DataStructures
 from webapp.mealplan import MealplanGenerator
 
 
-# define what the variables are for this use case
-@pytest.fixture
-def health_reqs():
-    return test_data.sample_health_reqs()
-
-
-@pytest.fixture
-def meal_plan_a():
-    return test_data.sample_meal_plan()
-
-
-@pytest.fixture
-def meal_plan_b():
-    return test_data.sample_meal_plan()
-
-
-@pytest.fixture
-def recipe_list():
-    ls = []
-    for i in range(12):
-        ls.append(test_data.sample_recipe())
-    return ls
-
-
-@pytest.fixture
-def json_recipe_list(recipe_list):
-    ls = []
-    for i in recipe_list:
-        ls.append(json.dumps(i))
-    return ls
-
-
-@pytest.fixture
-def mpg_class(nv1):
-    return MealplanGenerator(json.dumps(nv1))
-
-
 # test functions
-
-
 def test_sum_nutritional_values(nv1, nv2, mpg_class):
     """Tests _sum_nutritional_values utility function"""
+
     result = mpg_class._sum_nutritional_values(nv1, nv2)
     for i in result:
         assert result[i] == nv1[i] + nv2[i]
@@ -69,8 +32,6 @@ def test_sum_nutritional_values_fail(nv1, nv2, mpg_class):
 
 
 # we can expect a specific type of error like this:
-
-
 def test_diff_nutritional_values(nv1, nv2, mpg_class):
     """Tests _diff_nutritional_values utility function"""
     result = mpg_class._diff_nutritional_values(nv1, nv2)

@@ -2,7 +2,7 @@
 
 {% block content %}
 <style>
-    body { background-image: url("/static/foods.jpg");background-size:cover;background-repeat:no-repeat } 
+    body { background-color:lightblue; } 
 
 
 </style>
@@ -11,13 +11,13 @@
     
     <div class="row align-items-center justify-content-center">
     <div class="col-md-4" style="background-color:grey;color:black; border-radius:10px;width:50%">
+      <h1>{{message}}</h1>
       <form  action="" method="post" role="form">
         <h1 style="text-align:center;background-color:grey;color:black">Login to your Health/Diet Planner Account</h1>
-
         <div class="form-group">
  
-          <label for="username">Enter Username:</label>
-          <input type="text" class="form-control" id="username" name="username" placeholder="username?">
+          <label for="username">Enter Email:</label>
+          <input type="text" class="form-control" id="email" name="email" placeholder="email?">
            </div>
         <br>	
         <label for="password">Enter Password:</label>
