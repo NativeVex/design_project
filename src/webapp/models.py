@@ -71,6 +71,8 @@ class Recipes(db.Model):
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(100), unique=True)
+    directions = db.Column(db.String) 
+    ingredients = db.Column(db.String)
     calcium = db.Column(db.Float)
     calories = db.Column(db.Float)
     carbohydrate = db.Column(db.Float)
@@ -88,11 +90,14 @@ class Recipes(db.Model):
     trans_fat = db.Column(db.Float)
     vitamin_a = db.Column(db.Float)
     vitamin_c = db.Column(db.Float)
+    number_of_servings = db.Column(db.Integer)
     type = db.Column(db.String)
 
     def __init__(
         self,
         name: str,
+        directions: list,
+        ingredients: list,
         calories: float,
         carbohydrate: float,
         protein: float,
@@ -110,12 +115,15 @@ class Recipes(db.Model):
         trans_fat=0.0,
         vitamin_a=0.0,
         vitamin_c=0.0,
-        type="",
+        number_of_servings=0,
+        type = ""
     ):
         """Create a new Mealplan object using the email address and hashing the
         plaintext password using Werkzeug.Security.
         """
         self.name = name
+        self.directions = str(directions)
+        self.ingredients = str(ingredients)
         self.calories = calories
         self.carbohydrate = carbohydrate
         self.protein = protein
@@ -133,7 +141,34 @@ class Recipes(db.Model):
         self.trans_fat = trans_fat
         self.vitamin_a = vitamin_a
         self.vitamin_c = vitamin_c
+        self.number_of_servings = number_of_servings
         self.type = type
+
+    def __init__(self, json_str):
+        data_dict = json.loads(json_str)
+        self.name = data_dict["name"]
+        self.directions = str(data_dict["directions"])
+        self.ingredients = str(data_dict["ingredients"])
+        self.number_of_servings = data_dict["number_of_servings"]
+        self.type = data_dict["type"]
+
+        self.calories = data_dict["nutritional_value"]["calories"]
+        self.carbohydrate = data_dict["nutritional_value"]["carbohydrate"]
+        self.protein = data_dict["nutritional_value"]["protein"]
+        self.cholesterol = data_dict["nutritional_value"]["cholesterol"]
+        self.fat = data_dict["nutritional_value"]["fat"]
+        self.fiber = data_dict["nutritional_value"]["fiber"]
+        self.iron = data_dict["nutritional_value"]["iron"]
+        self.monounsaturated_fat = data_dict["nutritional_value"]["monounsaturated_fat"]
+        self.polyunsaturated_fat = data_dict["nutritional_value"]["polyunsaturated_fat"]
+        self.potassium = data_dict["nutritional_value"]["potassium"]
+        self.calcium = data_dict["nutritional_value"]["calcium"]
+        self.saturated_fat = data_dict["nutritional_value"]["saturated_fat"]
+        self.sodium = data_dict["nutritional_value"]["sodium"]
+        self.sugar = data_dict["nutritional_value"]["sugar"]
+        self.trans_fat = data_dict["nutritional_value"]["trans_fat"]
+        self.vitamin_a = data_dict["nutritional_value"]["vitamin_a"]
+        self.vitamin_c = data_dict["nutritional_value"]["vitamin_c"]
 
     def get_id(self):
         """Return the user ID as a unicode string (`str`)."""
