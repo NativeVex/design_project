@@ -223,19 +223,19 @@ class MealplanGenerator(data_src.DataStructures):
         # TODO
         # Ability to add arbitrary # of snacks (favor coming at the RSS from the low end? Third slider so they can say how much they wanna snack?)
         # Ability to deduce which meal should be composed of main + side dish and which meal should be just a lunch
+        # Figure out how to store both servings that recipe makes and how many of those to eat
+        # Better suggestions for meals
+        # More randomness so we don't suggest nearly the same meal plan every time.
+        # MAYBE a way to pair main and side dishes together? Like sushi doesn't really go with bean soup yknow
 
-        # OK so this works but makes really bad suggestions. Like REALLY bad. I think the issue is that the meals are too small and so even with 4 of them we get like 1/4 of the daily values
+        # OK so this works but makes bad suggestions. pretty bad. I think the issue is that the meals are too small and so even with 4 of them we get like 1/4 of the daily values
         # solution to this would proably be find the meal plan that has the best *shape* then multiply meal servings to get something that seems right. Not 100% sure what the best way to do this is though...
 
-        #OK so this works but makes really bad suggestions. Like REALLY bad. I think the issue is that the meals are too small and so even with 4 of them we get like 1/4 of the daily values
-        #solution to this would proably be find the meal plan that has the best *shape* then multiply meal servings to get something that seems right. Not 100% sure what the best way to do this is though...
 
         breakfast_reqs = self._mul_nutritional_values(self.user_health_requirements, self.nutrition_split[0])
         lunch_reqs = self._mul_nutritional_values(self.user_health_requirements, self.nutrition_split[1])
         dinner_reqs = self._mul_nutritional_values(self.user_health_requirements, self.nutrition_split[2])
 
-        #TODO: check for 1-4 servings the RSS and pick the lowest out of those
-        #Figure out how to store both servings that recipe makes and how many of those to eat
         lowest_RSS = math.inf
         for i in self.breakfasts:
             for n in range(1, 5):
