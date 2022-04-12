@@ -23,15 +23,16 @@ def get_recipes_from_db(
 ):
     recipes = []
 
-    #MOCK CODE
+    # MOCK CODE
     with open("r2.json") as r:
         for recipe in r:
             fixme = json.loads(recipe.strip())
             for i in fixme["nutritional_values"]:
-                fixme["nutritional_values"][i] = float(fixme["nutritional_values"][i])
+                fixme["nutritional_values"][i] = float(
+                    fixme["nutritional_values"][i])
             recipes.append(json.dumps(fixme))
     return recipes
-    #END MOCK CODE
+    # END MOCK CODE
 
     queried_recipes = Recipes.query.filter(
         Recipes.Calories > Calories_min,
@@ -152,7 +153,7 @@ class MealplanGenerator(data_src.DataStructures):
         This function divides all values in a dict containing nutritional values by a scalar value
         Paramaters:
         n1 (dict): nutritional values
-        n2 (int/float): scalar to divide 
+        n2 (int/float): scalar to divide
         Returns:
         dict: n1/n2
         """
@@ -194,14 +195,16 @@ class MealplanGenerator(data_src.DataStructures):
 
     def _recipe_RSS(self, health_requirements, recipe_data):
         RSS = 0
-        offset = self._diff_nutritional_values(health_requirements, recipe_data["nutritional_values"])
+        offset = self._diff_nutritional_values(
+            health_requirements, recipe_data["nutritional_values"])
         for j in offset:
             RSS += offset[j]**2
         return RSS
 
     def _nutritional_values_RSS(self, health_requirements, nutritional_values):
         RSS = 0
-        offset = self._diff_nutritional_values(health_requirements, nutritional_values)
+        offset = self._diff_nutritional_values(health_requirements,
+                                               nutritional_values)
         for j in offset:
             RSS += offset[j]**2
         return RSS
@@ -217,18 +220,19 @@ class MealplanGenerator(data_src.DataStructures):
         best_meal_plan: DataStructures.meal_plan
         best_meal_plan = DataStructures.meal_plan(4)
 
+        # TODO
+        # Ability to add arbitrary # of snacks (favor coming at the RSS from the low end? Third slider so they can say how much they wanna snack?)
+        # Ability to deduce which meal should be composed of main + side dish and which meal should be just a lunch
 
-        #TODO
-        #Ability to add arbitrary # of snacks (favor coming at the RSS from the low end? Third slider so they can say how much they wanna snack?)
-        #Ability to deduce which meal should be composed of main + side dish and which meal should be just a lunch
+        # OK so this works but makes really bad suggestions. Like REALLY bad. I think the issue is that the meals are too small and so even with 4 of them we get like 1/4 of the daily values
+        # solution to this would proably be find the meal plan that has the best *shape* then multiply meal servings to get something that seems right. Not 100% sure what the best way to do this is though...
 
-
-        #OK so this works but makes really bad suggestions. Like REALLY bad. I think the issue is that the meals are too small and so even with 4 of them we get like 1/4 of the daily values
-        #solution to this would proably be find the meal plan that has the best *shape* then multiply meal servings to get something that seems right. Not 100% sure what the best way to do this is though...
-
-        breakfast_reqs = self._div_nutritional_values(self.user_health_requirements, self.nutrition_split[0])
-        lunch_reqs = self._div_nutritional_values(self.user_health_requirements, self.nutrition_split[1])
-        dinner_reqs = self._div_nutritional_values(self.user_health_requirements, self.nutrition_split[2])
+        breakfast_reqs = self._div_nutritional_values(
+            self.user_health_requirements, self.nutrition_split[0])
+        lunch_reqs = self._div_nutritional_values(
+            self.user_health_requirements, self.nutrition_split[1])
+        dinner_reqs = self._div_nutritional_values(
+            self.user_health_requirements, self.nutrition_split[2])
 
         lowest_RSS = math.inf
         for i in self.breakfasts:
@@ -245,7 +249,11 @@ class MealplanGenerator(data_src.DataStructures):
         lowest_RSS = math.inf
         for i in self.main_dishes:
             for j in self.side_dishes:
-                cur_RSS = self._nutritional_values_RSS(dinner_reqs, self._sum_nutritional_values(i["nutritional_values"], j["nutritional_values"]))
+                cur_RSS = self._nutritional_values_RSS(
+                    dinner_reqs,
+                    self._sum_nutritional_values(i["nutritional_values"],
+                                                 j["nutritional_values"]),
+                )
                 if cur_RSS < lowest_RSS:
                     best_meal_plan[2] = i
                     best_meal_plan[3] = j

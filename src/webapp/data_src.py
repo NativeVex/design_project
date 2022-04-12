@@ -10,7 +10,8 @@ class DataStructures:
 
     def default_nutritional_values():
         return json.loads(
-                '{"calcium": 1300.0, "calories": 2000.0, "carbohydrate": 275.0, "cholesterol": 300.0, "fat": 78.0, "fiber": 28.0, "iron": 18.0, "monounsaturated_fat": 29.0, "polyunsaturated_fat": 29.0, "potassium": 4700.0, "protein": 50.0, "saturated_fat": 20.0, "sodium": 2300.0, "sugar": 0.0, "trans_fat": 0.0, "vitamin_a": 900.0, "vitamin_c": 90.0}')
+            '{"calcium": 1300.0, "calories": 2000.0, "carbohydrate": 275.0, "cholesterol": 300.0, "fat": 78.0, "fiber": 28.0, "iron": 18.0, "monounsaturated_fat": 29.0, "polyunsaturated_fat": 29.0, "potassium": 4700.0, "protein": 50.0, "saturated_fat": 20.0, "sodium": 2300.0, "sugar": 0.0, "trans_fat": 0.0, "vitamin_a": 900.0, "vitamin_c": 90.0}'
+        )
 
     def recipe_data():
         skeleton = json.loads(
