@@ -103,14 +103,14 @@ class Recipes(db.Model):
         monounsaturated_fat=0.0,
         polyunsaturated_fat=0.0,
         potassium=0.0,
-        calcium = 0.0,
+        calcium=0.0,
         saturated_fat=0.0,
         sodium=0.0,
         sugar=0.0,
         trans_fat=0.0,
         vitamin_a=0.0,
         vitamin_c=0.0,
-        type = ""
+        type="",
     ):
         """Create a new Mealplan object using the email address and hashing the
         plaintext password using Werkzeug.Security.

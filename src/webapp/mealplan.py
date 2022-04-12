@@ -41,8 +41,10 @@ def get_recipes_from_db(
         skeleton["nutritional value"]["fat"] = recipe.fat
         skeleton["nutritional value"]["fiber"] = recipe.fiber
         skeleton["nutritional value"]["iron"] = recipe.iron
-        skeleton["nutritional value"]["monounsaturated_fat"] = recipe.monounsaturated_fat
-        skeleton["nutritional value"]["polyunsaturated_fat"] = recipe.polyunsaturated_fat
+        skeleton["nutritional value"][
+            "monounsaturated_fat"] = recipe.monounsaturated_fat
+        skeleton["nutritional value"][
+            "polyunsaturated_fat"] = recipe.polyunsaturated_fat
         skeleton["nutritional value"]["potassium"] = recipe.potassium
         skeleton["nutritional value"]["protein"] = recipe.protein
         skeleton["nutritional value"]["saturated_fat"] = recipe.saturated_fat
