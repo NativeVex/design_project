@@ -71,7 +71,7 @@ class Recipes(db.Model):
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(100), unique=True)
-    directions = db.Column(db.String) 
+    directions = db.Column(db.String)
     ingredients = db.Column(db.String)
     calcium = db.Column(db.Float)
     calories = db.Column(db.Float)
@@ -116,7 +116,7 @@ class Recipes(db.Model):
         vitamin_a=0.0,
         vitamin_c=0.0,
         number_of_servings=0,
-        type = ""
+        type="",
     ):
         """Create a new Mealplan object using the email address and hashing the
         plaintext password using Werkzeug.Security.
@@ -159,8 +159,10 @@ class Recipes(db.Model):
         self.fat = data_dict["nutritional_value"]["fat"]
         self.fiber = data_dict["nutritional_value"]["fiber"]
         self.iron = data_dict["nutritional_value"]["iron"]
-        self.monounsaturated_fat = data_dict["nutritional_value"]["monounsaturated_fat"]
-        self.polyunsaturated_fat = data_dict["nutritional_value"]["polyunsaturated_fat"]
+        self.monounsaturated_fat = data_dict["nutritional_value"][
+            "monounsaturated_fat"]
+        self.polyunsaturated_fat = data_dict["nutritional_value"][
+            "polyunsaturated_fat"]
         self.potassium = data_dict["nutritional_value"]["potassium"]
         self.calcium = data_dict["nutritional_value"]["calcium"]
         self.saturated_fat = data_dict["nutritional_value"]["saturated_fat"]
