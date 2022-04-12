@@ -1,9 +1,9 @@
 import itertools
 import json
+import math
 import os
 import random
 import sys
-import math
 
 from webapp import data_src
 from webapp.data_src import DataStructures
@@ -79,11 +79,15 @@ class MealplanGenerator(data_src.DataStructures):
     lunches = []
     main_dishes = []
     side_dishes = []
-    snacks = [] #leave for now
+    snacks = []  # leave for now
     user_health_requirements = None
     nutrition_split = [0.25, 0.25, 0.5]
 
-    def __init__(self, json_health_requirements, breakfast = 0.25, lunch = 0.25, dinner = 0.5):
+    def __init__(self,
+                 json_health_requirements,
+                 breakfast=0.25,
+                 lunch=0.25,
+                 dinner=0.5):
         """Plan Meals for Week Usecase
 
         Big paragraph
@@ -92,7 +96,7 @@ class MealplanGenerator(data_src.DataStructures):
 
         queries recipes from DB
         """
-        #Can be done in get_recipes_from_db()
+        # Can be done in get_recipes_from_db()
         json_recipes = get_recipes_from_db()
         for i in json_recipes:
             j = json.loads(i)
@@ -180,12 +184,14 @@ class MealplanGenerator(data_src.DataStructures):
         # TODO: data scaling; otherwise an error in calories will matter a lot more than an error in vitamin A
         RSS = 0
         for i in meal_plan:
-            offset = self._diff_nutritional_values(health_requirements, i["nutritional_values"])
+            offset = self._diff_nutritional_values(health_requirements,
+                                                   i["nutritional_values"])
             for j in offset:
                 RSS += offset[j]**2
         return RSS
         # if we want some randomness so it doesn't always spit out the same meal plan we can uncomment and/or change the following line
         # RSS += random.random() * 2
+
     def _recipe_RSS(self, health_requirements, recipe_data):
         RSS = 0
         offset = self._diff_nutritional_values(health_requirements, recipe_data["nutritional_values"])
@@ -199,7 +205,6 @@ class MealplanGenerator(data_src.DataStructures):
         for j in offset:
             RSS += offset[j]**2
         return RSS
-
 
     # this is the "head" of the code
     def gen_meal_plan(self) -> DataStructures.meal_plan:
