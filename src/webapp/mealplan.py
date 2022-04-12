@@ -3,6 +3,7 @@ import json
 import os
 import random
 import sys
+import math
 
 from webapp import data_src
 from webapp.data_src import DataStructures
@@ -64,9 +65,15 @@ def get_recipes_from_db(
 
 class MealplanGenerator(data_src.DataStructures):
     recipes = []
+    breakfasts = []
+    lunches = []
+    main_dishes = []
+    side_dishes = []
+    snacks = [] #leave for now
     user_health_requirements = None
+    nutrition_split = [0.25, 0.25, 0.5]
 
-    def __init__(self, json_health_requirements):
+    def __init__(self, json_health_requirements, breakfast = 0.25, lunch = 0.25, dinner = 0.5):
         """Plan Meals for Week Usecase
 
         Big paragraph
@@ -75,10 +82,25 @@ class MealplanGenerator(data_src.DataStructures):
 
         queries recipes from DB
         """
+        #Can be done in get_recipes_from_db()
         json_recipes = get_recipes_from_db()
         for i in json_recipes:
-            self.recipes.append(json.loads(i))
+            j = json.loads(i)
+            self.recipes.append(j)
+            for k in j.types:
+                if k == "Breakfast":
+                    self.breakfasts.append(j)
+                if k == "Lunch":
+                    self.lunches.append(j)
+                if k == "Main Dish":
+                    self.main_dishes.append(j)
+                if k == "Side Dish":
+                    self.side_dishes.append(j)
+                if k == "Snack":
+                    self.snacks.append(j)
+
         self.user_health_requirements = json.loads(json_health_requirements)
+        self.nutrition_split = [breakfast, lunch, dinner]
 
     def _sum_nutritional_values(self, n1, n2):
         """Adds two nutritional value datastructures
@@ -110,6 +132,21 @@ class MealplanGenerator(data_src.DataStructures):
             n3[i] -= n2[i]
         return n3
 
+    def _div_nutritional_values(self, n1, n2):
+        """Divide a nutritional value datastructure by a scalar value
+
+        This function divides all values in a dict containing nutritional values by a scalar value
+        Paramaters:
+        n1 (dict): nutritional values
+        n2 (dict): scalar to divide 
+        Returns:
+        dict: n1/n2
+        """
+        n3 = dict(n1)
+        for i in n1:
+            n3[i] /= n2
+        return n3
+
     def _calculate_meal_plan_nutrition(self, recipes):
         """Calculates the total nutrition of a mealplan
 
@@ -133,13 +170,25 @@ class MealplanGenerator(data_src.DataStructures):
         # TODO: data scaling; otherwise an error in calories will matter a lot more than an error in vitamin A
         RSS = 0
         for i in meal_plan:
-            offset = self._diff_nutritional_values(health_requirements,
-                                                   i["nutritional value"])
+            offset = self._diff_nutritional_values(health_requirements, i["nutritional_values"])
             for j in offset:
                 RSS += offset[j]**2
         return RSS
         # if we want some randomness so it doesn't always spit out the same meal plan we can uncomment and/or change the following line
         # RSS += random.random() * 2
+    def _recipe_RSS(self, health_requirements, recipe_data):
+        RSS = 0
+        offset = self._diff_nutritional_values(health_requirements, recipe_data["nutritional_values"])
+        for j in offset:
+            RSS += offset[j]**2
+        return RSS
+    def _nutritional_values_RSS(self, health_requirements, nutritional_values):
+        RSS = 0
+        offset = self._diff_nutritional_values(health_requirements, nutritional_values)
+        for j in offset:
+            RSS += offset[j]**2
+        return RSS
+
 
     # this is the "head" of the code
     def gen_meal_plan(self) -> DataStructures.meal_plan:
@@ -150,7 +199,7 @@ class MealplanGenerator(data_src.DataStructures):
         lowest RSS
         """
         best_meal_plan: DataStructures.meal_plan
-        best_meal_plan = DataStructures.meal_plan()
+        best_meal_plan = DataStructures.meal_plan(4)
 
         # n choose k reqs. For this proof of concept n is number of recipes and k is 3. Thus there are
         # n! / (k!(n-k)!) answers. This is obviously impossible to compute for any significant number of recipes.
@@ -158,17 +207,44 @@ class MealplanGenerator(data_src.DataStructures):
 
         # We can assess the quality of a meal plan given the RSS of the meal plan wrt the reqs. With this we can compare
         # two meal plans and pick the better one.
-        meals_per_meal_plan = 3
-        possible_meal_plans_iterator = itertools.combinations(
-            self.recipes, meals_per_meal_plan)
 
-        # print all possible meal plans
-        lowest_RSS = 10000000000000
-        for i in possible_meal_plans_iterator:
-            current_meal_plan_RSS = self._meal_plan_RSS(
-                self.user_health_requirements, i)
-            if current_meal_plan_RSS < lowest_RSS:
-                lowest_RSS = current_meal_plan_RSS
-                best_meal_plan = i
+        breakfast_reqs = _div_nutritional_values(self.health_requirements, nutrition_split[0])
+        lunch_reqs = _div_nutritional_values(self.health_requirements, nutrition_split[1])
+        dinner_reqs = _div_nutritional_values(self.health_requirements, nutrition_split[2])
+
+        lowest_RSS = math.inf
+        for i in breakfasts:
+            cur_RSS = _recipe_RSS(breakfast_reqs, i)
+            if cur_RSS < lowest_RSS:
+                best_meal_plan[0] = i
+
+        lowest_RSS = math.inf
+        for i in lunches:
+            cur_RSS = _recipe_RSS(lunch_reqs, i)
+            if cur_RSS < lowest_RSS:
+                best_meal_plan[1] = i
+
+        lowest_RSS = math.inf
+        for i in main_dishes:
+            for j in side_dishes:
+                cur_RSS = _nutritional_values_RSS(dinner_reqs, _sum_nutritional_values(i["nutritional_values"], j["nutritional_values"]))
+                if cur_RSS < lowest_RSS:
+                    best_meal_plan[2] = i
+                    best_meal_plan[3] = j
+
+        
+        
+#       meals_per_meal_plan = 3
+#       possible_meal_plans_iterator = itertools.combinations(
+#           self.recipes, meals_per_meal_plan)
+
+#       # print all possible meal plans
+#       lowest_RSS = 10000000000000
+#       for i in possible_meal_plans_iterator:
+#           current_meal_plan_RSS = self._meal_plan_RSS(
+#               self.user_health_requirements, i)
+#           if current_meal_plan_RSS < lowest_RSS:
+#               lowest_RSS = current_meal_plan_RSS
+#               best_meal_plan = i
 
         return json.dumps(best_meal_plan)
