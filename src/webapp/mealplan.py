@@ -88,9 +88,7 @@ class MealplanGenerator(data_src.DataStructures):
 
     def __init__(self,
                  json_health_requirements,
-                 calorie_split = [0.25, 0.25, 0.5],
-                 protein_split = [0.25, 0.25, 0.5],
-                 carbs_split =[0.25, 0.25, 0.5]):
+                 json_splits):
         """Plan Meals for Week Usecase
 
         Big paragraph
@@ -117,9 +115,11 @@ class MealplanGenerator(data_src.DataStructures):
                     self.snacks.append(j)
 
         self.user_health_requirements = json.loads(json_health_requirements)
-        self.calorie_split = calorie_split
-        self.protein_split = protein_split
-        self.carbs_split = carbs_split
+        splits = json.loads(json_splits)
+        calorie_split = splits['calorie_split']
+        protein_split = splits['protein_split']
+        carbs_split = splits['carbs_split']
+            
 
     def _sum_nutritional_values(self, n1, n2):
         """Adds two nutritional value datastructures
@@ -242,6 +242,22 @@ class MealplanGenerator(data_src.DataStructures):
         hr_dinner["vitamin_c"] = health_requirements["vitamin_c"] * avg_split[0]
 
         return hr_breakfast, hr_lunch, hr_dinner
+    
+    def _scale_recipe(self, recipe, scale):
+        for idx in range(len(recipe["ingredients"])):
+            i = recipe["ingredients"][idx]
+            str_value = i.split(' ')[0]
+            rest_of_str = i[len(str_value):]
+            float_value = 0.0
+            if '/' in str_value:
+                frac = str_value.split('/')
+                float_value = int(frac[0])/int(frac[1])
+                float_value *= scale
+            else:
+                float_value = float(str_value) * scale
+            recipe["ingredients"][idx] = str(float_value) + rest_of_str
+        recipe["number_of_servings"] *= scale
+
 
     # this is the "head" of the code
     def gen_meal_plan(self) -> DataStructures.meal_plan:
@@ -257,24 +273,19 @@ class MealplanGenerator(data_src.DataStructures):
         # TODO
         # Ability to add arbitrary # of snacks (favor coming at the RSS from the low end? Third slider so they can say how much they wanna snack?)
         # Ability to deduce which meal should be composed of main + side dish and which meal should be just a lunch
-
-        # OK so this works but makes really bad suggestions. Like REALLY bad. I think the issue is that the meals are too small and so even with 4 of them we get like 1/4 of the daily values
-        # solution to this would proably be find the meal plan that has the best *shape* then multiply meal servings to get something that seems right. Not 100% sure what the best way to do this is though...
-
-        #OK so this works but makes really bad suggestions. Like REALLY bad. I think the issue is that the meals are too small and so even with 4 of them we get like 1/4 of the daily values
-        #solution to this would proably be find the meal plan that has the best *shape* then multiply meal servings to get something that seems right. Not 100% sure what the best way to do this is though...
+        # Figure out how to store both servings that recipe makes and how many of those to eat
+        # Eliminate duplicate meals in day (or at least control for them -> total # of servings made == over the course of the week; maybe scale ingredients?)
 
         breakfast_reqs, lunch_reqs, dinner_reqs = self._balance_health_requirements(self.calorie_split, self.protein_split, self.carbs_split, self.user_health_requirements)
 
-        #TODO: check for 1-4 servings the RSS and pick the lowest out of those
-        #Figure out how to store both servings that recipe makes and how many of those to eat
         lowest_RSS = math.inf
         for i in self.breakfasts:
             for n in range(1, 5):
                 cur_RSS = self._nutritional_values_RSS(breakfast_reqs, self._mul_nutritional_values(i["nutritional_values"], n))
                 if cur_RSS < lowest_RSS:
                     lowest_RSS = cur_RSS
-                    i["number_of_servings"] /= n
+                    i["number_of_servings"] /= n #Assume we get 0.66 servings here. Scale the recipe to make it 1
+                    self._scale_recipe(i, 1/i["number_of_servings"])
                     i["nutritional_values"] = self._mul_nutritional_values(i["nutritional_values"], n)
                     best_meal_plan[0] = i
 
@@ -285,6 +296,7 @@ class MealplanGenerator(data_src.DataStructures):
                 if cur_RSS < lowest_RSS:
                     lowest_RSS = cur_RSS
                     i["number_of_servings"] /= n
+                    self._scale_recipe(i, 1/i["number_of_servings"])
                     i["nutritional_values"] = self._mul_nutritional_values(i["nutritional_values"], n)
                     best_meal_plan[1] = i
 
@@ -296,7 +308,9 @@ class MealplanGenerator(data_src.DataStructures):
                     if cur_RSS < lowest_RSS:
                         lowest_RSS = cur_RSS
                         i["number_of_servings"] /= n
+                        self._scale_recipe(i, 1/j["number_of_servings"])
                         j["number_of_servings"] /= n
+                        self._scale_recipe(j, 1/j["number_of_servings"])
                         i["nutritional_values"] = self._mul_nutritional_values(i["nutritional_values"], n)
                         j["nutritional_values"] = self._mul_nutritional_values(j["nutritional_values"], n)
                         best_meal_plan[2] = i
