@@ -18,6 +18,7 @@
    <div class="row align-items-center justify-content-center" style="text-align:center;">
 {{jsonrecipe}}<br>
 {{mealplan}}<br>
+{{exercise}}<br>
 {{days}}{{intensity}}{{muscles}}
    <div class="col-md-4" style="background-color:grey;color:black;border-radius:10px;width:80%">
     <h1 style="text-align:center;background-color:grey;color:black">Add a Exercise, Meal, or Food item</h1>
@@ -82,10 +83,78 @@
       <label for="newfood">Add new Food</label>
       <input type="text" class="form-control" id="newfood" name="newrecipename" placeholder="Food name?">
       <input type="text" class="form-control" id="newfood" name="newrecipeingredients" placeholder="Food Ingredients?">
+      <input type="text" class="form-control" id="newfood" name="foodtype" placeholder="Food Type?">
+      <input type="text" class="form-control" id="newfood" name="newrecipedirections" placeholder="Food Directions?">
+
       <input type="number" class="form-control" step="0.1" id="Calories" min="0" name="newrecipecalories" placeholder="Calories?">
       <input type="number" class="form-control" step="0.1" id="Carbs" min="0" name="newrecipecarbs" placeholder="Carbs?">
       <input type="number" class="form-control" step="0.1" id="Proteins" min="0" name="protein" placeholder="Proteins?">
-      <br>
+      <input type="number" class="form-control" step="0.1" id="numberofservings" min="0" name="numberofservings" placeholder="number of servings?">
+
+      <div style="display:inline-block">
+        <div style="background-color:white;" onmouseover="myFunction()">Choose other diet requirements</div>
+        <div id="dietinfo" style="display:none;background-color:lightblue;color:black;padding:20px;">
+        <a onclick="showfats()">Fat</a>
+          <a onclick="showcholesterol()">Cholesterol</a>
+          <a onclick="showsodium()">sodium</a>
+          <a onclick="showvitamina()">vitamina</a>
+          <a onclick="showvitaminc()">vitaminc</a>
+          <a onclick="showcalcium()">calcium</a>
+          <a onclick="showfiber()">fiber</a>
+          <a onclick="showmonounsaturated_fat()">monounsaturated fat</a>
+          <a onclick="showpolyunsaturated_fat()">polyunsaturated fat</a>
+          <a onclick="showsaturated_fat()">saturated fat</a>
+          <a onclick="showsugar()">sugar</a>
+          <a onclick="showtrans_fat()">trans fat</a>
+          <a onclick="showiron()">iron</a>
+          <a onclick="showpotassium()">Potassium</a>
+
+
+        </div>
+      </div>
+      <div id="fats" style="display:none">
+        <input type="number" class="form-control" step="0.1" id="fats" min="0" name="fat" placeholder="fat?">
+      </div>
+      <div id="cholesterols" style="display:none">
+        <input type="number" class="form-control" step="0.1" id="cholesterols" min="0" name="cholesterol" placeholder="cholesterol?">
+      </div>
+      <div id="sodiums" style="display:none">
+        <input type="number" class="form-control" step="0.1" id="sodiums" min="0" name="sodium" placeholder="sodium?">
+      </div>
+      <div id="vitamina" style="display:none">
+        <input type="number" class="form-control" step="0.1" id="vitamina" min="0" name="vitamina" placeholder="vitamin a?">
+      </div>
+      <div id="vitaminc" style="display:none">
+        <input type="number" class="form-control" step="0.1" id="vitaminc" min="0" name="vitaminc" placeholder="vitamin c?">
+      </div>
+      <div id="calciums" style="display:none">
+        <input type="number" class="form-control" step="0.1" id="calciums" min="0" name="calcium" placeholder="calcium?">
+      </div>
+      <div id="fiber" style="display:none">
+        <input type="number" class="form-control" step="0.1" id="fiber" min="0" name="fiber" placeholder="fiber?">
+      </div>
+      <div id="monounsaturated_fat" style="display:none">
+        <input type="number" class="form-control" step="0.1" id="monounsaturated_fat" min="0" name="monounsaturated_fat" placeholder="monounsaturated fat?">
+      </div>
+      <div id="polyunsaturated_fat" style="display:none">
+        <input type="number" class="form-control" step="0.1" id="polyunsaturated_fat" min="0" name="polyunsaturated_fat" placeholder="polyunsaturated fat?">
+      </div>
+      <div id="saturated_fat" style="display:none">
+        <input type="number" class="form-control" step="0.1" id="saturated_fat" min="0" name="saturated_fat" placeholder="saturated fat?">
+      </div>
+      <div id="sugar" style="display:none">
+        <input type="number" class="form-control" step="0.1" id="sugar" min="0" name="sugar" placeholder="sugar?">
+      </div>
+      <div id="trans_fat" style="display:none">
+        <input type="number" class="form-control" step="0.1" id="trans_fat" min="0" name="trans_fat" placeholder="trans fat?">
+      </div>
+      <div id="irons" style="display:none">
+        <input type="number" class="form-control" step="0.1" id="irons" min="0" name="iron" placeholder="iron?">
+      </div>
+      <div id="potassiums" style="display:none">
+        <input type="number" class="form-control" step="0.1" id="potassiums" min="0" name="potassium" placeholder="potassium?">
+      </div>
+      
       <button type="submit" class="btn btn-success">Add Food Recipe</button>
 
       </form>
@@ -97,20 +166,231 @@
          <label for="newmeal">Add new Meal</label>
          <input type="text" class="form-control" id="newmeal" name="newfoodname1" placeholder="First Recipe name?">
          <input type="text" class="form-control" id="newfood" name="newfoodingredients1" placeholder="First Recipe Ingredients?">
+         <input type="text" class="form-control" id="newfood" name="newfooddirections1" placeholder="First Recipe Directions?">
+
+         <input type="number" class="form-control" step="0.1" id="newfood1numberofservings" min="0" name="newfood1numberofservings" placeholder="number of servings?">
+         <input type="text" class="form-control" step="0.1" id="newfood1type" min="0" name="newfood1type" placeholder="food type?">
          <input type="number" class="form-control" step="0.1" id="Calories" min="0" name="Calories1" placeholder="First Recipe Calories?">
          <input type="number" class="form-control" step="0.1"id="Carbs" min="0" name="Carbs1" placeholder="First Recipe Carbs?">
          <input type="number" class="form-control" step="0.1" id="Proteins" min="0" name="Proteins1" placeholder="First Recipe Proteins?">
+         
+         <div style="display:inline-block">
+          <div style="background-color:white;" onmouseover="myFunction1()">Choose other diet requirements</div>
+          <div id="dietinfo1" style="display:none;background-color:lightblue;color:black;padding:20px;">
+          <a onclick="showfats1()">Fat</a>
+            <a onclick="showcholesterol1()">Cholesterol</a>
+            <a onclick="showsodium1()">sodium</a>
+            <a onclick="showvitamina1()">vitamina</a>
+            <a onclick="showvitaminc1()">vitaminc</a>
+            <a onclick="showcalcium1()">calcium</a>
+            <a onclick="showfiber1()">fiber</a>
+            <a onclick="showmonounsaturated_fat1()">monounsaturated fat</a>
+            <a onclick="showpolyunsaturated_fat1()">polyunsaturated fat</a>
+            <a onclick="showsaturated_fat1()">saturated fat</a>
+            <a onclick="showsugar1()">sugar</a>
+            <a onclick="showtrans_fat1()">trans fat</a>
+            <a onclick="showiron1()">iron</a>
+            <a onclick="showpotassium1()">Potassium</a>
+  
+  
+          </div>
+        </div>
+        <div id="fats1" style="display:none">
+          <input type="number" class="form-control" step="0.1" id="fats1" min="0" name="fats1" placeholder="fat?">
+        </div>
+        <div id="cholesterols1" style="display:none">
+          <input type="number" class="form-control" step="0.1" id="cholesterols1" min="0" name="cholesterols1" placeholder="cholesterol?">
+        </div>
+        <div id="sodiums1" style="display:none">
+          <input type="number" class="form-control" step="0.1" id="sodiums1" min="0" name="sodiums1" placeholder="sodium?">
+        </div>
+        <div id="vitamina1" style="display:none">
+          <input type="number" class="form-control" step="0.1" id="vitamina1" min="0" name="vitamina1" placeholder="vitamin a?">
+        </div>
+        <div id="vitaminc1" style="display:none">
+          <input type="number" class="form-control" step="0.1" id="vitaminc1" min="0" name="vitaminc1" placeholder="vitamin c?">
+        </div>
+        <div id="calciums1" style="display:none">
+          <input type="number" class="form-control" step="0.1" id="calciums1" min="0" name="calciums1" placeholder="calcium?">
+        </div>
+        <div id="fiber1" style="display:none">
+          <input type="number" class="form-control" step="0.1" id="fiber1" min="0" name="fiber1" placeholder="fiber?">
+        </div>
+        <div id="monounsaturated_fat1" style="display:none">
+          <input type="number" class="form-control" step="0.1" id="monounsaturated_fat1" min="0" name="monounsaturated_fat1" placeholder="monounsaturated fat?">
+        </div>
+        <div id="polyunsaturated_fat1" style="display:none">
+          <input type="number" class="form-control" step="0.1" id="polyunsaturated_fat1" min="0" name="polyunsaturated_fat1" placeholder="polyunsaturated fat?">
+        </div>
+        <div id="saturated_fat1" style="display:none">
+          <input type="number" class="form-control" step="0.1" id="saturated_fat1" min="0" name="saturated_fat1" placeholder="saturated fat?">
+        </div>
+        <div id="sugar1" style="display:none">
+          <input type="number" class="form-control" step="0.1" id="sugar1" min="0" name="sugar1" placeholder="sugar?">
+        </div>
+        <div id="trans_fat1" style="display:none">
+          <input type="number" class="form-control" step="0.1" id="trans_fat1" min="0" name="trans_fat1" placeholder="trans fat?">
+        </div>
+        <div id="irons1" style="display:none">
+          <input type="number" class="form-control" step="0.1" id="irons1" min="0" name="irons1" placeholder="iron?">
+        </div>
+        <div id="potassiums1" style="display:none">
+          <input type="number" class="form-control" step="0.1" id="potassiums1" min="0" name="potassiums1" placeholder="potassium?">
+        </div>
+         <br>
+         <br>
+         <br>
          <input type="text" class="form-control" id="newfood" name="newfoodname2" placeholder="Second Recipe name?">
          <input type="text" class="form-control" id="newfood" name="newfoodingredients2" placeholder="Second Recipe Ingredients?">
+         <input type="text" class="form-control" id="newfood" name="newfooddirections2" placeholder="Second Recipe Directions?">
+         <input type="number" class="form-control" step="0.1" id="newfood2numberofservings" min="0" name="newfood2numberofservings" placeholder="number of servings?">
+         <input type="text" class="form-control" step="0.1" id="newfood2type" min="0" name="newfood2type" placeholder="food type?">
+         
+
          <input type="number" class="form-control" step="0.1" id="Calories" min="0" name="Calories2" placeholder="Second Recipe Calories?">
          <input type="number" class="form-control" step="0.1" id="Carbs" min="0" name="Carbs2" placeholder="Second Recipe Carbs?">
          <input type="number" class="form-control" step="0.1" id="Proteins" min="0" name="Proteins2" placeholder="Second Recipe Proteins?">
+         
+         <div style="display:inline-block">
+          <div style="background-color:white;" onmouseover="myFunction2()">Choose other diet requirements</div>
+          <div id="dietinfo2" style="display:none;background-color:lightblue;color:black;padding:20px;">
+          <a onclick="showfats2()">Fat</a>
+            <a onclick="showcholesterol2()">Cholesterol</a>
+            <a onclick="showsodium2()">sodium</a>
+            <a onclick="showvitamina2()">vitamina</a>
+            <a onclick="showvitaminc2()">vitaminc</a>
+            <a onclick="showcalcium2()">calcium</a>
+            <a onclick="showfiber2()">fiber</a>
+            <a onclick="showmonounsaturated_fat2()">monounsaturated fat</a>
+            <a onclick="showpolyunsaturated_fat2()">polyunsaturated fat</a>
+            <a onclick="showsaturated_fat2()">saturated fat</a>
+            <a onclick="showsugar2()">sugar</a>
+            <a onclick="showtrans_fat2()">trans fat</a>
+            <a onclick="showiron2()">iron</a>
+            <a onclick="showpotassium2()">Potassium</a>
+  
+  
+          </div>
+        </div>
+        <div id="fats2" style="display:none">
+          <input type="number" class="form-control" step="0.1" id="fats2" min="0" name="fats2" placeholder="fat?">
+        </div>
+        <div id="cholesterols2" style="display:none">
+          <input type="number" class="form-control" step="0.1" id="cholesterols2" min="0" name="cholesterols2" placeholder="cholesterol?">
+        </div>
+        <div id="sodiums2" style="display:none">
+          <input type="number" class="form-control" step="0.1" id="sodiums2" min="0" name="sodiums2" placeholder="sodium?">
+        </div>
+        <div id="vitamina2" style="display:none">
+          <input type="number" class="form-control" step="0.1" id="vitamina2" min="0" name="vitamina2" placeholder="vitamin a?">
+        </div>
+        <div id="vitaminc2" style="display:none">
+          <input type="number" class="form-control" step="0.1" id="vitaminc2" min="0" name="vitaminc2" placeholder="vitamin c?">
+        </div>
+        <div id="calciums2" style="display:none">
+          <input type="number" class="form-control" step="0.1" id="calciums2" min="0" name="calciums2" placeholder="calcium?">
+        </div>
+        <div id="fiber2" style="display:none">
+          <input type="number" class="form-control" step="0.1" id="fiber2" min="0" name="fiber2" placeholder="fiber?">
+        </div>
+        <div id="monounsaturated_fat2" style="display:none">
+          <input type="number" class="form-control" step="0.1" id="monounsaturated_fat2" min="0" name="monounsaturated_fat2" placeholder="monounsaturated fat?">
+        </div>
+        <div id="polyunsaturated_fat2" style="display:none">
+          <input type="number" class="form-control" step="0.1" id="polyunsaturated_fat2" min="0" name="polyunsaturated_fat2" placeholder="polyunsaturated fat?">
+        </div>
+        <div id="saturated_fat2" style="display:none">
+          <input type="number" class="form-control" step="0.1" id="saturated_fat2" min="0" name="saturated_fat2" placeholder="saturated fat?">
+        </div>
+        <div id="sugar2" style="display:none">
+          <input type="number" class="form-control" step="0.1" id="sugar2" min="0" name="sugar2" placeholder="sugar?">
+        </div>
+        <div id="trans_fat2" style="display:none">
+          <input type="number" class="form-control" step="0.1" id="trans_fat2" min="0" name="trans_fat2" placeholder="trans fat?">
+        </div>
+        <div id="irons2" style="display:none">
+          <input type="number" class="form-control" step="0.1" id="irons2" min="0" name="irons2" placeholder="iron?">
+        </div>
+        <div id="potassiums2" style="display:none">
+          <input type="number" class="form-control" step="0.1" id="potassiums2" min="0" name="potassiums2" placeholder="potassium?">
+        </div>
+        <br>
+         <br>
+         <br>
+         
+         
          <input type="text" class="form-control" id="newfood" name="newfoodname3" placeholder="Third Recipe name?">
          <input type="text" class="form-control" id="newfood" name="newfoodingredients3" placeholder="Third Recipe Ingredients?">
+         <input type="text" class="form-control" id="newfood" name="newfooddirections3" placeholder="Second Recipe Directions?">
+         <input type="number" class="form-control" step="0.1" id="newfood3numberofservings" min="0" name="newfood3numberofservings" placeholder="number of servings?">
+         <input type="text" class="form-control" step="0.1" id="newfood3type" min="0" name="newfood3type" placeholder="food type?">
+         
          <input type="number" class="form-control" step="0.1" id="Calories" min="0" name="Calories3" placeholder="Third Recipe Calories?">
          <input type="number" class="form-control" step="0.1" id="Carbs" min="0" name="Carbs3" placeholder="Third Recipe Carbs?">
          <input type="number" class="form-control" step="0.1" id="Proteins" min="0" name="Proteins3" placeholder="Third Recipe Proteins?">
-        
+         <div style="display:inline-block">
+          <div style="background-color:white;" onmouseover="myFunction3()">Choose other diet requirements</div>
+          <div id="dietinfo3" style="display:none;background-color:lightblue;color:black;padding:20px;">
+          <a onclick="showfats3()">Fat</a>
+            <a onclick="showcholesterol3()">Cholesterol</a>
+            <a onclick="showsodium3()">sodium</a>
+            <a onclick="showvitamina3()">vitamina</a>
+            <a onclick="showvitaminc3()">vitaminc</a>
+            <a onclick="showcalcium3()">calcium</a>
+            <a onclick="showfiber3()">fiber</a>
+            <a onclick="showmonounsaturated_fat3()">monounsaturated fat</a>
+            <a onclick="showpolyunsaturated_fat3()">polyunsaturated fat</a>
+            <a onclick="showsaturated_fat3()">saturated fat</a>
+            <a onclick="showsugar3()">sugar</a>
+            <a onclick="showtrans_fat3()">trans fat</a>
+            <a onclick="showiron3()">iron</a>
+            <a onclick="showpotassium3()">Potassium</a>
+  
+  
+          </div>
+        </div>
+        <div id="fats3" style="display:none">
+          <input type="number" class="form-control" step="0.1" id="fats3" min="0" name="fats3" placeholder="fat?">
+        </div>
+        <div id="cholesterols3" style="display:none">
+          <input type="number" class="form-control" step="0.1" id="cholesterols3" min="0" name="cholesterols3" placeholder="cholesterol?">
+        </div>
+        <div id="sodiums3" style="display:none">
+          <input type="number" class="form-control" step="0.1" id="sodiums3" min="0" name="sodiums3" placeholder="sodium?">
+        </div>
+        <div id="vitamina3" style="display:none">
+          <input type="number" class="form-control" step="0.1" id="vitamina3" min="0" name="vitamina3" placeholder="vitamin a?">
+        </div>
+        <div id="vitaminc3" style="display:none">
+          <input type="number" class="form-control" step="0.1" id="vitaminc3" min="0" name="vitaminc3" placeholder="vitamin c?">
+        </div>
+        <div id="calciums3" style="display:none">
+          <input type="number" class="form-control" step="0.1" id="calciums3" min="0" name="calciums3" placeholder="calcium?">
+        </div>
+        <div id="fiber3" style="display:none">
+          <input type="number" class="form-control" step="0.1" id="fiber3" min="0" name="fiber3" placeholder="fiber?">
+        </div>
+        <div id="monounsaturated_fat3" style="display:none">
+          <input type="number" class="form-control" step="0.1" id="monounsaturated_fat3" min="0" name="monounsaturated_fat3" placeholder="monounsaturated fat?">
+        </div>
+        <div id="polyunsaturated_fat3" style="display:none">
+          <input type="number" class="form-control" step="0.1" id="polyunsaturated_fat3" min="0" name="polyunsaturated_fat3" placeholder="polyunsaturated fat?">
+        </div>
+        <div id="saturated_fat3" style="display:none">
+          <input type="number" class="form-control" step="0.1" id="saturated_fat3" min="0" name="saturated_fat3" placeholder="saturated fat?">
+        </div>
+        <div id="sugar3" style="display:none">
+          <input type="number" class="form-control" step="0.1" id="sugar3" min="0" name="sugar3" placeholder="sugar?">
+        </div>
+        <div id="trans_fat3" style="display:none">
+          <input type="number" class="form-control" step="0.1" id="trans_fat3" min="0" name="trans_fat3" placeholder="trans fat?">
+        </div>
+        <div id="irons3" style="display:none">
+          <input type="number" class="form-control" step="0.1" id="irons3" min="0" name="irons3" placeholder="iron?">
+        </div>
+        <div id="potassiums3" style="display:none">
+          <input type="number" class="form-control" step="0.1" id="potassiums3" min="0" name="potassiums3" placeholder="potassium?">
+        </div>
 
           </div>
        <br>													   
@@ -135,6 +415,193 @@
         </div>
         
     </div>
+    <script>
+      function showfats() {
+        document.getElementById("fats").style.display="block";
+      }
+      function showcholesterol() {
+        document.getElementById("cholesterols").style.display="block";
+      }
+      function showsodium() {
+        document.getElementById("sodiums").style.display="block";
+      }
+      function showvitamina() {
+        document.getElementById("vitamina").style.display="block";
+      }
+      function showvitaminc() {
+        document.getElementById("vitaminc").style.display="block";
+      }
+      function showcalcium() {
+        document.getElementById("calciums").style.display="block";
+      }
+      function showfiber() {
+        document.getElementById("fiber").style.display="block";
+      }
+      function showpolyunsaturated_fat() {
+        document.getElementById("polyunsaturated_fat").style.display="block";
+      }
+      function showsaturated_fat() {
+        document.getElementById("saturated_fat").style.display="block";
+      }
+      function showiron() {
+        document.getElementById("irons").style.display="block";
+      }
+      function showmonounsaturated_fat() {
+        document.getElementById("monounsaturated_fat").style.display="block";
+      }
+      function showsugar() {
+        document.getElementById("sugar").style.display="block";
+      }
+      function showtrans_fat() {
+        document.getElementById("trans_fat").style.display="block";
+      }
+      function showpotassium() {
+        document.getElementById("potassiums").style.display="block";
+      }
+      function myFunction() {
+        document.getElementById("dietinfo").style.display="block";       
+        }
+        
+      function showfats1() {
+        document.getElementById("fats1").style.display="block";
+      }
+      function showcholesterol1() {
+        document.getElementById("cholesterols1").style.display="block";
+      }
+      function showsodium1() {
+        document.getElementById("sodiums1").style.display="block";
+      }
+      function showvitamina1() {
+        document.getElementById("vitamina1").style.display="block";
+      }
+      function showvitaminc1() {
+        document.getElementById("vitaminc1").style.display="block";
+      }
+      function showcalcium1() {
+        document.getElementById("calciums1").style.display="block";
+      }
+      function showfiber1() {
+        document.getElementById("fiber1").style.display="block";
+      }
+      function showpolyunsaturated_fat1() {
+        document.getElementById("polyunsaturated_fat1").style.display="block";
+      }
+      function showsaturated_fat1() {
+        document.getElementById("saturated_fat1").style.display="block";
+      }
+      function showiron1() {
+        document.getElementById("irons1").style.display="block";
+      }
+      function showmonounsaturated_fat1() {
+        document.getElementById("monounsaturated_fat1").style.display="block";
+      }
+      function showsugar1() {
+        document.getElementById("sugar1").style.display="block";
+      }
+      function showtrans_fat1() {
+        document.getElementById("trans_fat1").style.display="block";
+      }
+      function showpotassium1() {
+        document.getElementById("potassiums1").style.display="block";
+      }
+      function myFunction1() {
+        document.getElementById("dietinfo1").style.display="block";       
+        }
+
+        function showfats2() {
+        document.getElementById("fats2").style.display="block";
+      }
+      function showcholesterol2() {
+        document.getElementById("cholesterols2").style.display="block";
+      }
+      function showsodium2() {
+        document.getElementById("sodiums2").style.display="block";
+      }
+      function showvitamina2() {
+        document.getElementById("vitamina2").style.display="block";
+      }
+      function showvitaminc2() {
+        document.getElementById("vitaminc2").style.display="block";
+      }
+      function showcalcium2() {
+        document.getElementById("calciums2").style.display="block";
+      }
+      function showfiber2() {
+        document.getElementById("fiber2").style.display="block";
+      }
+      function showpolyunsaturated_fat2() {
+        document.getElementById("polyunsaturated_fat2").style.display="block";
+      }
+      function showsaturated_fat2() {
+        document.getElementById("saturated_fat2").style.display="block";
+      }
+      function showiron2() {
+        document.getElementById("irons2").style.display="block";
+      }
+      function showmonounsaturated_fat2() {
+        document.getElementById("monounsaturated_fat2").style.display="block";
+      }
+      function showsugar2() {
+        document.getElementById("sugar2").style.display="block";
+      }
+      function showtrans_fat2() {
+        document.getElementById("trans_fat2").style.display="block";
+      }
+      function showpotassium2() {
+        document.getElementById("potassiums2").style.display="block";
+      }
+      function myFunction2() {
+        document.getElementById("dietinfo2").style.display="block";       
+        }
+
+        function showfats3() {
+        document.getElementById("fats3").style.display="block";
+      }
+      function showcholesterol3() {
+        document.getElementById("cholesterols3").style.display="block";
+      }
+      function showsodium3() {
+        document.getElementById("sodiums3").style.display="block";
+      }
+      function showvitamina3() {
+        document.getElementById("vitamina3").style.display="block";
+      }
+      function showvitaminc3() {
+        document.getElementById("vitaminc3").style.display="block";
+      }
+      function showcalcium3() {
+        document.getElementById("calciums3").style.display="block";
+      }
+      function showfiber3() {
+        document.getElementById("fiber3").style.display="block";
+      }
+      function showpolyunsaturated_fat3() {
+        document.getElementById("polyunsaturated_fat3").style.display="block";
+      }
+      function showsaturated_fat3() {
+        document.getElementById("saturated_fat3").style.display="block";
+      }
+      function showiron3() {
+        document.getElementById("irons3").style.display="block";
+      }
+      function showmonounsaturated_fat3() {
+        document.getElementById("monounsaturated_fat3").style.display="block";
+      }
+      function showsugar3() {
+        document.getElementById("sugar3").style.display="block";
+      }
+      function showtrans_fat3() {
+        document.getElementById("trans_fat3").style.display="block";
+      }
+      function showpotassium3() {
+        document.getElementById("potassiums3").style.display="block";
+      }
+      function myFunction3() {
+        document.getElementById("dietinfo3").style.display="block";       
+        }
+               
+      
+      </script>
    </div>
   </div>
  
