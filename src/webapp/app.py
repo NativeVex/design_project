@@ -484,7 +484,8 @@ def addexercise():
         selectedtargetmuscles = request.form.getlist("muscles")
         exercisedata=DataStructures.exercise_reqs()
         exercisedata["days"]=dayschecked
-        exercisedata["level"]=int(intensity)
+        if(intensity!=''):
+            exercisedata["level"]=int(intensity)
         exercisedata["targetmusclegroups"]=selectedtargetmuscles
         newexercise=json.dumps(exercisedata)
         newaddedexercise=json.loads(newexercise)     
@@ -528,7 +529,8 @@ def listitems():
         newfood1["name"]=newfoodname1
         newfood1["ingredients"]=[newfoodingredients1]
         newfood1["directions"]=[newfooddirections1]
-        newfood1["number_of_servings"]=int(newfood1numberofservings)
+        if(newfood1numberofservings!=''):
+            newfood1["number_of_servings"]=int(newfood1numberofservings)
         newfood1["type"]=newfood1type
 
         if(newfoodcalories1!=None and newfoodcalories1!=''):
@@ -595,7 +597,8 @@ def listitems():
         newfood2["name"]=newfoodname2
         newfood2["ingredients"]=[newfoodingredients2]
         newfood2["directions"]=[newfooddirections2]
-        newfood2["number_of_servings"]=int(newfood2numberofservings)
+        if(newfood2numberofservings!=''):
+            newfood2["number_of_servings"]=int(newfood2numberofservings)
         newfood2["type"]=newfood2type
 
         if(newfoodcalories2!=None and newfoodcalories2!=''):
@@ -662,7 +665,8 @@ def listitems():
         newfood3["name"]=newfoodname3
         newfood3["ingredients"]=[newfoodingredients3]
         newfood3["directions"]=[newfooddirections3]
-        newfood3["number_of_servings"]=int(newfood3numberofservings)
+        if(newfood3numberofservings!=''):
+            newfood3["number_of_servings"]=int(newfood3numberofservings)
         newfood3["type"]=newfood3type
 
         if(newfoodcalories3!=None and newfoodcalories3!=''):
