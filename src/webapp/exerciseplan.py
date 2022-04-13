@@ -3,6 +3,7 @@ import json
 import os
 import random
 import sys
+import copy
 
 from webapp import data_src
 from webapp.data_src import DataStructures
@@ -44,10 +45,12 @@ def get_exercises_from_db():
 
 class ExerciseplanGenerator(data_src.DataStructures):
     user_requirements = None
-    exercise_list = None
+    exercise_list = [] 
     def __init__(self, json_str):
         self.user_requirements = json.loads(json_str)
-        self.exercise_list = get_exercises_from_db()
+        json_exercises = get_exercises_from_db()
+        for i in json_exercises:
+            self.exercise_list.append(json.loads(i))
         return
 
     #For each day that the user wants to work out, give them exercises S.T.
@@ -68,22 +71,28 @@ class ExerciseplanGenerator(data_src.DataStructures):
         """
         exercises = []
         exercise_sum = 0
-        needed_groups = self.user_requirements["targetmusclegroups"] #copy.deepcopy?
+        needed_groups = copy.deepcopy(self.user_requirements["targetmusclegroups"])
         random.shuffle(self.exercise_list) #does this work as intended?
-        for i in self.exercise_list:
-            if i["level"] > self.user_requirements["level"] or i["level"] > ((3 * self.user_requirements["level"]) - exercise_sum):
-                continue
-            if needed_groups == []:
-                if self._overlap(self.user_requirements["targetmusclegroups"]):
-                    exercises.append(i)
-                    exercise_sum += i["level"]
-            else:
-                if self._overlap(needed_groups, i):
-                    exercises.append(i)
-                    exercise_sum += i["level"]
-                    for j in i["targetmusclegroups"]:
-                        if j in needed_groups:
-                            needed_groups.remove(j)
+        while exercise_sum != (3 * self.user_requirements["level"]):
+            ex_size = len(exercises)
+            for i in self.exercise_list:
+                if exercise_sum == 3 * self.user_requirements["level"]:
+                    break
+                if i["level"] > self.user_requirements["level"] or i["level"] > ((3 * self.user_requirements["level"]) - exercise_sum):
+                    continue
+                if needed_groups == []:
+                    if self._overlap(self.user_requirements["targetmusclegroups"], i):
+                        exercises.append(i)
+                        exercise_sum += i["level"]
+                else:
+                    if self._overlap(needed_groups, i):
+                        exercises.append(i)
+                        exercise_sum += i["level"]
+                        for j in i["targetmusclegroups"]:
+                            if j in needed_groups:
+                                needed_groups.remove(j)
+            if ex_size == len(exercises): #no exercises added this entire loop
+                break
         return exercises
 
     def gen_exercise_plan(self):
