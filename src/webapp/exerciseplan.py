@@ -11,34 +11,9 @@ from webapp.data_src import DataStructures
 
 def get_exercises_from_db():
     exercises = []
-    pull_up = DataStructures.exercise()
-    pull_up["name"] = "Pull Ups"
-    pull_up["targetmusclegroups"] = ["back", "shoulders", "arms", "core", "chest"]
-    pull_up["level"] = 4
-    pull_up["sets"] = 3
-    pull_up["reps"] = 8
-    exercises.append(json.dumps(pull_up))
-    squats = DataStructures.exercise()
-    squats["name"] = "Squats"
-    squats["targetmusclegroups"] = ["thighs", "hamstrings", "glutes"]
-    squats["level"] = 1
-    squats["sets"] = 3
-    squats["reps"] = 30
-    exercises.append(json.dumps(squats))
-    crunches = DataStructures.exercise()
-    crunches["name"] = "Crunches"
-    crunches["targetmusclegroups"] = ["core"]
-    crunches["level"] = 1
-    crunches["sets"] = 3
-    crunches["reps"] = 30
-    exercises.append(json.dumps(crunches))
-    push_up = DataStructures.exercise()
-    push_up["name"] = "Push Ups"
-    push_up["targetmusclegroups"] = ["core", "arms", "chest", "shoulders"]
-    push_up["level"] = 2
-    push_up["sets"] = 3
-    push_up["reps"] = 15
-    exercises.append(json.dumps(push_up))
+    with open("homeworkouts_org_exercises.json") as file:
+        for line in file:
+            exercises.append(line)
     return exercises
 
 
@@ -69,31 +44,34 @@ class ExerciseplanGenerator(data_src.DataStructures):
         """
         Returns a list of exercises for one day that satisfy the user's requirements
         """
-        exercises = []
+        user_exercises = []
         exercise_sum = 0
         needed_groups = copy.deepcopy(self.user_requirements["targetmusclegroups"])
-        random.shuffle(self.exercise_list) #does this work as intended?
+        exercise_list = copy.deepcopy(self.exercise_list)
+        random.shuffle(exercise_list)
         while exercise_sum != (3 * self.user_requirements["level"]):
-            ex_size = len(exercises)
-            for i in self.exercise_list:
+            ex_size = len(user_exercises)
+            for i in exercise_list:
                 if exercise_sum == 3 * self.user_requirements["level"]:
                     break
                 if i["level"] > self.user_requirements["level"] or i["level"] > ((3 * self.user_requirements["level"]) - exercise_sum):
                     continue
                 if needed_groups == []:
                     if self._overlap(self.user_requirements["targetmusclegroups"], i):
-                        exercises.append(i)
+                        user_exercises.append(i)
                         exercise_sum += i["level"]
+                        exercise_list.remove(i)
                 else:
                     if self._overlap(needed_groups, i):
-                        exercises.append(i)
+                        user_exercises.append(i)
                         exercise_sum += i["level"]
                         for j in i["targetmusclegroups"]:
                             if j in needed_groups:
                                 needed_groups.remove(j)
-            if ex_size == len(exercises): #no exercises added this entire loop
+                        exercise_list.remove(i)
+            if ex_size == len(user_exercises): #no exercises added this entire loop
                 break
-        return exercises
+        return user_exercises
 
     def gen_exercise_plan(self):
         to_return = DataStructures.exercise_plan()

@@ -1,0 +1,22 @@
+{"name": "Tricep Dips", "targetmusclegroups": ["triceps"], "level": 3, "sets": 3, "reps": 10}
+{"name": "Sumo Squats", "targetmusclegroups": ["quads", "hamstrings", "glutes"], "level": 2, "sets": 3, "reps": 15}
+{"name": "Split Squats", "targetmusclegroups": ["quads", "hamstrings", "glutes"], "level": 2, "sets": 3, "reps": 15}
+{"name": "Plank Arm Lifts", "targetmusclegroups": ["shoulders", "abs"], "level": 4, "sets": 2, "reps": 60}
+{"name": "Pelvic Tilts", "targetmusclegroups": ["abs"], "level": 1, "sets": 3, "reps": 20}
+{"name": "One-legged Calf Raises", "targetmusclegroups": ["calves"], "level": 4, "sets": 3, "reps": 25}
+{"name": "Oblique Crunches", "targetmusclegroups": ["side abs"], "level": 3, "sets": 3, "reps": 15}
+{"name": "Jump Squats", "targetmusclegroups": ["quads", "hamstrings", "glutes", "cardio"], "level": 4, "sets": 3, "reps": 12}
+{"name": "Hawaiian Squats", "targetmusclegroups": ["quads", "hamstrings", "glutes"], "level": 4, "sets": 3, "reps": 12}
+{"name": "Glute Bridges", "targetmusclegroups": ["glutes", "quads", "hamstrings"], "level": 2, "sets": 3, "reps": 20}
+{"name": "Reverse Lunges", "targetmusclegroups": ["quads", "hamstrings", "glutes"], "level": 1, "sets": 3, "reps": 15}
+{"name": "Forward Lunges", "targetmusclegroups": ["quads", "hamstrings", "glutes"], "level": 1, "sets": 3, "reps": 15}
+{"name": "Floor Hyperextensions", "targetmusclegroups": ["upper back", "lower back", "traps", "shoulders", "glutes"], "level": 2, "sets": 3, "reps": 45}
+{"name": "Diamond Push-Ups", "targetmusclegroups": ["chest", "shoulders", "triceps"], "level": 3, "sets": 3, "reps": 15}
+{"name": "Burpees", "targetmusclegroups": ["quads", "calves", "glutes", "hamstrings", "abs", "cardio"], "level": 3, "sets": 3, "reps": 15}
+{"name": "Mountain Climbers", "targetmusclegroups": ["abs", "quads", "calves"], "level": 2, "sets": 3, "reps": 25}
+{"name": "Bent Leg Kickbacks", "targetmusclegroups": ["glutes", "hamstrings"], "level": 2, "sets": 3, "reps": 20}
+{"name": "Air Bike Crunches", "targetmusclegroups": ["abs"], "level": 3, "sets": 3, "reps": 25}
+{"name": "Sit-Ups", "targetmusclegroups": ["abs"], "level": 3, "sets": 3, "reps": 20}
+{"name": "Rear Pull-Ups", "targetmusclegroups": ["shoulders", "upper back", "lower back", "biceps"], "level": 6, "sets": 3, "reps": 8}
+{"name": "Pull-Ups", "targetmusclegroups": ["upper back", "lower back", "biceps", "shoulders"], "level": 5, "sets": 3, "reps": 8}
+{"name": "Push-Ups", "targetmusclegroups": ["chest", "shoulders", "biceps", "triceps"], "level": 3, "sets": 3, "reps": 15}
