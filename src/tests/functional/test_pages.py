@@ -95,7 +95,7 @@ def test_generate_mealplan(test_client):
     """
     response = test_client.post(
         "/mealplan",
-        data=dict(caloriesbreakfastamount=".7", calorieslunchamount=".2",carbsbreakfastamount=".3",carbslunchamount=".6", proteinsbreakfastamount=".5",proteinslunchamount=".1"),
+        data=dict(Calories="129.7",Carbs="57.6",Proteins="68.5",fiber="75.9",caloriesbreakfastamount=".7", calorieslunchamount=".2",carbsbreakfastamount=".3",carbslunchamount=".6", proteinsbreakfastamount=".5",proteinslunchamount=".1"),
         follow_redirects=True,
     )
     assert b"Personal Meal Plan Recommendations" in response.data
@@ -110,7 +110,7 @@ def test_generate_exercise_plan(test_client):
     """
     response = test_client.post(
         "/exerciseplan",
-        data=dict(sunday=True, thursday=True,friday=True,intensity="8",selectedtargetmuscles="thighs"),
+        data=dict(sunday=True,friday=True,intensity="8",glutes=True,thighs=True,chest=True),
         follow_redirects=True,
     )
     assert b"Personal Exercise Plan Recommendations" in response.data
@@ -124,7 +124,7 @@ def test_add_exercise(test_client):
     """
     response = test_client.post(
         "/addexercise",
-        data=dict(dayschecked=["Thursday","Tuesday","Friday"], intensity="5",selectedtargetmuscles="chest"),
+        data=dict(dayschecked=["Tuesday","Thursday","Friday"], intensity="5",selectedtargetmuscles=["arms","core","chest","hamstrings"]),
         follow_redirects=True,
     )
     assert b"Add a Exercise, Meal, or Food item" in response.data
