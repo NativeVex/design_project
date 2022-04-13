@@ -10,7 +10,8 @@
     <h1 style="margin-top:10px;text-align:center;color:black">{% block title %} Personal Meal Plan Recommendations{% endblock %}</h1>
     <div style="width: 50%; margin: auto">
         {{calories}}
-        {{jsoninfo}}
+        {{newjsoninfo}}
+        {{newjsonsplitdata}}
         <form action="/diet/" method="">
             <button name="btn" class="btn-primary btn-lg" type="submit">Generate new mealplan</button>
         </form>    
@@ -30,43 +31,46 @@
 
             </span>
             <br>
-            Calories: <span>{{ item['nutritional value']['calories'] }}</span>
+            Directions: <span>{% for direction in item['directions'] %}
+                {{direction}}
+                {% endfor %}
+
+            </span>
             <br>
-            Carbs: <span>{{ item['nutritional value']['carbs'] }}</span>
+            Calories: <span>{{ item['nutritional_values']['calories'] }}</span>
             <br>
-            Protein: <span>{{ item['nutritional value']['protein'] }}</span>
+            Carbs: <span>{{ item['nutritional_values']['carbs'] }}</span>
             <br>
-            Fat: <span>{{ item['nutritional value']['fat'] }}</span>
+            Protein: <span>{{ item['nutritional_values']['protein'] }}</span>
             <br>
-            Cholesterol: <span>{{ item['nutritional value']['cholesterol'] }}</span>
+            calcium: <span>{{ item['nutritional_values']['calcium'] }}</span>
             <br>
-            Sodium: <span>{{ item['nutritional value']['sodium'] }}</span>
+            Cholesterol: <span>{{ item['nutritional_values']['cholesterol'] }}</span>
             <br>
-            Vitamina: <span>{{ item['nutritional value']['vitaminA'] }}</span>
+            fat: <span>{{ item['nutritional_values']['fat'] }}</span>
             <br>
-            Calcium: <span>{{ item['nutritional value']['calcium'] }}</span>
+            fiber: <span>{{ item['nutritional_values']['fiber'] }}</span>
             <br>
-            Copper: <span>{{ item['nutritional value']['copper'] }}</span>
+            iron: <span>{{ item['nutritional_values']['iron'] }}</span>
             <br>
-            Fluoride: <span>{{ item['nutritional value']['fluoride'] }}</span>
+            monosaturated fat: <span>{{ item['nutritional_values']['monosaturated_fat'] }}</span>
             <br>
-            Iodine: <span>{{ item['nutritional value']['iodine'] }}</span>
+            polyunsaturated fat: <span>{{ item['nutritional_values']['polyunsaturated_fat'] }}</span>
             <br>
-            Iron: <span>{{ item['nutritional value']['iron'] }}</span>
+            potassium: <span>{{ item['nutritional_values']['potassium'] }}</span>
             <br>
-            Magnesium: <span>{{ item['nutritional value']['magnesium'] }}</span>
+            saturated fat: <span>{{ item['nutritional_values']['saturated_fat'] }}</span>
             <br>
-            Manganese: <span>{{ item['nutritional value']['manganese'] }}</span>
+            sodium: <span>{{ item['nutritional_values']['sodium'] }}</span>
             <br>
-            Molybdenum: <span>{{ item['nutritional value']['molybdenum'] }}</span>
+            sugar: <span>{{ item['nutritional_values']['sugar'] }}</span>
             <br>
-            Phosphorus: <span>{{ item['nutritional value']['phosphorus'] }}</span>
+            trans fat: <span>{{ item['nutritional_values']['trans_fat'] }}</span>
             <br>
-            Potassium: <span>{{ item['nutritional value']['potassium'] }}</span>
+            vitamin a: <span>{{ item['nutritional_values']['vitamin_a'] }}</span>
             <br>
-            Selenium: <span>{{ item['nutritional value']['selenium'] }}</span>
-            <br>
-            Zinc: <span>{{ item['nutritional value']['zinc'] }}</span>
+            vitamin c: <span>{{ item['nutritional_values']['vitamin_c'] }}</span>
+            
             <br>
             <br>
             <br>
