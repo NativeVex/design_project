@@ -317,17 +317,17 @@ class MealplanGenerator(data_src.DataStructures):
                 self.user_health_requirements,
                 self._calculate_meal_plan_nutrition(best_meal_plan))
 
-        best_meal_plan_with_snacks = copy.deepcopy(best_meal_plan)
-        while True:
-            lowest_RSS = self._nutritional_values_RSS(missing_nutrition, DataStructures.nutritional_values())
-            best_snack = None
-            for i in self.snacks:
-                cur_RSS = self._nutritional_values_RSS(missing_nutrition, i["nutritional_values"])
-                if cur_RSS < lowest_RSS: #adding this snack is better
-                    best_snack = i
-                    lowest_RSS = cur_RSS
-            if best_snack == None: #no snacks were better than None
-                break
-            best_meal_plan_with_snacks.append(best_snack)
+#       best_meal_plan_with_snacks = copy.deepcopy(best_meal_plan)
+#       while True:
+#           lowest_RSS = self._nutritional_values_RSS(missing_nutrition, DataStructures.nutritional_values())
+#           best_snack = None
+#           for i in self.snacks:
+#               cur_RSS = self._nutritional_values_RSS(missing_nutrition, i["nutritional_values"])
+#               if cur_RSS < lowest_RSS: #adding this snack is better
+#                   best_snack = i
+#                   lowest_RSS = cur_RSS
+#           if best_snack == None: #no snacks were better than None
+#               break
+#           best_meal_plan_with_snacks.append(best_snack)
 
         return json.dumps(best_meal_plan)
