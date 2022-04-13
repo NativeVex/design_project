@@ -99,7 +99,7 @@ class ExerciseplanGenerator(data_src.DataStructures):
         Returns a weekly exercise plan populated with exercises for every day that the user wants to work out.
 
         in: N/A
-        out: Weekly exercise plan in json format
+        out: Weekly exercise plan in JSON format
         """
         to_return = DataStructures.exercise_plan()
         for i in self.user_requirements["days"]:
