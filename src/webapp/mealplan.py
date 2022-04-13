@@ -5,6 +5,7 @@ import os
 import random
 import sys
 import fractions
+import copy
 
 from webapp import data_src
 from webapp.data_src import DataStructures
@@ -186,32 +187,23 @@ class MealplanGenerator(data_src.DataStructures):
         """Calculates the RSS for a mealplan wrt health reqs
         Calculates the RSS (residual sum of squares) for a mealplan with regards to health requirements
         """
-        # TODO: data scaling; otherwise an error in calories will matter a lot more than an error in vitamin A
         RSS = 0
         for i in meal_plan:
-            offset = self._diff_nutritional_values(health_requirements,
-                                                   i["nutritional_values"])
-            for j in offset:
-                RSS += offset[j]**2
-        return (RSS/len(meal_plan))/len(meal_plan[0]["nutritional_values"])
-        # if we want some randomness so it doesn't always spit out the same meal plan we can uncomment and/or change the following line
-        # RSS += random.random() * 2
+            RSS += self._recipe_RSS(health_requirements, i)
+        RSS /= len(meal_plan)
+        return RSS
 
     def _recipe_RSS(self, health_requirements, recipe_data):
         """Calculates the RSS for a recipe wrt health reqs
         Calculates the RSS (residual sum of squares) for a recipe with regards to health requirements
         """
-        RSS = 0
-        offset = self._diff_nutritional_values(
-            health_requirements, recipe_data["nutritional_values"])
-        for j in offset:
-            RSS += offset[j]**2
-        return RSS/len(recipe_data["nutritional_values"])
+        return self._nutritional_values_RSS(health_requirements, recipe_data["nutritional_values"])
 
     def _nutritional_values_RSS(self, health_requirements, nutritional_values):
         """Calculates the RSS for a set of nutritional values wrt health reqs
         Calculates the RSS (residual sum of squares) for a set of nutritional values with regards to health requirements
         """
+        # TODO: data scaling; otherwise an error in calories will matter a lot more than an error in vitamin A
         RSS = 0
         offset = self._diff_nutritional_values(health_requirements,
                                                nutritional_values)
@@ -268,9 +260,10 @@ class MealplanGenerator(data_src.DataStructures):
     def gen_meal_plan(self) -> DataStructures.meal_plan:
         """Generates a mealplan based on the health requirements that the class was created with
 
-        Creates n choose k different mealplans based on recipes gotten from DB, then calculates the
-        RSS of each of these wrt the user's heatlh requirements. Returns the best mealplan, with the
-        lowest RSS
+        For each of 3 meals, picks the meal option that best matches the user's desired intake for that meal.
+        Put each of the best meals together to generate a mealplan
+
+        TODO: add snacks to lower mealplan RSS
         """
         best_meal_plan: DataStructures.meal_plan
         best_meal_plan = DataStructures.meal_plan(4)
@@ -316,5 +309,23 @@ class MealplanGenerator(data_src.DataStructures):
                         j["nutritional_values"] = self._mul_nutritional_values(j["nutritional_values"], n)
                         best_meal_plan[2] = i
                         best_meal_plan[3] = j
+
+
+        missing_nutrition = self._diff_nutritional_values(
+                self.user_health_requirements,
+                self._calculate_meal_plan_nutrition(best_meal_plan))
+
+        best_meal_plan_with_snacks = copy.deepcopy(best_meal_plan)
+        while True:
+            lowest_RSS = self._nutritional_values_RSS(missing_nutrition, DataStructures.nutritional_values())
+            best_snack = None
+            for i in self.snacks:
+                cur_RSS = self._nutritional_values_RSS(missing_nutrition, i["nutritional_values"])
+                if cur_RSS < lowest_RSS: #adding this snack is better
+                    best_snack = i
+                    lowest_RSS = cur_RSS
+            if best_snack == None: #no snacks were better than None
+                break
+            best_meal_plan_with_snacks.append(best_snack)
 
         return json.dumps(best_meal_plan)
