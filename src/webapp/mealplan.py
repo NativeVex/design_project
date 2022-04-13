@@ -184,7 +184,6 @@ class MealplanGenerator(data_src.DataStructures):
 
     def _meal_plan_RSS(self, health_requirements, meal_plan):
         """Calculates the RSS for a mealplan wrt health reqs
-
         Calculates the RSS (residual sum of squares) for a mealplan with regards to health requirements
         """
         # TODO: data scaling; otherwise an error in calories will matter a lot more than an error in vitamin A
@@ -199,6 +198,9 @@ class MealplanGenerator(data_src.DataStructures):
         # RSS += random.random() * 2
 
     def _recipe_RSS(self, health_requirements, recipe_data):
+        """Calculates the RSS for a recipe wrt health reqs
+        Calculates the RSS (residual sum of squares) for a recipe with regards to health requirements
+        """
         RSS = 0
         offset = self._diff_nutritional_values(
             health_requirements, recipe_data["nutritional_values"])
@@ -207,6 +209,9 @@ class MealplanGenerator(data_src.DataStructures):
         return RSS/len(recipe_data["nutritional_values"])
 
     def _nutritional_values_RSS(self, health_requirements, nutritional_values):
+        """Calculates the RSS for a set of nutritional values wrt health reqs
+        Calculates the RSS (residual sum of squares) for a set of nutritional values with regards to health requirements
+        """
         RSS = 0
         offset = self._diff_nutritional_values(health_requirements,
                                                nutritional_values)
