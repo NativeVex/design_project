@@ -4,6 +4,7 @@ import math
 import os
 import random
 import sys
+import fractions
 
 from webapp import data_src
 from webapp.data_src import DataStructures
@@ -248,15 +249,14 @@ class MealplanGenerator(data_src.DataStructures):
             i = recipe["ingredients"][idx]
             str_value = i.split(' ')[0]
             rest_of_str = i[len(str_value):]
-            float_value = 0.0
-            if '/' in str_value:
-                frac = str_value.split('/')
-                float_value = int(frac[0])/int(frac[1])
-                float_value *= scale
+            fraction = fractions.Fraction(0, 1)
+            if not str_value.replace('.','',1).isdigit() and not str_value.replace('/', '', 1).isdigit(): #not a number
+                continue
             else:
-                float_value = float(str_value) * scale
-            recipe["ingredients"][idx] = str(float_value) + rest_of_str
-        recipe["number_of_servings"] *= scale
+                fraction = fractions.Fraction(str_value) #works for fractions, decimals, and ints
+                fraction *= scale
+                recipe["ingredients"][idx] = str(fraction) + rest_of_str
+        recipe["number_of_servings"] = float(recipe["number_of_servings"] * scale)
 
 
     # this is the "head" of the code
@@ -284,8 +284,7 @@ class MealplanGenerator(data_src.DataStructures):
                 cur_RSS = self._nutritional_values_RSS(breakfast_reqs, self._mul_nutritional_values(i["nutritional_values"], n))
                 if cur_RSS < lowest_RSS:
                     lowest_RSS = cur_RSS
-                    i["number_of_servings"] /= n #Assume we get 0.66 servings here. Scale the recipe to make it 1
-                    self._scale_recipe(i, 1/i["number_of_servings"])
+                    self._scale_recipe(i, fractions.Fraction(n,fractions.Fraction(i["number_of_servings"])))
                     i["nutritional_values"] = self._mul_nutritional_values(i["nutritional_values"], n)
                     best_meal_plan[0] = i
 
@@ -295,8 +294,7 @@ class MealplanGenerator(data_src.DataStructures):
                 cur_RSS = self._nutritional_values_RSS(lunch_reqs, self._mul_nutritional_values(i["nutritional_values"], n))
                 if cur_RSS < lowest_RSS:
                     lowest_RSS = cur_RSS
-                    i["number_of_servings"] /= n
-                    self._scale_recipe(i, 1/i["number_of_servings"])
+                    self._scale_recipe(i, fractions.Fraction(n,fractions.Fraction(i["number_of_servings"])))
                     i["nutritional_values"] = self._mul_nutritional_values(i["nutritional_values"], n)
                     best_meal_plan[1] = i
 
@@ -307,10 +305,8 @@ class MealplanGenerator(data_src.DataStructures):
                     cur_RSS = self._nutritional_values_RSS(dinner_reqs, self._mul_nutritional_values(self._sum_nutritional_values(i["nutritional_values"], j["nutritional_values"]), n))
                     if cur_RSS < lowest_RSS:
                         lowest_RSS = cur_RSS
-                        i["number_of_servings"] /= n
-                        self._scale_recipe(i, 1/j["number_of_servings"])
-                        j["number_of_servings"] /= n
-                        self._scale_recipe(j, 1/j["number_of_servings"])
+                        self._scale_recipe(i, fractions.Fraction(n,fractions.Fraction(i["number_of_servings"])))
+                        self._scale_recipe(j, fractions.Fraction(n,fractions.Fraction(j["number_of_servings"])))
                         i["nutritional_values"] = self._mul_nutritional_values(i["nutritional_values"], n)
                         j["nutritional_values"] = self._mul_nutritional_values(j["nutritional_values"], n)
                         best_meal_plan[2] = i
