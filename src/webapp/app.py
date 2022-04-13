@@ -464,7 +464,7 @@ def addfood():
         if(potassium!=None and potassium!=''):
             newrecipe["nutritional_values"]["potassium"] = float(potassium)
         
-        if(numberofservings!=''):
+        if(numberofservings!='' and numberofservings!=None):
             newrecipe["number_of_servings"]=int(numberofservings)
         newrecipe["type"]=foodtype  
                                     #add newfoodrecipe to database
@@ -529,7 +529,7 @@ def listitems():
         newfood1["name"]=newfoodname1
         newfood1["ingredients"]=[newfoodingredients1]
         newfood1["directions"]=[newfooddirections1]
-        if(newfood1numberofservings!=''):
+        if(newfood1numberofservings!='' and newfood1numberofservings!=None):
             newfood1["number_of_servings"]=int(newfood1numberofservings)
         newfood1["type"]=newfood1type
 
@@ -597,7 +597,7 @@ def listitems():
         newfood2["name"]=newfoodname2
         newfood2["ingredients"]=[newfoodingredients2]
         newfood2["directions"]=[newfooddirections2]
-        if(newfood2numberofservings!=''):
+        if(newfood2numberofservings!='' and newfood2numberofservings!=None):
             newfood2["number_of_servings"]=int(newfood2numberofservings)
         newfood2["type"]=newfood2type
 
@@ -665,7 +665,7 @@ def listitems():
         newfood3["name"]=newfoodname3
         newfood3["ingredients"]=[newfoodingredients3]
         newfood3["directions"]=[newfooddirections3]
-        if(newfood3numberofservings!=''):
+        if(newfood3numberofservings!='' and newfood3numberofservings!=None):
             newfood3["number_of_servings"]=int(newfood3numberofservings)
         newfood3["type"]=newfood3type
 
