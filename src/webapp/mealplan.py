@@ -90,7 +90,9 @@ class MealplanGenerator(data_src.DataStructures):
 
     def __init__(self,
                  json_health_requirements,
-                 json_splits):
+                 json_splits = 
+                '{"calorie_split": [0.25, 0.25, 0.5], "protein_split": [0.25, 0.25, 0.5], "carbs_split": [0.25, 0.25, 0.5]}'
+                 ):
         """Plan Meals for Week Usecase
 
         Big paragraph
@@ -222,19 +224,19 @@ class MealplanGenerator(data_src.DataStructures):
                 ]
 
         hr_breakfast["calories"] = health_requirements["calories"] * calorie_split[0]
-        hr_breakfast["protein"] = health_requirements["protein"] * calorie_split[0]
+        hr_breakfast["protein"] = health_requirements["protein"] * protein_split[0]
         hr_breakfast["iron"] = health_requirements["iron"] * avg_split[0]
         hr_breakfast["vitamin_a"] = health_requirements["vitamin_a"] * avg_split[0]
         hr_breakfast["vitamin_c"] = health_requirements["vitamin_c"] * avg_split[0]
 
         hr_lunch["calories"] = health_requirements["calories"] * calorie_split[1]
-        hr_lunch["protein"] = health_requirements["protein"] * calorie_split[1]
+        hr_lunch["protein"] = health_requirements["protein"] * protein_split[1]
         hr_lunch["iron"] = health_requirements["iron"] * avg_split[0]
         hr_lunch["vitamin_a"] = health_requirements["vitamin_a"] * avg_split[0]
         hr_lunch["vitamin_c"] = health_requirements["vitamin_c"] * avg_split[0]
 
         hr_dinner["calories"] = health_requirements["calories"] * calorie_split[2]
-        hr_dinner["protein"] = health_requirements["protein"] * calorie_split[2]
+        hr_dinner["protein"] = health_requirements["protein"] * protein_split[2]
         hr_dinner["iron"] = health_requirements["iron"] * avg_split[0]
         hr_dinner["vitamin_a"] = health_requirements["vitamin_a"] * avg_split[0]
         hr_dinner["vitamin_c"] = health_requirements["vitamin_c"] * avg_split[0]

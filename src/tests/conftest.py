@@ -36,7 +36,7 @@ def json_recipe_list(recipe_list):
 
 @pytest.fixture
 def mpg_class(nv1):
-    return MealplanGenerator(json.dumps(nv1))
+    return MealplanGenerator(json.dumps(nv1), '{"calorie_split": [0.25, 0.25, 0.5], "protein_split": [0.25, 0.25, 0.5], "carbs_split": [0.25, 0.25, 0.5]}')
 
 
 @pytest.fixture()
@@ -72,31 +72,42 @@ def init_database_recipes(test_client):
     db.drop_all()
     db.init_app(app)
     db.create_all(app=app)
-
+    
+    adobo_chicken_dict = DataStructures.recipe_data()
+    adobo_chicken_dict["name"] = "Adobo Chicken"
+    adobo_chicken_dict["ingredients"] = ["Chicken", "Adobo Sauce"]
+    adobo_chicken_dict["directions"] = ["Mix chicken and adobo sauce"]
+    adobo_chicken_dict["nutritional_values"]["calcium"] = 14.0
+    adobo_chicken_dict["nutritional_values"]["calories"] = 107.0
+    adobo_chicken_dict["nutritional_values"]["carbohydrate"] = 2.48
+    adobo_chicken_dict["nutritional_values"]["fat"] = 4.93
+    adobo_chicken_dict["nutritional_values"]["iron"] = 1.05
+    adobo_chicken_dict["nutritional_values"]["potassium"] = 147.0
+    adobo_chicken_dict["nutritional_values"]["protein"] = 11.88
+    adobo_chicken_dict["nutritional_values"]["sodium"] = 392.0
+    adobo_chicken_dict["nutritional_values"]["vitamin_a"] = 9.0
+    adobo_chicken_dict["number_of_servings"] = 1
+    adobo_chicken_dict["type"] = ["Lunch"]
+    ice_cream_sandwich_dict = DataStructures.recipe_data()
+    ice_cream_sandwich_dict["name"] = "Ice Cream Sandwich"
+    ice_cream_sandwich_dict["ingredients"] = ["Ice Cream", "Sandwich"]
+    ice_cream_sandwich_dict["directions"] = ["Open wrapper", "Eat"]
+    ice_cream_sandwich_dict["nutritional_values"]["calcium"] = 60.0
+    ice_cream_sandwich_dict["nutritional_values"]["calories"] = 143.0
+    ice_cream_sandwich_dict["nutritional_values"]["carbohydrate"] = 21.75
+    ice_cream_sandwich_dict["nutritional_values"]["fat"] = 5.60
+    ice_cream_sandwich_dict["nutritional_values"]["iron"] = 0.28
+    ice_cream_sandwich_dict["nutritional_values"]["potassium"] = 122.0
+    ice_cream_sandwich_dict["nutritional_values"]["protein"] = 2.610
+    ice_cream_sandwich_dict["nutritional_values"]["sodium"] = 37.00
+    ice_cream_sandwich_dict["nutritional_values"]["vitamin_a"] = 53.0
+    ice_cream_sandwich_dict["number_of_servings"] = 1
+    ice_cream_sandwich_dict["type"] = ["Snack"]
     adobo_chicken = Recipes(
-        name="Adobo Chicken",
-        Calories=107.0,
-        Carbs=2.48,
-        Proteins=11.88,
-        fat=4.93,
-        Sodium=392.0,
-        Vitamina=9.0,
-        Calcium=14.0,
-        Iron=1.05,
-        Potassium=147.0,
+            json.dumps(adobo_chicken_dict)
     )
     ice_cream_sandwich = Recipes(
-        name="Ice Cream Sandwich",
-        Calories=143.0,
-        Carbs=21.75,
-        Proteins=2.61,
-        fat=5.6,
-        Cholesterol=20.0,
-        Sodium=37.0,
-        Vitamina=53.0,
-        Calcium=60.0,
-        Iron=0.28,
-        Potassium=122.0,
+            json.dumps(ice_cream_sandwich_dict)
     )
 
     db.session.add(adobo_chicken)
@@ -136,10 +147,14 @@ def nv2(test_client, init_database_recipes):
 def rd1(nv1):
     recipe = DataStructures.recipe_data()
     recipe["name"] = str(base64.b64encode(random.randbytes(20)))
+    recipe["number_of_servings"] = 4
+    recipe["type"] = ["Breakfast"]
     for i in range(random.randint(3, 20)):
         recipe["ingredients"].append(
             str(base64.b64encode(random.randbytes(20))))
-    recipe["nutritional value"] = nv1
+        recipe["directions"].append(
+            str(base64.b64encode(random.randbytes(20))))
+    recipe["nutritional_values"] = nv1
     return recipe
 
 
@@ -147,10 +162,14 @@ def rd1(nv1):
 def rd2(nv1):
     recipe = DataStructures.recipe_data()
     recipe["name"] = str(base64.b64encode(random.randbytes(20)))
+    recipe["number_of_servings"] = 33
+    recipe["type"] = ["Lunch", "Main Dish"]
     for i in range(random.randint(3, 20)):
         recipe["ingredients"].append(
             str(base64.b64encode(random.randbytes(20))))
-    recipe["nutritional value"] = nv1
+        recipe["directions"].append(
+            str(base64.b64encode(random.randbytes(20))))
+    recipe["nutritional_values"] = nv1
     return recipe
 
 
@@ -158,10 +177,14 @@ def rd2(nv1):
 def rd3(nv1):
     recipe = DataStructures.recipe_data()
     recipe["name"] = str(base64.b64encode(random.randbytes(20)))
+    recipe["number_of_servings"] = 0.67
+    recipe["type"] = ["Lunch", "Side Dish", "Snack"]
     for i in range(random.randint(3, 20)):
         recipe["ingredients"].append(
             str(base64.b64encode(random.randbytes(20))))
-    recipe["nutritional value"] = nv1
+        recipe["directions"].append(
+            str(base64.b64encode(random.randbytes(20))))
+    recipe["nutritional_values"] = nv1
     return recipe
 
 

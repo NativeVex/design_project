@@ -151,27 +151,27 @@ class Recipes(db.Model):
         self.directions = str(data_dict["directions"])
         self.ingredients = str(data_dict["ingredients"])
         self.number_of_servings = data_dict["number_of_servings"]
-        self.type = data_dict["type"]
+        self.type = json.dumps(data_dict["type"])
 
-        self.calories = data_dict["nutritional_value"]["calories"]
-        self.carbohydrate = data_dict["nutritional_value"]["carbohydrate"]
-        self.protein = data_dict["nutritional_value"]["protein"]
-        self.cholesterol = data_dict["nutritional_value"]["cholesterol"]
-        self.fat = data_dict["nutritional_value"]["fat"]
-        self.fiber = data_dict["nutritional_value"]["fiber"]
-        self.iron = data_dict["nutritional_value"]["iron"]
-        self.monounsaturated_fat = data_dict["nutritional_value"][
+        self.calories = data_dict["nutritional_values"]["calories"]
+        self.carbohydrate = data_dict["nutritional_values"]["carbohydrate"]
+        self.protein = data_dict["nutritional_values"]["protein"]
+        self.cholesterol = data_dict["nutritional_values"]["cholesterol"]
+        self.fat = data_dict["nutritional_values"]["fat"]
+        self.fiber = data_dict["nutritional_values"]["fiber"]
+        self.iron = data_dict["nutritional_values"]["iron"]
+        self.monounsaturated_fat = data_dict["nutritional_values"][
             "monounsaturated_fat"]
-        self.polyunsaturated_fat = data_dict["nutritional_value"][
+        self.polyunsaturated_fat = data_dict["nutritional_values"][
             "polyunsaturated_fat"]
-        self.potassium = data_dict["nutritional_value"]["potassium"]
-        self.calcium = data_dict["nutritional_value"]["calcium"]
-        self.saturated_fat = data_dict["nutritional_value"]["saturated_fat"]
-        self.sodium = data_dict["nutritional_value"]["sodium"]
-        self.sugar = data_dict["nutritional_value"]["sugar"]
-        self.trans_fat = data_dict["nutritional_value"]["trans_fat"]
-        self.vitamin_a = data_dict["nutritional_value"]["vitamin_a"]
-        self.vitamin_c = data_dict["nutritional_value"]["vitamin_c"]
+        self.potassium = data_dict["nutritional_values"]["potassium"]
+        self.calcium = data_dict["nutritional_values"]["calcium"]
+        self.saturated_fat = data_dict["nutritional_values"]["saturated_fat"]
+        self.sodium = data_dict["nutritional_values"]["sodium"]
+        self.sugar = data_dict["nutritional_values"]["sugar"]
+        self.trans_fat = data_dict["nutritional_values"]["trans_fat"]
+        self.vitamin_a = data_dict["nutritional_values"]["vitamin_a"]
+        self.vitamin_c = data_dict["nutritional_values"]["vitamin_c"]
 
     def get_id(self):
         """Return the user ID as a unicode string (`str`)."""

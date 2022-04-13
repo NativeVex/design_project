@@ -57,6 +57,41 @@ def test_meal_plan_RSS(sample_health_reqs, mp, mpg_class):
             real_rss += (sample_health_reqs[j] - i["nutritional value"][j])**2
     assert real_rss == rss
 
+@pytest.mark.parametrize(
+        "calorie_split,protein_split,carbs_split,health_requirements",
+        [
+            ([0.25, 0.25, 0.5], [0.25, 0.25, 0.5], [0.25, 0.25, 0.5], nv1),
+            ([0.1, 0.1, 0.9], [0.1, 0.9, 0.1], [0.9, 0.1, 0.1], nv1),
+            ([0.0, 0.0, 0.0], [0.0, 0.0, 0.0], [0.0, 0.0, 0.0], nv2),
+            ([30.0, 30.0, 30.0], [29.9, 29.9, 29.9], [28.8, 28.8, 28.8], nv2)
+            ([1.1, 2.2, 3.3], [4.4, 5.5, 6.6], [7.7, 8.8, 9.9], nv2)
+            ])
+def test_balance_health_requirements(calorie_split, protein_split, carbs_split, health_requirements, mpg_class):
+    hr_breakfast, hr_lunch, hr_dinner = mpg_class._balance_health_requirements(
+            calorie_split, protein_split, carbs_split, health_requirements
+            )
+    assert hr_breakfast["calories"] == health_requirements["calories"] * calorie_split[0]
+    assert hr_breakfast["protein"] == health_requirements["protein"] * protein_split[0]
+    assert hr_breakfast["carbohydrate"] == health_requirements["carbohydrate"] * carbs_split[0]
+    assert hr_lunch["calories"] == health_requirements["calories"] * calorie_split[1]
+    assert hr_lunch["protein"] == health_requirements["protein"] * protein_split[1]
+    assert hr_lunch["carbohydrate"] == health_requirements["carbohydrate"] * carbs_split[1]
+    assert hr_dinner["calories"] == health_requirements["calories"] * calorie_split[2]
+    assert hr_dinner["protein"] == health_requirements["protein"] * protein_split[2]
+    assert hr_dinner["carbohydrate"] == health_requirements["carbohydrate"] * carbs_split[2]
+    return
+
+@pytest.mark.parametrize(
+        "recipe_data,scale",
+        [(rd1, 0)
+        (rd1, 1)
+        (rd1, 1.44)
+        (rd1, 3/2)
+        (rd1, 0.3)]
+        )
+def test_scale_recipe(recipe_data, scale):
+    
+    return
 
 def test_module_integration(mpg_class):
     """Tests full functionality of mealplan generator module"""

@@ -15,7 +15,7 @@ class DataStructures:
 
     def recipe_data():
         skeleton = json.loads(
-            '{"name":"n/a","ingredients":[],"directions":[],"nutritional_values":"","number_of_servings":0,"type":""}'
+            '{"name":"n/a","ingredients":[],"directions":[],"nutritional_values":"","number_of_servings":0,"type":[]}'
         )
         skeleton["nutritional_values"] = DataStructures.nutritional_values()
         return skeleton
