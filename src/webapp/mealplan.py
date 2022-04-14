@@ -65,6 +65,20 @@ def get_recipes_from_db(
     return recipes
 
 
+def save_mealplan(email: str, mealplan: DataStructures.mealplan) -> DataStructures.meal_plan:
+    user = User.query.filter_by(email=email).first()
+
+    if user:
+        user.add_mealplan(json.dumps(mealplan))
+    return mealplan
+
+def get_mealplan(email: str)-> DataStructures.meal_plan:
+    user = User.query.filter_by(email=email).first()
+
+    if user:
+        mealplan = user.get_mealplan()
+    mealplan
+
 class MealplanGenerator(data_src.DataStructures):
     recipes = []
     breakfasts = []
@@ -320,11 +334,3 @@ class MealplanGenerator(data_src.DataStructures):
 #           best_meal_plan_with_snacks.append(best_snack)
 
         return json.dumps(best_meal_plan)
-
-
-    def save_mealplan(self, email: str, mealplan: DataStructures.mealplan) -> DataStructures.meal_plan:
-        user = User.query.filter_by(email=email).first()
-
-        if user:
-            user.add_mealplan(json.dumps(mealplan))
-        return mealplan
