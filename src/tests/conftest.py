@@ -45,17 +45,18 @@ def init_database(test_client):
     db.create_all(app=app)
     yield
 
+
 @pytest.fixture()
 def init_database_recipes(test_client, request):
     # Create the database and the database table
     # and add two sample recipes
     file = pathlib.Path(request.node.fspath)
-    data = file.with_name('r2.json')
+    data = file.with_name("r2.json")
 
     db.drop_all()
     db.init_app(app)
     db.create_all(app=app)
-    
+
     with data.open() as r:
         for jsline in r:
             fixme = json.loads(jsline.strip())
@@ -173,7 +174,6 @@ def test_meal_plan(mp):
 
 @pytest.mark.xfail(reason="testing bad nutritional values")
 class TestBadNVs:
-
     def test_good_nutritional_values(self, nv1):
         test_nutritional_values(nv1)
 
@@ -203,7 +203,6 @@ class TestBadNVs:
 
 @pytest.mark.xfail(reason="testing bad recipe data")
 class TestBadRDs:
-
     def test_good_recipe(self, rd1):
         test_recipe_data(rd1)
 
@@ -233,7 +232,6 @@ class TestBadRDs:
 
 @pytest.mark.xfail(reason="testing bad meal plan")
 class TestBadMPs:
-
     def test_good_meal_plan(self, mp):
         test_meal_plan(mp)
 
@@ -250,7 +248,6 @@ class TestBadMPs:
 
 
 class TestGoodData:
-
     def test_all(self, mp):
         test_meal_plan(mp)
         for i in mp:
