@@ -91,7 +91,8 @@ class MealplanGenerator(data_src.DataStructures):
     def __init__(self,
                  json_health_requirements,
                  json_splits = 
-                '{"calorie_split": [0.25, 0.25, 0.5], "protein_split": [0.25, 0.25, 0.5], "carbs_split": [0.25, 0.25, 0.5]}'
+                '{"calorie_split": [0.25, 0.25, 0.5], "protein_split": [0.25, 0.25, 0.5], "carbs_split": [0.25, 0.25, 0.5]}',
+                db_function = get_recipes_from_db
                  ):
         """Plan Meals for Week Usecase
 
@@ -102,7 +103,8 @@ class MealplanGenerator(data_src.DataStructures):
         queries recipes from DB
         """
         # Can be done in get_recipes_from_db()
-        json_recipes = get_recipes_from_db()
+#       json_recipes = get_recipes_from_db()
+        json_recipes = db_function()
         for i in json_recipes:
             j = json.loads(i)
             self.recipes.append(j)
