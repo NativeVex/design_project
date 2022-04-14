@@ -20,7 +20,7 @@ body { background-color:lightblue; }
   <div>
     <h2>Saved Weekly Meal Plan</h2>
     {% if session["savedmealplan"] is defined %}
-
+      <h3>Your Meal Plan for email: {{session["email"]}} was Saved!</h3>
     <table class="table table-bordered" style="background-color:white;border-color:black">
       <tbody>
         <tr>
@@ -80,130 +80,140 @@ body { background-color:lightblue; }
 
     <table class="table table-bordered" style="background-color:white;border-color:black">
       <tbody>
-        <tr>
-          <td><h5 class="card-title"> Sunday</h5></td>
-          <td><h5 class="card-title"> Name: {{session["savedexerciseplan"]['Sunday'][0]['Name']}}</h5></td>
-          <td><h5 class="card-title"> Sets: {{session["savedexerciseplan"]['Sunday'][0]['sets']}}</h5></td>
-          <td><h5 class="card-title"> Reps: {{session["savedexerciseplan"]['Sunday'][0]['reps']}}</h5></td>
-          <td><h5 class="card-title"> Target Muscle Group: {{session["savedexerciseplan"]['Sunday'][0]['targetmusclegroup']}}</h5></td>
-          <td><h5 class="card-title"> Name: {{session["savedexerciseplan"]['Sunday'][1]['Name']}}</h5></td>
-          <td><h5 class="card-title"> Sets: {{session["savedexerciseplan"]['Sunday'][1]['sets']}}</h5></td>
-          <td><h5 class="card-title"> Reps: {{session["savedexerciseplan"]['Sunday'][1]['reps']}}</h5></td>
-          <td><h5 class="card-title"> Target Muscle Group: {{session["savedexerciseplan"]['Sunday'][1]['targetmusclegroup']}}</h5></td>
-          <td><h5 class="card-title"> Name: {{session["savedexerciseplan"]['Sunday'][2]['Name']}}</h5></td>
-          <td><h5 class="card-title"> Sets: {{session["savedexerciseplan"]['Sunday'][2]['sets']}}</h5></td>
-          <td><h5 class="card-title"> Reps: {{session["savedexerciseplan"]['Sunday'][2]['reps']}}</h5></td>
-          <td><h5 class="card-title"> Target Muscle Group: {{session["savedexerciseplan"]['Sunday'][2]['targetmusclegroup']}}</h5></td>
-        </tr>
-        <tr>
-          <td><h5 class="card-title"> Monday</h5></td>
+        <h5 class="card-header" style="background-color:black;color:white;">Sunday Exercises</h5>
+            <div class="card-body">
+            {% for exercise in session["savedexerciseplan"]['Sunday'] %}
+            <div class="card">
+              <h5 class="card-title"> Name: {{exercise['name']}}</h5>
+              <h5 class="card-title"> Level: {{exercise['level']}}</h5>
+              <h5 class="card-title"> Sets: {{exercise['sets']}}</h5>
+              <h5 class="card-title"> Reps: {{exercise['reps']}}</h5>
+              {% for musclegroup in exercise['targetmusclegroups'] %}
 
+              <h5 class="card-title"> Target Muscle Group: {{musclegroup}}</h5>
+              {% endfor %}
 
-          <td><h5 class="card-title"> Name: {{session["savedexerciseplan"]['Monday'][0]['Name']}}</h5></td>
-          <td><h5 class="card-title"> Sets: {{session["savedexerciseplan"]['Monday'][0]['sets']}}</h5></td>
-          <td><h5 class="card-title"> Reps: {{session["savedexerciseplan"]['Monday'][0]['reps']}}</h5></td>
-          <td><h5 class="card-title"> Target Muscle Group: {{session["savedexerciseplan"]['Monday'][0]['targetmusclegroup']}}</h5></td>
-          <td><h5 class="card-title"> Name: {{session["savedexerciseplan"]['Monday'][1]['Name']}}</h5></td>
-          <td><h5 class="card-title"> Sets: {{session["savedexerciseplan"]['Monday'][1]['sets']}}</h5></td>
-          <td><h5 class="card-title"> Reps: {{session["savedexerciseplan"]['Monday'][1]['reps']}}</h5></td>
-          <td><h5 class="card-title"> Target Muscle Group: {{session["savedexerciseplan"]['Monday'][1]['targetmusclegroup']}}</h5></td>
-          <td><h5 class="card-title"> Name: {{session["savedexerciseplan"]['Monday'][2]['Name']}}</h5></td>
-          <td><h5 class="card-title"> Sets: {{session["savedexerciseplan"]['Monday'][2]['sets']}}</h5></td>
-          <td><h5 class="card-title"> Reps: {{session["savedexerciseplan"]['Monday'][2]['reps']}}</h5></td>
-          <td><h5 class="card-title"> Target Muscle Group: {{session["savedexerciseplan"]['Monday'][2]['targetmusclegroup']}}</h5></td>
-        
-        </tr>
-        <tr>
-          <td><h5 class="card-title"> Tuesday</h5></td>
+              
+            </div>
+            {% endfor %}
+          </div>
+          </div>
+          
 
-
-
-          <td><h5 class="card-title"> Name: {{session["savedexerciseplan"]['Tuesday'][0]['Name']}}</h5></td>
-          <td><h5 class="card-title"> Sets: {{session["savedexerciseplan"]['Tuesday'][0]['sets']}}</h5></td>
-          <td><h5 class="card-title"> Reps: {{session["savedexerciseplan"]['Tuesday'][0]['reps']}}</h5></td>
-          <td><h5 class="card-title"> Target Muscle Group: {{session["savedexerciseplan"]['Tuesday'][0]['targetmusclegroup']}}</h5></td>
-          <td><h5 class="card-title"> Name: {{session["savedexerciseplan"]['Tuesday'][1]['Name']}}</h5></td>
-          <td><h5 class="card-title"> Sets: {{session["savedexerciseplan"]['Tuesday'][1]['sets']}}</h5></td>
-          <td><h5 class="card-title"> Reps: {{session["savedexerciseplan"]['Tuesday'][1]['reps']}}</h5></td>
-          <td><h5 class="card-title"> Target Muscle Group: {{session["savedexerciseplan"]['Tuesday'][1]['targetmusclegroup']}}</h5></td>
-          <td><h5 class="card-title"> Name: {{session["savedexerciseplan"]['Tuesday'][2]['Name']}}</h5></td>
-          <td><h5 class="card-title"> Sets: {{session["savedexerciseplan"]['Tuesday'][2]['sets']}}</h5></td>
-          <td><h5 class="card-title"> Reps: {{session["savedexerciseplan"]['Tuesday'][2]['reps']}}</h5></td>
-          <td><h5 class="card-title"> Target Muscle Group: {{session["savedexerciseplan"]['Tuesday'][2]['targetmusclegroup']}}</h5></td>
-       
-        </tr>
-        <tr>
-          <td><h5 class="card-title"> Wednesday</h5></td>
-
-
-
-          <td><h5 class="card-title"> Name: {{session["savedexerciseplan"]['Wednesday'][0]['Name']}}</h5></td>
-          <td><h5 class="card-title"> Sets: {{session["savedexerciseplan"]['Wednesday'][0]['sets']}}</h5></td>
-          <td><h5 class="card-title"> Reps: {{session["savedexerciseplan"]['Wednesday'][0]['reps']}}</h5></td>
-          <td><h5 class="card-title"> Target Muscle Group: {{session["savedexerciseplan"]['Wednesday'][0]['targetmusclegroup']}}</h5></td>
-          <td><h5 class="card-title"> Name: {{session["savedexerciseplan"]['Wednesday'][1]['Name']}}</h5></td>
-          <td><h5 class="card-title"> Sets: {{session["savedexerciseplan"]['Wednesday'][1]['sets']}}</h5></td>
-          <td><h5 class="card-title"> Reps: {{session["savedexerciseplan"]['Wednesday'][1]['reps']}}</h5></td>
-          <td><h5 class="card-title"> Target Muscle Group: {{session["savedexerciseplan"]['Wednesday'][1]['targetmusclegroup']}}</h5></td>
-          <td><h5 class="card-title"> Name: {{session["savedexerciseplan"]['Wednesday'][2]['Name']}}</h5></td>
-          <td><h5 class="card-title"> Sets: {{session["savedexerciseplan"]['Wednesday'][2]['sets']}}</h5></td>
-          <td><h5 class="card-title"> Reps: {{session["savedexerciseplan"]['Wednesday'][2]['reps']}}</h5></td>
-          <td><h5 class="card-title"> Target Muscle Group: {{session["savedexerciseplan"]['Wednesday'][2]['targetmusclegroup']}}</h5></td>
-        
-        </tr>
-        <tr>
-          <td><h5 class="card-title"> Thursday</h5></td>
-
-          <td><h5 class="card-title"> Name: {{session["savedexerciseplan"]['Thursday'][0]['Name']}}</h5></td>
-          <td><h5 class="card-title"> Sets: {{session["savedexerciseplan"]['Thursday'][0]['sets']}}</h5></td>
-          <td><h5 class="card-title"> Reps: {{session["savedexerciseplan"]['Thursday'][0]['reps']}}</h5></td>
-          <td><h5 class="card-title"> Target Muscle Group: {{session["savedexerciseplan"]['Thursday'][0]['targetmusclegroup']}}</h5></td>
-          <td><h5 class="card-title"> Name: {{session["savedexerciseplan"]['Thursday'][1]['Name']}}</h5></td>
-          <td><h5 class="card-title"> Sets: {{session["savedexerciseplan"]['Thursday'][1]['sets']}}</h5></td>
-          <td><h5 class="card-title"> Reps: {{session["savedexerciseplan"]['Thursday'][1]['reps']}}</h5></td>
-          <td><h5 class="card-title"> Target Muscle Group: {{session["savedexerciseplan"]['Thursday'][1]['targetmusclegroup']}}</h5></td>
-          <td><h5 class="card-title"> Name: {{session["savedexerciseplan"]['Thursday'][2]['Name']}}</h5></td>
-          <td><h5 class="card-title"> Sets: {{session["savedexerciseplan"]['Thursday'][2]['sets']}}</h5></td>
-          <td><h5 class="card-title"> Reps: {{session["savedexerciseplan"]['Thursday'][2]['reps']}}</h5></td>
-          <td><h5 class="card-title"> Target Muscle Group: {{session["savedexerciseplan"]['Thursday'][2]['targetmusclegroup']}}</h5></td>
-        
-        </tr>
-        <tr>
-          <td><h5 class="card-title"> Friday</h5></td>
-
-
-
-          <td><h5 class="card-title"> Name: {{session["savedexerciseplan"]['Friday'][0]['Name']}}</h5></td>
-          <td><h5 class="card-title"> Sets: {{session["savedexerciseplan"]['Friday'][0]['sets']}}</h5></td>
-          <td><h5 class="card-title"> Reps: {{session["savedexerciseplan"]['Friday'][0]['reps']}}</h5></td>
-          <td><h5 class="card-title"> Target Muscle Group: {{session["savedexerciseplan"]['Friday'][0]['targetmusclegroup']}}</h5></td>
-          <td><h5 class="card-title"> Name: {{session["savedexerciseplan"]['Friday'][1]['Name']}}</h5></td>
-          <td><h5 class="card-title"> Sets: {{session["savedexerciseplan"]['Friday'][1]['sets']}}</h5></td>
-          <td><h5 class="card-title"> Reps: {{session["savedexerciseplan"]['Friday'][1]['reps']}}</h5></td>
-          <td><h5 class="card-title"> Target Muscle Group: {{session["savedexerciseplan"]['Friday'][1]['targetmusclegroup']}}</h5></td>
-          <td><h5 class="card-title"> Name: {{session["savedexerciseplan"]['Friday'][2]['Name']}}</h5></td>
-          <td><h5 class="card-title"> Sets: {{session["savedexerciseplan"]['Friday'][2]['sets']}}</h5></td>
-          <td><h5 class="card-title"> Reps: {{session["savedexerciseplan"]['Friday'][2]['reps']}}</h5></td>
-          <td><h5 class="card-title"> Target Muscle Group: {{session["savedexerciseplan"]['Friday'][2]['targetmusclegroup']}}</h5></td>
-        
-        </tr>
-        <tr>
-
-          <td><h5 class="card-title"> Saturday</h5></td>
-          <td><h5 class="card-title"> Name: {{session["savedexerciseplan"]['Saturday'][0]['Name']}}</h5></td>
-          <td><h5 class="card-title"> Sets: {{session["savedexerciseplan"]['Saturday'][0]['sets']}}</h5></td>
-          <td><h5 class="card-title"> Reps: {{session["savedexerciseplan"]['Saturday'][0]['reps']}}</h5></td>
-          <td><h5 class="card-title"> Target Muscle Group: {{session["savedexerciseplan"]['Saturday'][0]['targetmusclegroup']}}</h5></td>
-          <td><h5 class="card-title"> Name: {{session["savedexerciseplan"]['Saturday'][1]['Name']}}</h5></td>
-          <td><h5 class="card-title"> Sets: {{session["savedexerciseplan"]['Saturday'][1]['sets']}}</h5></td>
-          <td><h5 class="card-title"> Reps: {{session["savedexerciseplan"]['Saturday'][1]['reps']}}</h5></td>
-          <td><h5 class="card-title"> Target Muscle Group: {{session["savedexerciseplan"]['Saturday'][1]['targetmusclegroup']}}</h5></td>
-          <td><h5 class="card-title"> Name: {{session["savedexerciseplan"]['Saturday'][2]['Name']}}</h5></td>
-          <td><h5 class="card-title"> Sets: {{session["savedexerciseplan"]['Saturday'][2]['sets']}}</h5></td>
-          <td><h5 class="card-title"> Reps: {{session["savedexerciseplan"]['Saturday'][2]['reps']}}</h5></td>
-          <td><h5 class="card-title"> Target Muscle Group: {{session["savedexerciseplan"]['Saturday'][2]['targetmusclegroup']}}</h5></td>
-        
-        </tr>
+          <div class="card" style="margin-top:10px;">
+            <h5 class="card-header" style="background-color:black;color:white;">Monday Exercises</h5>
+            <div class="card-body">
+              {% for exercise in session["savedexerciseplan"]['Monday'] %}
+              <div class="card">
+                <h5 class="card-title"> Name: {{exercise['name']}}</h5>
+                <h5 class="card-title"> Level: {{exercise['level']}}</h5>
+                <h5 class="card-title"> Sets: {{exercise['sets']}}</h5>
+                <h5 class="card-title"> Reps: {{exercise['reps']}}</h5>
+                {% for musclegroup in exercise['targetmusclegroups'] %}
+  
+                <h5 class="card-title"> Target Muscle Group: {{musclegroup}}</h5>
+                {% endfor %}
+  
+                
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+          <div class="card" style="margin-top:10px;">
+            <h5 class="card-header" style="background-color:black;color:white;">Tuesday Exercises</h5>
+            <div class="card-body">
+              {% for exercise in session["savedexerciseplan"]['Tuesday'] %}
+              <div class="card">
+                <h5 class="card-title"> Name: {{exercise['name']}}</h5>
+                <h5 class="card-title"> Level: {{exercise['level']}}</h5>
+                <h5 class="card-title"> Sets: {{exercise['sets']}}</h5>
+                <h5 class="card-title"> Reps: {{exercise['reps']}}</h5>
+                {% for musclegroup in exercise['targetmusclegroups'] %}
+  
+                <h5 class="card-title"> Target Muscle Group: {{musclegroup}}</h5>
+                {% endfor %}
+  
+                
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+          <div class="card" style="margin-top:10px;">
+            <h5 class="card-header" style="background-color:black;color:white;">Wednesday Exercises</h5>
+            <div class="card-body">
+              {% for exercise in session["savedexerciseplan"]['Wednesday'] %}
+              <div class="card">
+                <h5 class="card-title"> Name: {{exercise['name']}}</h5>
+                <h5 class="card-title"> Level: {{exercise['level']}}</h5>
+                <h5 class="card-title"> Sets: {{exercise['sets']}}</h5>
+                <h5 class="card-title"> Reps: {{exercise['reps']}}</h5>
+                {% for musclegroup in exercise['targetmusclegroups'] %}
+  
+                <h5 class="card-title"> Target Muscle Group: {{musclegroup}}</h5>
+                {% endfor %}
+  
+                
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+          <div class="card" style="margin-top:10px;">
+            <h5 class="card-header" style="background-color:black;color:white;">Thursday Exercises</h5>
+            <div class="card-body">
+              {% for exercise in session["savedexerciseplan"]['Thursday'] %}
+              <div class="card">
+                <h5 class="card-title"> Name: {{exercise['name']}}</h5>
+                <h5 class="card-title"> Level: {{exercise['level']}}</h5>
+                <h5 class="card-title"> Sets: {{exercise['sets']}}</h5>
+                <h5 class="card-title"> Reps: {{exercise['reps']}}</h5>
+                {% for musclegroup in exercise['targetmusclegroups'] %}
+  
+                <h5 class="card-title"> Target Muscle Group: {{musclegroup}}</h5>
+                {% endfor %}
+  
+                
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+          <div class="card" style="margin-top:10px;">
+            <h5 class="card-header" style="background-color:black;color:white;">Friday Exercises</h5>
+            <div class="card-body">
+              {% for exercise in session["savedexerciseplan"]['Friday'] %}
+              <div class="card">
+                <h5 class="card-title"> Name: {{exercise['name']}}</h5>
+                <h5 class="card-title"> Level: {{exercise['level']}}</h5>
+                <h5 class="card-title"> Sets: {{exercise['sets']}}</h5>
+                <h5 class="card-title"> Reps: {{exercise['reps']}}</h5>
+                {% for musclegroup in exercise['targetmusclegroups'] %}
+  
+                <h5 class="card-title"> Target Muscle Group: {{musclegroup}}</h5>
+                {% endfor %}
+  
+                
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+          <div class="card" style="margin-top:10px;">
+            <h5 class="card-header" style="background-color:black;color:white;">Saturday Exercises</h5>
+            <div class="card-body">
+              {% for exercise in session["savedexerciseplan"]['Saturday'] %}
+              <div class="card">
+                <h5 class="card-title"> Name: {{exercise['name']}}</h5>
+                <h5 class="card-title"> Level: {{exercise['level']}}</h5>
+                <h5 class="card-title"> Sets: {{exercise['sets']}}</h5>
+                <h5 class="card-title"> Reps: {{exercise['reps']}}</h5>
+                {% for musclegroup in exercise['targetmusclegroups'] %}
+  
+                <h5 class="card-title"> Target Muscle Group: {{musclegroup}}</h5>
+                {% endfor %}
+  
+                
+              </div>
+              {% endfor %}
+            </div>
+          </div>
         {% endif %}
 
         

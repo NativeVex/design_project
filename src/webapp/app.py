@@ -17,8 +17,10 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from wtforms import Form, StringField, IntegerField,DecimalField,DecimalRangeField,BooleanField,SelectField,SubmitField, validators
 
 from webapp.data_src import DataStructures
-from webapp.mealplan import MealplanGenerator
-from webapp.models import User, db
+from webapp.mealplan import MealplanGenerator, get_mealplan, get_recipes_from_db, save_mealplan
+from webapp.exerciseplan import ExerciseplanGenerator
+
+from webapp.models import Recipes, User, db
 
 app = Flask(__name__, instance_relative_config=True)
 
@@ -30,6 +32,8 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///db.sqlite"
 
 db.init_app(app)
 db.create_all(app=app)
+
+
 
 
 class signupform(Form):
@@ -74,7 +78,7 @@ def login():
     if request.method == "POST":
         email = request.form["email"]
         password = request.form["password"]
-
+        session["email"]=email
         user = User.query.filter_by(email=email).first()
 
         # check if the user actually exists
@@ -106,6 +110,7 @@ def logout():
     """
 
     session.pop("username", None)  # removes session username
+    session.pop("email", None)  # removes temporary session exerciseplan
     session.pop("tempmealplan", None)  # removes temporary session mealplan
     session.pop("tempexerciseplan", None)  # removes temporary session exerciseplan
     session.pop("savedmealplan", None)  # removes saved session mealplan
@@ -277,8 +282,8 @@ def mealplan():
         mpg = MealplanGenerator(newjsoninfo,newjsonsplitdata)
         mealplan = mpg.gen_meal_plan()
         newmealplan=json.loads(mealplan)
-        session["tempmealplan"]=newmealplan
-        return render_template("mealplans.html", bestmealplan=newmealplan,newjsonsplitdata=newjsonsplitdata,newjsoninfo=newjsoninfo)
+        session["tempmealplan"]=mealplan
+        return render_template("mealplans.html",bestmealplan=newmealplan)
     elif request.method == "GET":
         return render_template("mealplans.html")
 
@@ -289,7 +294,13 @@ def savemealplan():
     the user can see their saved meal plan
 
     """
-    session["savedmealplan"]=session["tempmealplan"]
+    email=session["email"]
+    mealplan=session["tempmealplan"]
+    #print(email)
+    user=User.query.filter_by(email=email).first()
+    savedmealplan=save_mealplan(email,mealplan)
+    #print(savedmealplan)
+    session["savedmealplan"]=savedmealplan
     if request.method == "GET":
          # replacing single quotes with double quotes to change string to json format
         return redirect(url_for('saveduserinfo'))
@@ -313,6 +324,19 @@ class exerciseform(Form):
     thighs=BooleanField('Thighs')
     hamstrings=BooleanField('Hamstrings')
     glutes=BooleanField('Glutes')
+    triceps=BooleanField('triceps')
+    quads=BooleanField('quads')
+    abs=BooleanField('abs')
+    upperback=BooleanField('upperback')
+    lowerback=BooleanField('lowerback')
+    biceps=BooleanField('biceps')
+    calves=BooleanField('calves')
+    sideabs=BooleanField('sideabs')
+    cardio=BooleanField('cardio')
+    traps=BooleanField('traps')
+
+
+
 
 
 @app.route("/saveexerciseplan", methods=["GET"])
@@ -352,16 +376,43 @@ def exerciseplan():
         if(form.saturday.data!=False):
             daysofweek.append("Saturday")
 
-        exercisedata=DataStructures.exercise_reqs()    
-        exercisedata["days"]=daysofweek
+        exercisedata=DataStructures.exercise_reqs()   
+        if(form.sunday.data!=False):
+            exercisedata["days"]["Sunday"]=True
+        if(form.monday.data!=False):
+            exercisedata["days"]["Monday"]=True
+        if(form.tuesday.data!=False):
+            exercisedata["days"]["Tuesday"]=True
+        if(form.wednesday.data!=False):
+            exercisedata["days"]["Wednesday"]=True
+        if(form.thursday.data!=False):
+            exercisedata["days"]["Thursday"]=True
+        if(form.friday.data!=False):
+            exercisedata["days"]["Friday"]=True
+        if(form.saturday.data!=False):
+            exercisedata["days"]["Saturday"]=True
         intensity=form.intensity.data
 
-        exercisedata["level"]=intensity
+        exercisedata["level"]=int(intensity)
 
         #selectedtargetmuscles= form.targetmusclegroup.data
         targetmusclegroups=[]
-        if(form.back.data!=False):
-            targetmusclegroups.append("back")
+        if(form.upperback.data!=False):
+            targetmusclegroups.append("upper back")
+        if(form.lowerback.data!=False):
+            targetmusclegroups.append("lower back")
+        if(form.triceps.data!=False):
+            targetmusclegroups.append("triceps")
+        if(form.abs.data!=False):
+            targetmusclegroups.append("abs")
+        if(form.calves.data!=False):
+            targetmusclegroups.append("calves")
+        if(form.sideabs.data!=False):
+            targetmusclegroups.append("side abs")
+        if(form.cardio.data!=False):
+            targetmusclegroups.append("cardio")
+        if(form.traps.data!=False):
+            targetmusclegroups.append("traps")
         if(form.shoulders.data!=False):
             targetmusclegroups.append("shoulders")
         if(form.arms.data!=False):
@@ -379,13 +430,16 @@ def exerciseplan():
         
         list1 = [1, 2, 3]
         exercisedata["targetmusclegroups"]=targetmusclegroups
-        jsonexerciseplan = json.dumps(exercisedata)
-        newexerciseplan=json.loads(jsonexerciseplan)
-        session["tempexerciseplan"]=newexerciseplan
+
+        newexerciseplan=json.dumps(exercisedata)
+        epg = ExerciseplanGenerator(newexerciseplan)
+        exerciseplan = epg.gen_exercise_plan()
+        userexerciseplan=json.loads(exerciseplan)
+        session["tempexerciseplan"]=userexerciseplan
         #daysofweek.clear()     may need to empty days of week list for future requests
         #targetmusclegroups.clear()
         return render_template("exerciseplan.html",
-                               bestexerciseplan=newexerciseplan,days=daysofweek,intensity=intensity,muscles=targetmusclegroups)
+                               bestexerciseplan=userexerciseplan)
         
     elif request.method == "GET":
         return render_template("exerciseplan.html")
@@ -479,18 +533,27 @@ def addexercise():
     
     """
     if request.method == "POST":
-        dayschecked=request.form.getlist("days")   #getting new exericse to add to database
+           #getting new exericse to add to database
+        name=request.form["name"]
         intensity=request.form["intensity"]
+        sets=request.form["sets"]
+        reps=request.form["reps"]
         selectedtargetmuscles = request.form.getlist("muscles")
-        exercisedata=DataStructures.exercise_reqs()
-        exercisedata["days"]=dayschecked
-        if(intensity!=''):
+        exercisedata=DataStructures.exercise()
+        
+        if(name!='' and name!=None):
+            exercisedata["name"]=name
+        if(intensity!='' and intensity!=None):
             exercisedata["level"]=int(intensity)
+        if(sets!='' and sets!=None):
+            exercisedata["sets"]=int(sets)
+        if(reps!='' and reps!=None):
+            exercisedata["reps"]=int(reps)
         exercisedata["targetmusclegroups"]=selectedtargetmuscles
         newexercise=json.dumps(exercisedata)
         newaddedexercise=json.loads(newexercise)     
                                                     #add exercise to database
-        return render_template("shoppinglist.html",exercise=newaddedexercise,days=dayschecked,intensity=intensity,muscles=selectedtargetmuscles)
+        return render_template("shoppinglist.html",exercise=newaddedexercise,intensity=intensity,muscles=selectedtargetmuscles)
 
 
 

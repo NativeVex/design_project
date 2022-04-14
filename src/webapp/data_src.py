@@ -34,5 +34,5 @@ class DataStructures:
 
     def exercise_reqs():
         skeleton = json.loads(
-                '{"days":[],"targetmusclegroups":[],"level":0}')
+                '{"days":{"Sunday":false, "Monday":false, "Tuesday":false,"Wednesday":false,"Thursday":false,"Friday":false,"Saturday":false},"targetmusclegroups":[],"level":0}')
         return skeleton
