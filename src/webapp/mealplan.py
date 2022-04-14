@@ -26,48 +26,47 @@ def get_recipes_from_db(
     recipes = []
 
     # MOCK CODE
-    with open("r2.json") as r:
-        for recipe in r:
-            fixme = json.loads(recipe.strip())
-            for i in fixme["nutritional_values"]:
-                fixme["nutritional_values"][i] = float(
-                    fixme["nutritional_values"][i])
-            recipes.append(json.dumps(fixme))
-    return recipes
+#   with open("r2.json") as r:
+#       for recipe in r:
+#           fixme = json.loads(recipe.strip())
+#           for i in fixme["nutritional_values"]:
+#               fixme["nutritional_values"][i] = float(
+#                   fixme["nutritional_values"][i])
+#           recipes.append(json.dumps(fixme))
+#   return recipes
     # END MOCK CODE
 
+    #Variable names are weird but not my code so not my job
     queried_recipes = Recipes.query.filter(
-        Recipes.Calories > Calories_min,
-        Recipes.Calories < Calories_max,
-        Recipes.Carbs > Carbs_min,
-        Recipes.Carbs < Carbs_max,
-        Recipes.Proteins > Proteins_min,
-        Recipes.Proteins < Proteins_max,
+        Recipes.calories > Calories_min,
+        Recipes.calories < Calories_max,
+        Recipes.carbohydrate > Carbs_min,
+        Recipes.carbohydrate < Carbs_max,
+        Recipes.protein > Proteins_min,
+        Recipes.protein < Proteins_max,
     )
 
     for recipe in queried_recipes:
         skeleton = DataStructures.recipe_data()
         skeleton["name"] = recipe.name
-        skeleton["nutritional value"]["calcium"] = recipe.calcium
-        skeleton["nutritional value"]["calories"] = recipe.calories
-        skeleton["nutritional value"]["carbohydrate"] = recipe.carbohydrate
-        skeleton["nutritional value"]["cholesterol"] = recipe.cholesterol
-        skeleton["nutritional value"]["fat"] = recipe.fat
-        skeleton["nutritional value"]["fiber"] = recipe.fiber
-        skeleton["nutritional value"]["iron"] = recipe.iron
-        skeleton["nutritional value"][
-            "monounsaturated_fat"] = recipe.monounsaturated_fat
-        skeleton["nutritional value"][
-            "polyunsaturated_fat"] = recipe.polyunsaturated_fat
-        skeleton["nutritional value"]["potassium"] = recipe.potassium
-        skeleton["nutritional value"]["protein"] = recipe.protein
-        skeleton["nutritional value"]["saturated_fat"] = recipe.saturated_fat
-        skeleton["nutritional value"]["sodium"] = recipe.sodium
-        skeleton["nutritional value"]["sugar"] = recipe.sugar
-        skeleton["nutritional value"]["trans_fat"] = recipe.trans_fat
-        skeleton["nutritional value"]["vitamin_a"] = recipe.vitamin_a
-        skeleton["nutritional value"]["vitamin_c"] = recipe.vitamin_c
-        skeleton["nutritional value"]["type"] = recipe.type
+        skeleton["nutritional_values"]["calcium"] = recipe.calcium
+        skeleton["nutritional_values"]["calories"] = recipe.calories
+        skeleton["nutritional_values"]["carbohydrate"] = recipe.carbohydrate
+        skeleton["nutritional_values"]["cholesterol"] = recipe.cholesterol
+        skeleton["nutritional_values"]["fat"] = recipe.fat
+        skeleton["nutritional_values"]["fiber"] = recipe.fiber
+        skeleton["nutritional_values"]["iron"] = recipe.iron
+        skeleton["nutritional_values"][ "monounsaturated_fat"] = recipe.monounsaturated_fat
+        skeleton["nutritional_values"][ "polyunsaturated_fat"] = recipe.polyunsaturated_fat
+        skeleton["nutritional_values"]["potassium"] = recipe.potassium
+        skeleton["nutritional_values"]["protein"] = recipe.protein
+        skeleton["nutritional_values"]["saturated_fat"] = recipe.saturated_fat
+        skeleton["nutritional_values"]["sodium"] = recipe.sodium
+        skeleton["nutritional_values"]["sugar"] = recipe.sugar
+        skeleton["nutritional_values"]["trans_fat"] = recipe.trans_fat
+        skeleton["nutritional_values"]["vitamin_a"] = recipe.vitamin_a
+        skeleton["nutritional_values"]["vitamin_c"] = recipe.vitamin_c
+        skeleton["nutritional_values"]["type"] = recipe.type
         recipes.append(json.dumps(skeleton))
 
     the_void = DataStructures.recipe_data()
@@ -193,7 +192,9 @@ class MealplanGenerator(data_src.DataStructures):
         """
         RSS = 0
         for i in meal_plan:
-            RSS += self._recipe_RSS(health_requirements, i)
+            for j in i["nutritional_values"]:
+                RSS += (health_requirements[j] - i["nutritional_values"][j])**2
+            RSS /= len(i["nutritional_values"])
         RSS /= len(meal_plan)
         return RSS
 

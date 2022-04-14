@@ -14,13 +14,19 @@ from webapp.mealplan import MealplanGenerator
 
 
 def test_nutritional_values(nv1):
+    """
+    This test ensures that a nutritional_values structure passed in is valid.
+    """
     template_nv = DataStructures.nutritional_values()
     for i in template_nv:
         assert i in nv1
-        assert type(nv1[i]) == type(template_nv[i])
+        assert type(nv1[i]) == type(template_nv[i]) #Will catch ints
 
 
 def test_recipe_data(rd1):
+    """
+    This test ensures that a recipe_data structure passed in is valid.
+    """
     template_rd = DataStructures.recipe_data()
     for i in template_rd:
         assert i in rd1
@@ -30,22 +36,40 @@ def test_recipe_data(rd1):
     assert type(rd1["ingredients"]) == type(template_rd["ingredients"])
     for i in rd1["ingredients"]:
         assert type(i) == str
+    assert "directions" in rd1
+    assert type(rd1["directions"]) == type(template_rd["directions"])
+    for i in rd1["directions"]:
+        assert type(i) == str
     test_nutritional_values(rd1["nutritional_values"])
+    assert type(rd1["type"]) == type(template_rd["type"])
+    for i in rd1["type"]:
+        assert type(i) == str
+
 
 
 def test_meal_plan(mp):
+    """
+    This test ensures that a meal_plan structure passed in is valid.
+    """
     for i in mp:
         test_recipe_data(i)
 
 
 @pytest.mark.xfail(reason="testing bad nutritional values")
 class TestBadNVs:
-
     def test_good_nutritional_values(self, nv1):
         test_nutritional_values(nv1)
 
     def test_bad_calories(self, nv2):
         nv2["calories"] = "yabba dabba doo"
+        test_nutritional_values(nv2)
+
+    def test_sneaky_int(self, nv2):
+        nv2["calories"] = int(nv2["calories"])
+        test_nutritional_values(nv2)
+
+    def test_sneaky_str(self, nv2):
+        nv2["sodium"] = str(nv2["sodium"])
         test_nutritional_values(nv2)
 
     def test_missing_something(self, nv2):
@@ -59,11 +83,7 @@ class TestBadNVs:
         test_nutritional_values(nv2)
 
     def test_missing_item(self, nv2):
-        nv2.pop("vitaminA")
-        test_nutritional_values(nv2)
-
-    def test_good_nutritional_values_2(self, nv2):
-        assert "vitaminA" in nv2
+        nv2.pop("vitamin_a")
         test_nutritional_values(nv2)
 
 
@@ -86,7 +106,7 @@ class TestBadRDs:
         test_recipe_data(rd1)
 
     def test_bad_nv(self, rd1):
-        rd["nutritional value"].pop("vitaminA")
+        rd["nutritional_values"].pop("vitamin_a")
         test_recipe_data(rd)
 
     def test_missing_something(self, rd1):
@@ -96,9 +116,6 @@ class TestBadRDs:
     def test_empty_recipe(self):
         rd = dict()
         test_recipe_data(rd)
-
-    def test_good_recipe(rd1, self):
-        test_recipe_data(rd1)
 
 
 def test_delim2():
@@ -111,15 +128,16 @@ class TestBadMPs:
     def test_good_meal_plan(self, mp):
         test_meal_plan(mp)
 
+    def test_empty_mp(self): #Should pass
+        mp = []
+        test_meal_plan(mp)
+
     def test_bad_recipe_ingredient(self, mp):
         mp[0]["ingredients"].append(0.24)
         test_meal_plan(mp)
 
-    def test_empty_mp(self):
-        mp = []
-        test_meal_plan(mp)
-
-    def test_good_meal_plan(self, mp):
+    def test_bad_entry_in_mealplan(self, mp):
+        mp.append([True, False, False, True, 0.223, 3.1415])
         test_meal_plan(mp)
 
 
@@ -133,4 +151,4 @@ class TestGoodData:
         test_meal_plan(mp)
         for i in mp:
             test_recipe_data(i)
-            test_nutritional_values(i["nutritional value"])
+            test_nutritional_values(i["nutritional_values"])
