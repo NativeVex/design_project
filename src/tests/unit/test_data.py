@@ -30,7 +30,7 @@ def test_recipe_data(rd1):
     assert type(rd1["ingredients"]) == type(template_rd["ingredients"])
     for i in rd1["ingredients"]:
         assert type(i) == str
-    test_nutritional_values(rd1["nutritional value"])
+    test_nutritional_values(rd1["nutritional_values"])
 
 
 def test_meal_plan(mp):
