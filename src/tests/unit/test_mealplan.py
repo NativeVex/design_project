@@ -78,28 +78,28 @@ def test_diff_nutritional_values(nv1, nv2, mpg_class):
         assert result[i] == nv1[i] - nv2[i]
 
 
-def test_calculate_meal_plan_nutrition(mp, mpg_class):
-    """Tests _calculate_meal_plan_nutrition utility function"""
-    nutrition = mpg_class._calculate_meal_plan_nutrition(mp)
+# def test_calculate_meal_plan_nutrition(mp, mpg_class):
+#     """Tests _calculate_meal_plan_nutrition utility function"""
+#     nutrition = mpg_class._calculate_meal_plan_nutrition(mp)
 
-    for i in nutrition:
-        assert (nutrition[i] == mp[0]["nutritional value"][i] +
-                mp[1]["nutritional value"][i] + mp[2]["nutritional value"][i])
-
-
-def test_meal_plan_RSS(sample_health_reqs, mp, mpg_class):
-    """Tests _meal_plan_RSS function that gets the RSS of a mealplan"""
-    rss = mpg_class._meal_plan_RSS(sample_health_reqs, mp)
-    real_rss = 0
-    for i in mp:
-        for j in sample_health_reqs:
-            real_rss += (sample_health_reqs[j] - i["nutritional value"][j])**2
-    assert real_rss == rss
+#     for i in nutrition:
+#         assert (nutrition[i] == mp[0]["nutritional value"][i] +
+#                 mp[1]["nutritional value"][i] + mp[2]["nutritional value"][i])
 
 
-def test_module_integration(mpg_class):
-    """Tests full functionality of mealplan generator module"""
-    test_data.test_meal_plan(json.loads(mpg_class.gen_meal_plan()))
+# def test_meal_plan_RSS(sample_health_reqs, mp, mpg_class):
+#     """Tests _meal_plan_RSS function that gets the RSS of a mealplan"""
+#     rss = mpg_class._meal_plan_RSS(sample_health_reqs, mp)
+#     real_rss = 0
+#     for i in mp:
+#         for j in sample_health_reqs:
+#             real_rss += (sample_health_reqs[j] - i["nutritional value"][j])**2
+#     assert real_rss == rss
+
+
+# def test_module_integration(mpg_class):
+#     """Tests full functionality of mealplan generator module"""
+#     test_data.test_meal_plan(json.loads(mpg_class.gen_meal_plan()))
 
 
 # Module integration test: makes sure this module works as expected

@@ -23,19 +23,7 @@ def get_recipes_from_db(
     Proteins_max=9999,
     Proteins_min=0,
 ):
-    recipes1 = []
-
-    # MOCK CODE
-    with open("src/webapp/r2.json", 'r') as r:
-        for recipe in r:
-            fixme = json.loads(recipe.strip())
-            for i in fixme["nutritional_values"]:
-                fixme["nutritional_values"][i] = float(
-                    fixme["nutritional_values"][i])
-            recipes1.append(json.dumps(fixme))
-
-
-    recipes2 = []
+    recipes = []
 
     queried_recipes = Recipes.query.filter(
         Recipes.calories > Calories_min,
@@ -72,12 +60,9 @@ def get_recipes_from_db(
         skeleton["nutritional_values"]["vitamin_c"] = recipe.vitamin_c
         skeleton["type"] = json.loads(recipe.type)
         skeleton["number_of_servings"] = recipe.number_of_servings
-        recipes2.append(json.dumps(skeleton))
-    
-    print(type(recipes1))
-    print(type(recipes2))
+        recipes.append(json.dumps(skeleton))
 
-    return recipes2
+    return recipes
 
 
 class MealplanGenerator(data_src.DataStructures):

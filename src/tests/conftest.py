@@ -6,6 +6,7 @@ import sys
 from curses.ascii import SO
 
 import pytest
+import pathlib
 
 from webapp.app import app, db
 from webapp.data_src import DataStructures
@@ -64,55 +65,27 @@ def init_database(test_client):
     db.create_all(app=app)
     yield
 
-
 @pytest.fixture()
-def init_database_recipes(test_client):
+def init_database_recipes(test_client, request):
     # Create the database and the database table
     # and add two sample recipes
+    file = pathlib.Path(request.node.fspath)
+    data = file.with_name('r2.json')
+
     db.drop_all()
     db.init_app(app)
     db.create_all(app=app)
     
-    adobo_chicken_dict = DataStructures.recipe_data()
-    adobo_chicken_dict["name"] = "Adobo Chicken"
-    adobo_chicken_dict["ingredients"] = ["Chicken", "Adobo Sauce"]
-    adobo_chicken_dict["directions"] = ["Mix chicken and adobo sauce"]
-    adobo_chicken_dict["nutritional_values"]["calcium"] = 14.0
-    adobo_chicken_dict["nutritional_values"]["calories"] = 107.0
-    adobo_chicken_dict["nutritional_values"]["carbohydrate"] = 2.48
-    adobo_chicken_dict["nutritional_values"]["fat"] = 4.93
-    adobo_chicken_dict["nutritional_values"]["iron"] = 1.05
-    adobo_chicken_dict["nutritional_values"]["potassium"] = 147.0
-    adobo_chicken_dict["nutritional_values"]["protein"] = 11.88
-    adobo_chicken_dict["nutritional_values"]["sodium"] = 392.0
-    adobo_chicken_dict["nutritional_values"]["vitamin_a"] = 9.0
-    adobo_chicken_dict["number_of_servings"] = 1
-    adobo_chicken_dict["type"] = ["Lunch"]
-    ice_cream_sandwich_dict = DataStructures.recipe_data()
-    ice_cream_sandwich_dict["name"] = "Ice Cream Sandwich"
-    ice_cream_sandwich_dict["ingredients"] = ["Ice Cream", "Sandwich"]
-    ice_cream_sandwich_dict["directions"] = ["Open wrapper", "Eat"]
-    ice_cream_sandwich_dict["nutritional_values"]["calcium"] = 60.0
-    ice_cream_sandwich_dict["nutritional_values"]["calories"] = 143.0
-    ice_cream_sandwich_dict["nutritional_values"]["carbohydrate"] = 21.75
-    ice_cream_sandwich_dict["nutritional_values"]["fat"] = 5.60
-    ice_cream_sandwich_dict["nutritional_values"]["iron"] = 0.28
-    ice_cream_sandwich_dict["nutritional_values"]["potassium"] = 122.0
-    ice_cream_sandwich_dict["nutritional_values"]["protein"] = 2.610
-    ice_cream_sandwich_dict["nutritional_values"]["sodium"] = 37.00
-    ice_cream_sandwich_dict["nutritional_values"]["vitamin_a"] = 53.0
-    ice_cream_sandwich_dict["number_of_servings"] = 1
-    ice_cream_sandwich_dict["type"] = ["Snack"]
-    adobo_chicken = Recipes(
-            json.dumps(adobo_chicken_dict)
-    )
-    ice_cream_sandwich = Recipes(
-            json.dumps(ice_cream_sandwich_dict)
-    )
-
-    db.session.add(adobo_chicken)
-    db.session.add(ice_cream_sandwich)
+    with data.open() as r:
+        for jsline in r:
+            fixme = json.loads(jsline.strip())
+            for i in fixme["nutritional_values"]:
+                fixme["nutritional_values"][i] = float(
+                    fixme["nutritional_values"][i])
+            new_recipe = Recipes(json.dumps(fixme))
+            db.session.add(new_recipe)
     db.session.commit()
+
     yield
 
 

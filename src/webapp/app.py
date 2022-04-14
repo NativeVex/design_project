@@ -19,6 +19,7 @@ from wtforms import Form, StringField, SubmitField, validators
 from webapp.data_src import DataStructures
 from webapp.mealplan import MealplanGenerator
 from webapp.models import User, db
+from webapp.populate_db import populate_db
 
 app = Flask(__name__, instance_relative_config=True)
 

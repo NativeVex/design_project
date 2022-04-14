@@ -97,8 +97,6 @@ class Recipes(db.Model):
     def __init__(
         self,
         name: str,
-        directions: list,
-        ingredients: list,
         calories: float,
         carbohydrate: float,
         protein: float,
@@ -117,14 +115,16 @@ class Recipes(db.Model):
         vitamin_a=0.0,
         vitamin_c=0.0,
         number_of_servings=0,
+        directions="",
+        ingredients="",
         type="",
     ):
         """Create a new Mealplan object using the email address and hashing the
         plaintext password using Werkzeug.Security.
         """
         self.name = name
-        self.directions = str(directions)
-        self.ingredients = str(ingredients)
+        self.directions = directions
+        self.ingredients = ingredients
         self.calories = calories
         self.carbohydrate = carbohydrate
         self.protein = protein
@@ -148,8 +148,8 @@ class Recipes(db.Model):
     def __init__(self, json_str):
         data_dict = json.loads(json_str)
         self.name = data_dict["name"]
-        self.directions = str(data_dict["directions"])
-        self.ingredients = str(data_dict["ingredients"])
+        self.directions = json.dumps(data_dict["directions"])
+        self.ingredients = json.dumps(data_dict["ingredients"])
         self.number_of_servings = data_dict["number_of_servings"]
         self.type = json.dumps(data_dict["type"])
 

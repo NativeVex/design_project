@@ -133,4 +133,4 @@ class TestGoodData:
         test_meal_plan(mp)
         for i in mp:
             test_recipe_data(i)
-            test_nutritional_values(i["nutritional value"])
+            test_nutritional_values(i["nutritional_values"])
