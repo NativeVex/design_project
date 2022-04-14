@@ -9,7 +9,7 @@ import copy
 
 from webapp import data_src
 from webapp.data_src import DataStructures
-from webapp.models import Recipes
+from webapp.models import Recipes, User, db
 
 
 # TODO: make this actually connect to a DB and pull recipes. Might need to add inputs to do a preliminary filtering of the DB first.
@@ -320,3 +320,11 @@ class MealplanGenerator(data_src.DataStructures):
 #           best_meal_plan_with_snacks.append(best_snack)
 
         return json.dumps(best_meal_plan)
+
+
+    def save_mealplan(self, email: str, mealplan: DataStructures.mealplan) -> DataStructures.meal_plan:
+        user = User.query.filter_by(email=email).first()
+
+        if user:
+            user.add_mealplan(json.dumps(mealplan))
+        return mealplan
