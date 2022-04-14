@@ -1,6 +1,7 @@
 import base64
 import itertools
 import json
+import pathlib
 import random
 import sys
 
@@ -9,7 +10,7 @@ import pytest
 from webapp.app import app, db
 from webapp.data_src import DataStructures
 from webapp.mealplan import MealplanGenerator
-from webapp.models import User
+from webapp.models import Recipes, User
 
 # Functions to test that a given datastructure is valid
 # Written to be used in other test code
@@ -42,6 +43,29 @@ def init_database(test_client):
     db.drop_all()
     db.init_app(app)
     db.create_all(app=app)
+    yield
+
+@pytest.fixture()
+def init_database_recipes(test_client, request):
+    # Create the database and the database table
+    # and add two sample recipes
+    file = pathlib.Path(request.node.fspath)
+    data = file.with_name('r2.json')
+
+    db.drop_all()
+    db.init_app(app)
+    db.create_all(app=app)
+    
+    with data.open() as r:
+        for jsline in r:
+            fixme = json.loads(jsline.strip())
+            for i in fixme["nutritional_values"]:
+                fixme["nutritional_values"][i] = float(
+                    fixme["nutritional_values"][i])
+            new_recipe = Recipes(json.dumps(fixme))
+            db.session.add(new_recipe)
+    db.session.commit()
+
     yield
 
 
