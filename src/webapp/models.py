@@ -71,7 +71,7 @@ class Recipes(db.Model):
     __tablename__ = "recipes"
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    name = db.Column(db.String(100), unique=True)
+    name = db.Column(db.String(100))
     directions = db.Column(db.String)
     ingredients = db.Column(db.String)
     calcium = db.Column(db.Float)
