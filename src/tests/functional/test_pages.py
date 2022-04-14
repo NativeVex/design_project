@@ -12,8 +12,8 @@ def test_signup(test_client, init_database):
 
     response = test_client.post(
         "/signup/",
-        data=dict(email="anyone@gmail.com",
-                  username="newuser",
+        data=dict(email="anyperson@gmail.com",
+                  username="foods",
                   password="some"),
         follow_redirects=True,
     )
@@ -110,7 +110,7 @@ def test_generate_exercise_plan(test_client):
     """
     response = test_client.post(
         "/exerciseplan",
-        data=dict(sunday=True,friday=True,intensity="8",glutes=True,thighs=True,chest=True),
+        data=dict(sunday=True,friday=True,intensity="8",glutes=True,chest=True),
         follow_redirects=True,
     )
     assert b"Personal Exercise Plan Recommendations" in response.data
@@ -124,10 +124,10 @@ def test_add_exercise(test_client):
     """
     response = test_client.post(
         "/addexercise",
-        data=dict(dayschecked=["Tuesday","Thursday","Friday"], intensity="5",selectedtargetmuscles=["arms","core","chest","hamstrings"]),
+        data=dict(name="newexercise", sets="9",reps="10",intensity="7",muscles=["quads","abs","hamstrings"]),
         follow_redirects=True,
     )
-    assert b"Add a Exercise, Meal, or Food item" in response.data
+    assert b"newexercise" in response.data
     assert response.status_code == 200
 
 def test_add_food_item(test_client):
@@ -141,6 +141,7 @@ def test_add_food_item(test_client):
         data=dict(newrecipename="apples", newrecipeingredients="any some foods",newrecipecalories="87.6",newrecipecarbs="6",protein="72"),
         follow_redirects=True,
     )
+    assert b"apples" in response.data
     assert b"Add a Exercise, Meal, or Food item" in response.data
     assert response.status_code == 200
 
@@ -157,6 +158,7 @@ def test_add_meal(test_client):
         newfoodname3="new fruits meal", newfoodingredients3="apples",newfoodcalories3="16",newfoodcarbs3="7.9",newfoodproteins3="67"),
         follow_redirects=True,
     )
+    assert b"fruits meal" in response.data
     assert b"Add a Exercise, Meal, or Food item" in response.data
     assert response.status_code == 200
 
