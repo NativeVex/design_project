@@ -77,7 +77,7 @@ def get_mealplan(email: str)-> DataStructures.meal_plan:
 
     if user:
         mealplan = user.get_mealplan()
-    mealplan
+    return mealplan
 
 class MealplanGenerator(data_src.DataStructures):
     recipes = []
