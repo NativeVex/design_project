@@ -15,10 +15,24 @@ class DataStructures:
 
     def recipe_data():
         skeleton = json.loads(
-            '{"name":"n/a","ingredients":[],"directions":[],"nutritional_values":"","number_of_servings":0,"type":[]}'
+            '{"name":"n/a","ingredients":[],"directions":[],"nutritional_values":"","number_of_servings":0,"type":""}'
         )
         skeleton["nutritional_values"] = DataStructures.nutritional_values()
         return skeleton
 
     def meal_plan(meals=3):
         return [DataStructures.recipe_data() for i in range(meals)]
+
+    def exercise():
+        return json.loads('{"name":"N/A","targetmusclegroups":[],"level":0,"sets":0,"reps":0}')
+
+    def exercise_plan():
+        skeleton = json.loads(
+                '{"Sunday":[],"Monday":[],"Tuesday":[],"Wednesday":[],"Thursday":[],"Friday":[],"Saturday":[]}'
+                )
+        return skeleton
+
+    def exercise_reqs():
+        skeleton = json.loads(
+                '{"days":{"Sunday":false, "Monday":false, "Tuesday":false,"Wednesday":false,"Thursday":false,"Friday":false,"Saturday":false},"targetmusclegroups":[],"level":0}')
+        return skeleton
