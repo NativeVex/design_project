@@ -19,66 +19,27 @@
     <div class="container"><br>
     <div class="row align-items-center justify-content-center" >
     <div class="col-md-4" style="background-color:grey;color:black;border-radius:10px;">
-      <form  action="/exerciseplan" method="post" role="form">
+      <form  action="" method="post" role="form">
         {{ form.csrf }}
         <h1 style="text-align:center;background-color:grey;color:black">Enter your exercise requirements</h1>
 
         <div class="form-group">
-          <br>
-          <br>
-          {{form.sunday(checked=True)}}{{form.sunday.label}}<br>
-          {{form.monday()}}{{form.monday.label}}
-          <br>
-          {{form.tuesday()}}{{form.tuesday.label}}
-          <br>
-          {{form.wednesday()}}{{form.wednesday.label}}
-          <br>
-          {{form.thursday()}}{{form.thursday.label}}
-          <br>
-          {{form.friday()}}{{form.friday.label}}
-          <br>
-          {{form.saturday()}}{{form.saturday.label}}
 
-  <br>
-          <br>
-          {{form.intensity.label}}
-          {{form.intensity}}
-          <br>
-          <div>
-           <!-- {{form.targetmusclegroup.label}} 
-            {{form.targetmusclegroup()}} -->
-            {{form.upperback(checked=True)}} {{form.upperback.label}}
+          <label for="duration">Exercise Duration:</label>
+          <input type="number" class="form-control" id="duration" name="duration" placeholder="duration?">
             <br>
-            {{form.lowerback()}} {{form.lowerback.label}}
-            <br>
-            {{form.quads()}} {{form.quads.label}}
-            <br>
-            {{form.triceps()}} {{form.triceps.label}}
-            <br>
-            {{form.biceps()}} {{form.biceps.label}}
-            <br>
-            {{form.abs()}} {{form.abs.label}}
-            <br>
-            {{form.shoulders()}} {{form.shoulders.label}}
-            <br>
-            {{form.chest()}} {{form.chest.label}}
-            <br>
-            {{form.calves()}} {{form.calves.label}}
-            <br>
-            {{form.sideabs()}} {{form.sideabs.label}}
-            <br>
-            {{form.cardio()}} {{form.cardio.label}}
-            <br>
-            {{form.traps()}} {{form.traps.label}}
-            <br>
-            {{form.hamstrings()}} {{form.hamstrings.label}}
-            <br>
-            {{form.glutes()}} {{form.glutes.label}}
-
-        </div>
-        </div>
+          <label for="intensity">Exercise Intensity:</label>
+          <input type="text" class="form-control" id="intensity" name="intensity" placeholder="intensity?">
+	    <br>
+	  <label for="frequency">Exercise Frequency:</label>
+	  <input type="number" class="form-control" id="frequency" name="frequency" placeholder="frequency?">
+	    <br>
+	  <label for="musclegroups">Desired Muscle Groups:</label>
+	  <input type="text" class="form-control" id="musclegroups" name="musclegroups" placeholder="musclegroups?">
+	</div>
 
         <br>													   
+
         <center>
           <button type="submit" class="btn btn-success">Submit</button>
         </center>
