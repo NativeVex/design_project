@@ -12,8 +12,8 @@ def test_signup(test_client, init_database):
 
     response = test_client.post(
         "/signup/",
-        data=dict(email="anyone@gmail.com",
-                  username="newuser",
+        data=dict(email="anyperson@gmail.com",
+                  username="foods",
                   password="some"),
         follow_redirects=True,
     )
@@ -87,7 +87,7 @@ def test_login_failed(test_client):
     assert b"Please check your login details and try again." in response.data
 
 
-def test_generatemealplan(test_client):
+def test_generate_mealplan(test_client):
     """
     GIVEN a Flask application configured for testing
     WHEN the '/mealplan' page is posted to (POST) when the user enters health requirements data
@@ -95,10 +95,96 @@ def test_generatemealplan(test_client):
     """
     response = test_client.post(
         "/mealplan",
-        data=dict(Calories="2000", Carbs="20", Proteins="6"),
+        data=dict(Calories="129.7",Carbs="57.6",Proteins="68.5",fiber="75.9",caloriesbreakfastamount=".7", calorieslunchamount=".2",carbsbreakfastamount=".3",carbslunchamount=".6", proteinsbreakfastamount=".5",proteinslunchamount=".1"),
         follow_redirects=True,
     )
+    assert b"Personal Meal Plan Recommendations" in response.data
     assert response.status_code == 200
+
+
+def test_generate_exercise_plan(test_client):
+    """
+    GIVEN a Flask application configured for testing
+    WHEN the '/mealplan' page is posted to (POST) when the user enters health requirements data
+
+    """
+    response = test_client.post(
+        "/exerciseplan",
+        data=dict(sunday=True,friday=True,intensity="8",glutes=True,chest=True),
+        follow_redirects=True,
+    )
+    assert b"Personal Exercise Plan Recommendations" in response.data
+    assert response.status_code == 200
+
+def test_add_exercise(test_client):
+    """
+    GIVEN a Flask application configured for testing
+    WHEN the '/mealplan' page is posted to (POST) when the user enters health requirements data
+
+    """
+    response = test_client.post(
+        "/addexercise",
+        data=dict(name="newexercise", sets="9",reps="10",intensity="7",muscles=["quads","abs","hamstrings"]),
+        follow_redirects=True,
+    )
+    assert b"newexercise" in response.data
+    assert response.status_code == 200
+
+def test_add_food_item(test_client):
+    """
+    GIVEN a Flask application configured for testing
+    WHEN the '/mealplan' page is posted to (POST) when the user enters health requirements data
+
+    """
+    response = test_client.post(
+        "/addfood",
+        data=dict(newrecipename="apples", newrecipeingredients="any some foods",newrecipecalories="87.6",newrecipecarbs="6",protein="72"),
+        follow_redirects=True,
+    )
+    assert b"apples" in response.data
+    assert b"Add a Exercise, Meal, or Food item" in response.data
+    assert response.status_code == 200
+
+def test_add_meal(test_client):
+    """
+    GIVEN a Flask application configured for testing
+    WHEN the '/mealplan' page is posted to (POST) when the user enters health requirements data
+
+    """
+    response = test_client.post(
+        "/listitems",
+        data=dict(newfoodname1="fruits meal",newfoodingredients1="apples oranges",newfoodcalories1="16.7",newfoodcarbs1="7",newfoodproteins1="6.2", 
+        newfoodname2="food meal", newfoodingredients2="meal foods",newfoodcalories2="5.3",newfoodcarbs2="7",newfoodproteins2="6",
+        newfoodname3="new fruits meal", newfoodingredients3="apples",newfoodcalories3="16",newfoodcarbs3="7.9",newfoodproteins3="67"),
+        follow_redirects=True,
+    )
+    assert b"fruits meal" in response.data
+    assert b"Add a Exercise, Meal, or Food item" in response.data
+    assert response.status_code == 200
+
+def test_change_health_requirements(test_client):
+    """
+    GIVEN a Flask application configured for testing
+    WHEN the '/changehealthrequirementss' page is posted to (POST) when the user enters health requirements data
+
+    """
+    response = test_client.get(    #going to change health requirements page to see current health configuration 
+        "/changehealthrequirements",
+        follow_redirects=True,
+    )
+    assert response.status_code==200
+    response1 = test_client.post(   #selecting old health requirements option to see old health configuration
+        "/getoldhealthrequirements",
+        follow_redirects=True,
+    )
+    assert response1.status_code==200
+    response2 = test_client.post(         #updating and saving new health configuration
+        "/savenewhealthrequirements",
+        data=dict(Calories="78.6", Carbs="47.9",Proteins="68.7",monounsaturated_fat="59.8",vitamin_a="45"),
+        follow_redirects=True,
+    )
+    assert b"59.8" in response2.data
+    assert response2.status_code == 200
 
 
 def test_points_page(test_client):
