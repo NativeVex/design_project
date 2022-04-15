@@ -25,18 +25,6 @@ def get_recipes_from_db(
 ):
     recipes = []
 
-    # MOCK CODE
-    #   with open("r2.json") as r:
-    #       for recipe in r:
-    #           fixme = json.loads(recipe.strip())
-    #           for i in fixme["nutritional_values"]:
-    #               fixme["nutritional_values"][i] = float(
-    #                   fixme["nutritional_values"][i])
-    #           recipes.append(json.dumps(fixme))
-    #   return recipes
-    # END MOCK CODE
-
-    # Variable names are weird but not my code so not my job
     queried_recipes = Recipes.query.filter(
         Recipes.calories > Calories_min,
         Recipes.calories < Calories_max,
@@ -49,6 +37,8 @@ def get_recipes_from_db(
     for recipe in queried_recipes:
         skeleton = DataStructures.recipe_data()
         skeleton["name"] = recipe.name
+        skeleton["ingredients"] = json.loads(recipe.ingredients)
+        skeleton["directions"] = json.loads(recipe.directions)
         skeleton["nutritional_values"]["calcium"] = recipe.calcium
         skeleton["nutritional_values"]["calories"] = recipe.calories
         skeleton["nutritional_values"]["carbohydrate"] = recipe.carbohydrate
@@ -68,12 +58,14 @@ def get_recipes_from_db(
         skeleton["nutritional_values"]["trans_fat"] = recipe.trans_fat
         skeleton["nutritional_values"]["vitamin_a"] = recipe.vitamin_a
         skeleton["nutritional_values"]["vitamin_c"] = recipe.vitamin_c
-        skeleton["nutritional_values"]["type"] = recipe.type
+        skeleton["type"] = json.loads(recipe.type)
+        skeleton["number_of_servings"] = recipe.number_of_servings
         recipes.append(json.dumps(skeleton))
 
     the_void = DataStructures.recipe_data()
     the_void["name"] = "The Void"
     recipes.append(json.dumps(the_void))
+
     return recipes
 
 
