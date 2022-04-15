@@ -1,15 +1,34 @@
-import copy
-import fractions
 import itertools
 import json
 import math
 import os
 import random
 import sys
+import fractions
+import copy
 
 from webapp import data_src
 from webapp.data_src import DataStructures
-from webapp.models import Recipes
+from webapp.models import Recipes, User, db
+
+
+def save_mealplan(email: str, mealplan: DataStructures.meal_plan) -> DataStructures.meal_plan:
+    user = User.query.filter_by(email=email).first()
+
+    if user:
+        user.add_mealplan(json.dumps(mealplan))
+    else:
+        return None
+
+def get_mealplan(email: str)-> DataStructures.meal_plan:
+    user = User.query.filter_by(email=email).first()
+
+    if user:
+        mealplan = user.get_mealplan()
+        return mealplan
+    return None
+   
+
 
 
 # TODO: make this actually connect to a DB and pull recipes. Might need to add inputs to do a preliminary filtering of the DB first.
@@ -25,18 +44,6 @@ def get_recipes_from_db(
 ):
     recipes = []
 
-    # MOCK CODE
-    #   with open("r2.json") as r:
-    #       for recipe in r:
-    #           fixme = json.loads(recipe.strip())
-    #           for i in fixme["nutritional_values"]:
-    #               fixme["nutritional_values"][i] = float(
-    #                   fixme["nutritional_values"][i])
-    #           recipes.append(json.dumps(fixme))
-    #   return recipes
-    # END MOCK CODE
-
-    # Variable names are weird but not my code so not my job
     queried_recipes = Recipes.query.filter(
         Recipes.calories > Calories_min,
         Recipes.calories < Calories_max,
@@ -49,6 +56,8 @@ def get_recipes_from_db(
     for recipe in queried_recipes:
         skeleton = DataStructures.recipe_data()
         skeleton["name"] = recipe.name
+        skeleton["ingredients"] = json.loads(recipe.ingredients)
+        skeleton["directions"] = json.loads(recipe.directions)
         skeleton["nutritional_values"]["calcium"] = recipe.calcium
         skeleton["nutritional_values"]["calories"] = recipe.calories
         skeleton["nutritional_values"]["carbohydrate"] = recipe.carbohydrate
@@ -68,12 +77,14 @@ def get_recipes_from_db(
         skeleton["nutritional_values"]["trans_fat"] = recipe.trans_fat
         skeleton["nutritional_values"]["vitamin_a"] = recipe.vitamin_a
         skeleton["nutritional_values"]["vitamin_c"] = recipe.vitamin_c
-        skeleton["nutritional_values"]["type"] = recipe.type
+        skeleton["type"] = json.loads(recipe.type)
+        skeleton["number_of_servings"] = recipe.number_of_servings
         recipes.append(json.dumps(skeleton))
 
     the_void = DataStructures.recipe_data()
     the_void["name"] = "The Void"
     recipes.append(json.dumps(the_void))
+
     return recipes
 
 
@@ -96,11 +107,9 @@ class MealplanGenerator(data_src.DataStructures):
         db_function=get_recipes_from_db,
     ):
         """Plan Meals for Week Usecase
-
         Big paragraph
         in: user constraints
         out: suggested match
-
         queries recipes from DB
         """
         # Can be done in get_recipes_from_db()
@@ -129,7 +138,6 @@ class MealplanGenerator(data_src.DataStructures):
 
     def _sum_nutritional_values(self, n1, n2):
         """Adds two nutritional value datastructures
-
         Adds the values of two nutritional value datastructures into a third datastructure
         Paramaters:
         n1 (dict): nutritional values
@@ -144,7 +152,6 @@ class MealplanGenerator(data_src.DataStructures):
 
     def _diff_nutritional_values(self, n1, n2):
         """Subtracts two nutritional value datastructures
-
         This function subtracts two dicts containing nutritional values, and returns their value in a third dict.
         Paramaters:
         n1 (dict): nutritional values
@@ -159,7 +166,6 @@ class MealplanGenerator(data_src.DataStructures):
 
     def _mul_nutritional_values(self, n1, n2):
         """Multiply a nutritional value datastructure by a scalar value
-
         This function multiplies all values in a dict containing nutritional values by a scalar value
         Paramaters:
         n1 (dict): nutritional values
@@ -174,7 +180,6 @@ class MealplanGenerator(data_src.DataStructures):
 
     def _calculate_meal_plan_nutrition(self, recipes):
         """Calculates the total nutrition of a mealplan
-
         This function calculates the sum of the nutrition values for an array of recipes, i.e. if you
         ate all these recipes what nutrition would you get
         Paramaters:
@@ -282,10 +287,8 @@ class MealplanGenerator(data_src.DataStructures):
     # this is the "head" of the code
     def gen_meal_plan(self) -> DataStructures.meal_plan:
         """Generates a mealplan based on the health requirements that the class was created with
-
         For each of 3 meals, picks the meal option that best matches the user's desired intake for that meal.
         Put each of the best meals together to generate a mealplan
-
         TODO: add snacks to lower mealplan RSS
         """
         best_meal_plan: DataStructures.meal_plan
