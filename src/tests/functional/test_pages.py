@@ -15,7 +15,8 @@ def test_signup(test_client, init_database):
     response = test_client.post(
         "/signup/",
         data=dict(email="anyperson@gmail.com",
-                  username="foods", password="some"),
+                  username="foods",
+                  password="some"),
         follow_redirects=True,
     )
 
@@ -32,14 +33,16 @@ def test_dupe_signup(test_client):
     test_client.post(
         "/signup/",
         data=dict(email="anything@gmail.com",
-                  username="newuser", password="some"),
+                  username="newuser",
+                  password="some"),
         follow_redirects=True,
     )
 
     response = test_client.post(
         "/signup/",
         data=dict(email="anything@gmail.com",
-                  username="newuser", password="some"),
+                  username="newuser",
+                  password="some"),
         follow_redirects=True,
     )
     assert response.status_code == 200
@@ -78,9 +81,10 @@ def test_login_failed(test_client):
     WHEN the '/' page is requested (POST)
     THEN check that the response is valid
     """
-    response = test_client.post(
-        "/", data=dict(email="any@gmail.com", password="notsome"), follow_redirects=True
-    )
+    response = test_client.post("/",
+                                data=dict(email="any@gmail.com",
+                                          password="notsome"),
+                                follow_redirects=True)
     assert response.status_code == 200
     assert b"Please check your login details and try again." in response.data
 
@@ -120,8 +124,11 @@ def test_generate_exercise_plan(test_client):
     """
     response = test_client.post(
         "/exerciseplan",
-        data=dict(sunday=True, friday=True,
-                  intensity="8", glutes=True, chest=True),
+        data=dict(sunday=True,
+                  friday=True,
+                  intensity="8",
+                  glutes=True,
+                  chest=True),
         follow_redirects=True,
     )
     assert b"Personal Exercise Plan Recommendations" in response.data

@@ -57,11 +57,9 @@ def get_recipes_from_db(
         skeleton["nutritional_values"]["fiber"] = recipe.fiber
         skeleton["nutritional_values"]["iron"] = recipe.iron
         skeleton["nutritional_values"][
-            "monounsaturated_fat"
-        ] = recipe.monounsaturated_fat
+            "monounsaturated_fat"] = recipe.monounsaturated_fat
         skeleton["nutritional_values"][
-            "polyunsaturated_fat"
-        ] = recipe.polyunsaturated_fat
+            "polyunsaturated_fat"] = recipe.polyunsaturated_fat
         skeleton["nutritional_values"]["potassium"] = recipe.potassium
         skeleton["nutritional_values"]["protein"] = recipe.protein
         skeleton["nutritional_values"]["saturated_fat"] = recipe.saturated_fat
@@ -186,8 +184,7 @@ class MealplanGenerator(data_src.DataStructures):
         nutrition_data = DataStructures.nutritional_values()
         for i in recipes:
             nutrition_data = self._sum_nutritional_values(
-                nutrition_data, i["nutritional_values"]
-            )
+                nutrition_data, i["nutritional_values"])
         return nutrition_data
 
     def _meal_plan_RSS(self, health_requirements, meal_plan):
@@ -197,8 +194,7 @@ class MealplanGenerator(data_src.DataStructures):
         RSS = 0
         for i in meal_plan:
             for j in i["nutritional_values"]:
-                RSS += (health_requirements[j] -
-                        i["nutritional_values"][j]) ** 2
+                RSS += (health_requirements[j] - i["nutritional_values"][j])**2
             RSS /= len(i["nutritional_values"])
         RSS /= len(meal_plan)
         return RSS
@@ -207,9 +203,8 @@ class MealplanGenerator(data_src.DataStructures):
         """Calculates the RSS for a recipe wrt health reqs
         Calculates the RSS (residual sum of squares) for a recipe with regards to health requirements
         """
-        return self._nutritional_values_RSS(
-            health_requirements, recipe_data["nutritional_values"]
-        )
+        return self._nutritional_values_RSS(health_requirements,
+                                            recipe_data["nutritional_values"])
 
     def _nutritional_values_RSS(self, health_requirements, nutritional_values):
         """Calculates the RSS for a set of nutritional values wrt health reqs
@@ -217,49 +212,52 @@ class MealplanGenerator(data_src.DataStructures):
         """
         # TODO: data scaling; otherwise an error in calories will matter a lot more than an error in vitamin A
         RSS = 0
-        offset = self._diff_nutritional_values(
-            health_requirements, nutritional_values)
+        offset = self._diff_nutritional_values(health_requirements,
+                                               nutritional_values)
         for j in offset:
-            RSS += offset[j] ** 2
+            RSS += offset[j]**2
         return RSS / len(nutritional_values)
 
-    def _balance_health_requirements(
-        self, calorie_split, protein_split, carbs_split, health_requirements
-    ):
-        hr_breakfast = self._mul_nutritional_values(
-            health_requirements, carbs_split[0])
-        hr_lunch = self._mul_nutritional_values(
-            health_requirements, carbs_split[1])
-        hr_dinner = self._mul_nutritional_values(
-            health_requirements, carbs_split[2])
+    def _balance_health_requirements(self, calorie_split, protein_split,
+                                     carbs_split, health_requirements):
+        hr_breakfast = self._mul_nutritional_values(health_requirements,
+                                                    carbs_split[0])
+        hr_lunch = self._mul_nutritional_values(health_requirements,
+                                                carbs_split[1])
+        hr_dinner = self._mul_nutritional_values(health_requirements,
+                                                 carbs_split[2])
         avg_split = [
             (calorie_split[0] + protein_split[0] + carbs_split[0]) / 3,
             (calorie_split[1] + protein_split[1] + carbs_split[1]) / 3,
             (calorie_split[2] + protein_split[2] + carbs_split[2]) / 3,
         ]
 
-        hr_breakfast["calories"] = health_requirements["calories"] * \
-            calorie_split[0]
-        hr_breakfast["protein"] = health_requirements["protein"] * \
-            protein_split[0]
+        hr_breakfast[
+            "calories"] = health_requirements["calories"] * calorie_split[0]
+        hr_breakfast[
+            "protein"] = health_requirements["protein"] * protein_split[0]
         hr_breakfast["iron"] = health_requirements["iron"] * avg_split[0]
-        hr_breakfast["vitamin_a"] = health_requirements["vitamin_a"] * avg_split[0]
-        hr_breakfast["vitamin_c"] = health_requirements["vitamin_c"] * avg_split[0]
+        hr_breakfast[
+            "vitamin_a"] = health_requirements["vitamin_a"] * avg_split[0]
+        hr_breakfast[
+            "vitamin_c"] = health_requirements["vitamin_c"] * avg_split[0]
 
-        hr_lunch["calories"] = health_requirements["calories"] * \
-            calorie_split[1]
+        hr_lunch[
+            "calories"] = health_requirements["calories"] * calorie_split[1]
         hr_lunch["protein"] = health_requirements["protein"] * protein_split[1]
         hr_lunch["iron"] = health_requirements["iron"] * avg_split[0]
         hr_lunch["vitamin_a"] = health_requirements["vitamin_a"] * avg_split[0]
         hr_lunch["vitamin_c"] = health_requirements["vitamin_c"] * avg_split[0]
 
-        hr_dinner["calories"] = health_requirements["calories"] * \
-            calorie_split[2]
-        hr_dinner["protein"] = health_requirements["protein"] * \
-            protein_split[2]
+        hr_dinner[
+            "calories"] = health_requirements["calories"] * calorie_split[2]
+        hr_dinner[
+            "protein"] = health_requirements["protein"] * protein_split[2]
         hr_dinner["iron"] = health_requirements["iron"] * avg_split[0]
-        hr_dinner["vitamin_a"] = health_requirements["vitamin_a"] * avg_split[0]
-        hr_dinner["vitamin_c"] = health_requirements["vitamin_c"] * avg_split[0]
+        hr_dinner[
+            "vitamin_a"] = health_requirements["vitamin_a"] * avg_split[0]
+        hr_dinner[
+            "vitamin_c"] = health_requirements["vitamin_c"] * avg_split[0]
 
         return hr_breakfast, hr_lunch, hr_dinner
 
@@ -269,19 +267,17 @@ class MealplanGenerator(data_src.DataStructures):
             str_value = i.split(" ")[0]
             rest_of_str = i[len(str_value):]
             fraction = fractions.Fraction(0, 1)
-            if (
-                not str_value.replace(".", "", 1).isdigit()
-                and not str_value.replace("/", "", 1).isdigit()
-            ):  # not a number
+            if (not str_value.replace(".", "", 1).isdigit()
+                    and not str_value.replace("/", "",
+                                              1).isdigit()):  # not a number
                 continue
             else:
                 fraction = fractions.Fraction(
-                    str_value
-                )  # works for fractions, decimals, and ints
+                    str_value)  # works for fractions, decimals, and ints
                 fraction *= scale
                 recipe["ingredients"][idx] = str(fraction) + rest_of_str
-        recipe["number_of_servings"] = float(
-            recipe["number_of_servings"] * scale)
+        recipe["number_of_servings"] = float(recipe["number_of_servings"] *
+                                             scale)
 
     # this is the "head" of the code
     def gen_meal_plan(self) -> DataStructures.meal_plan:
@@ -320,32 +316,27 @@ class MealplanGenerator(data_src.DataStructures):
                     self._scale_recipe(
                         i,
                         fractions.Fraction(
-                            n, fractions.Fraction(i["number_of_servings"])
-                        ),
+                            n, fractions.Fraction(i["number_of_servings"])),
                     )
                     i["nutritional_values"] = self._mul_nutritional_values(
-                        i["nutritional_values"], n
-                    )
+                        i["nutritional_values"], n)
                     best_meal_plan[0] = i
 
         lowest_RSS = math.inf
         for i in self.lunches:
             for n in range(1, 5):
                 cur_RSS = self._nutritional_values_RSS(
-                    lunch_reqs, self._mul_nutritional_values(
-                        i["nutritional_values"], n)
-                )
+                    lunch_reqs,
+                    self._mul_nutritional_values(i["nutritional_values"], n))
                 if cur_RSS < lowest_RSS:
                     lowest_RSS = cur_RSS
                     self._scale_recipe(
                         i,
                         fractions.Fraction(
-                            n, fractions.Fraction(i["number_of_servings"])
-                        ),
+                            n, fractions.Fraction(i["number_of_servings"])),
                     )
                     i["nutritional_values"] = self._mul_nutritional_values(
-                        i["nutritional_values"], n
-                    )
+                        i["nutritional_values"], n)
                     best_meal_plan[1] = i
 
         lowest_RSS = math.inf
@@ -356,8 +347,8 @@ class MealplanGenerator(data_src.DataStructures):
                         dinner_reqs,
                         self._mul_nutritional_values(
                             self._sum_nutritional_values(
-                                i["nutritional_values"], j["nutritional_values"]
-                            ),
+                                i["nutritional_values"],
+                                j["nutritional_values"]),
                             n,
                         ),
                     )
@@ -366,21 +357,19 @@ class MealplanGenerator(data_src.DataStructures):
                         self._scale_recipe(
                             i,
                             fractions.Fraction(
-                                n, fractions.Fraction(i["number_of_servings"])
-                            ),
+                                n,
+                                fractions.Fraction(i["number_of_servings"])),
                         )
                         self._scale_recipe(
                             j,
                             fractions.Fraction(
-                                n, fractions.Fraction(j["number_of_servings"])
-                            ),
+                                n,
+                                fractions.Fraction(j["number_of_servings"])),
                         )
                         i["nutritional_values"] = self._mul_nutritional_values(
-                            i["nutritional_values"], n
-                        )
+                            i["nutritional_values"], n)
                         j["nutritional_values"] = self._mul_nutritional_values(
-                            j["nutritional_values"], n
-                        )
+                            j["nutritional_values"], n)
                         best_meal_plan[2] = i
                         best_meal_plan[3] = j
 

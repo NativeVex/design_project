@@ -153,8 +153,8 @@ def rd1(nv1):
     for i in range(random.randint(3, 20)):
         recipe["ingredients"].append(
             str(base64.b64encode(random.randbytes(20))))
-        recipe["directions"].append(
-            str(base64.b64encode(random.randbytes(20))))
+        recipe["directions"].append(str(base64.b64encode(
+            random.randbytes(20))))
     recipe["nutritional_values"] = nv1
     return recipe
 
@@ -168,8 +168,8 @@ def rd2(nv1):
     for i in range(random.randint(3, 20)):
         recipe["ingredients"].append(
             str(base64.b64encode(random.randbytes(20))))
-        recipe["directions"].append(
-            str(base64.b64encode(random.randbytes(20))))
+        recipe["directions"].append(str(base64.b64encode(
+            random.randbytes(20))))
     recipe["nutritional_values"] = nv1
     return recipe
 
@@ -183,8 +183,8 @@ def rd3(nv1):
     for i in range(random.randint(3, 20)):
         recipe["ingredients"].append(
             str(base64.b64encode(random.randbytes(20))))
-        recipe["directions"].append(
-            str(base64.b64encode(random.randbytes(20))))
+        recipe["directions"].append(str(base64.b64encode(
+            random.randbytes(20))))
     recipe["nutritional_values"] = nv1
     return recipe
 

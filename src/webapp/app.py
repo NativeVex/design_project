@@ -64,10 +64,10 @@ class dietform(Form):
     Proteins = DecimalField("Proteins:", [validators.InputRequired()])
     fat = DecimalField("Fat:", [validators.Optional()])
     fiber = DecimalField("Fiber:", [validators.Optional()])
-    monounsaturated_fat = DecimalField(
-        "Monosaturated fat:", [validators.Optional()])
-    polyunsaturated_fat = DecimalField(
-        "Polyunsaturated fat:", [validators.Optional()])
+    monounsaturated_fat = DecimalField("Monosaturated fat:",
+                                       [validators.Optional()])
+    polyunsaturated_fat = DecimalField("Polyunsaturated fat:",
+                                       [validators.Optional()])
     saturated_fat = DecimalField("saturated fat:", [validators.Optional()])
     Cholesterol = DecimalField("Cholesterol:", [validators.Optional()])
     sugar = DecimalField("Sugar:", [validators.Optional()])
@@ -168,13 +168,14 @@ def signup():
         # if this returns a user, then the email already exists in database
         user = User.query.filter_by(email=email).first()
         if (
-            user
+                user
         ):  # if a user is found, we want to redirect back to signup page so user can try again
             message = "Email address already exists"
             return render_template("signup.html", message=message)
         else:
             # create a new user with the form data.
-            new_user = User(email=email, username=username,
+            new_user = User(email=email,
+                            username=username,
                             password_plaintext=password)
 
             db.session.add(new_user)
@@ -254,8 +255,8 @@ def mealplan():
         caloriesbreakfast = request.form.get("caloriesbreakfastamount")
         calorieslunch = request.form.get("calorieslunchamount")
         if ((float(caloriesbreakfast)) + (float(calorieslunch))) < 1:
-            caloriesdinner = 1 - \
-                (float(caloriesbreakfast) + float(calorieslunch))
+            caloriesdinner = 1 - (float(caloriesbreakfast) +
+                                  float(calorieslunch))
         elif ((float(caloriesbreakfast)) + (float(calorieslunch))) == 1:
             caloriesdinner = 0.0
         else:
@@ -271,8 +272,8 @@ def mealplan():
         proteinsbreakfast = request.form.get("proteinsbreakfastamount")
         proteinslunch = request.form.get("proteinslunchamount")
         if ((float(proteinsbreakfast)) + (float(proteinslunch))) < 1:
-            proteinsdinner = 1 - \
-                (float(proteinsbreakfast) + float(proteinslunch))
+            proteinsdinner = 1 - (float(proteinsbreakfast) +
+                                  float(proteinslunch))
         elif ((float(proteinsbreakfast)) + (float(proteinslunch))) == 1:
             proteinsdinner = 0.0
         else:
@@ -332,8 +333,8 @@ class exerciseform(Form):
     thursday = BooleanField("Thursday")
     friday = BooleanField("Friday")
     saturday = BooleanField("Saturday")
-    intensity = IntegerField("Intensity:", validators=[
-                             validators.InputRequired()])
+    intensity = IntegerField("Intensity:",
+                             validators=[validators.InputRequired()])
     targetmusclegroup = SelectField(
         "Choose Target Muscle Group",
         choices=[
@@ -468,7 +469,8 @@ def exerciseplan():
         session["tempexerciseplan"] = userexerciseplan
         # daysofweek.clear()     may need to empty days of week list for future requests
         # targetmusclegroups.clear()
-        return render_template("exerciseplan.html", bestexerciseplan=userexerciseplan)
+        return render_template("exerciseplan.html",
+                               bestexerciseplan=userexerciseplan)
 
     elif request.method == "GET":
         return render_template("exerciseplan.html")
@@ -486,8 +488,7 @@ def addfood():
     """
     if request.method == "POST":
         newrecipename = request.form.get(
-            "newrecipename"
-        )  # getting new food recipe to add to database
+            "newrecipename")  # getting new food recipe to add to database
         newrecipeingredients = request.form.get("newrecipeingredients")
         foodtype = request.form.get("foodtype")
         numberofservings = request.form.get("numberofservings")
@@ -539,12 +540,10 @@ def addfood():
             newrecipe["nutritional_values"]["fiber"] = float(fiber)
         if monounsaturated_fat != None and monounsaturated_fat != "":
             newrecipe["nutritional_values"]["monounsaturated_fat"] = float(
-                monounsaturated_fat
-            )
+                monounsaturated_fat)
         if polyunsaturated_fat != None and polyunsaturated_fat != "":
             newrecipe["nutritional_values"]["polyunsaturated_fat"] = float(
-                polyunsaturated_fat
-            )
+                polyunsaturated_fat)
         if saturated_fat != None and saturated_fat != "":
             newrecipe["nutritional_values"]["saturated_fat"] = float(
                 saturated_fat)
@@ -606,7 +605,8 @@ def listitems():
 
     """
     if request.method == "POST":
-        mealplan = DataStructures.meal_plan()  # getting new mealplan to add to database
+        mealplan = DataStructures.meal_plan(
+        )  # getting new mealplan to add to database
         newfoodname1 = request.form.get("newfoodname1")
         newfoodingredients1 = request.form.get("newfoodingredients1")
         newfooddirections1 = request.form.get("newfooddirections1")
@@ -662,12 +662,10 @@ def listitems():
             newfood1["nutritional_values"]["fiber"] = float(fiber1)
         if monounsaturated_fat1 != None and monounsaturated_fat1 != "":
             newfood1["nutritional_values"]["monounsaturated_fat"] = float(
-                monounsaturated_fat1
-            )
+                monounsaturated_fat1)
         if polyunsaturated_fat1 != None and polyunsaturated_fat1 != "":
             newfood1["nutritional_values"]["polyunsaturated_fat"] = float(
-                polyunsaturated_fat1
-            )
+                polyunsaturated_fat1)
         if saturated_fat1 != None and saturated_fat1 != "":
             newfood1["nutritional_values"]["saturated_fat"] = float(
                 saturated_fat1)
@@ -737,12 +735,10 @@ def listitems():
             newfood2["nutritional_values"]["fiber"] = float(fiber2)
         if monounsaturated_fat2 != None and monounsaturated_fat2 != "":
             newfood2["nutritional_values"]["monounsaturated_fat"] = float(
-                monounsaturated_fat2
-            )
+                monounsaturated_fat2)
         if polyunsaturated_fat2 != None and polyunsaturated_fat2 != "":
             newfood2["nutritional_values"]["polyunsaturated_fat"] = float(
-                polyunsaturated_fat2
-            )
+                polyunsaturated_fat2)
         if saturated_fat2 != None and saturated_fat2 != "":
             newfood2["nutritional_values"]["saturated_fat"] = float(
                 saturated_fat2)
@@ -812,12 +808,10 @@ def listitems():
             newfood3["nutritional_values"]["fiber"] = float(fiber3)
         if monounsaturated_fat3 != None and monounsaturated_fat3 != "":
             newfood3["nutritional_values"]["monounsaturated_fat"] = float(
-                monounsaturated_fat3
-            )
+                monounsaturated_fat3)
         if polyunsaturated_fat3 != None and polyunsaturated_fat3 != "":
             newfood3["nutritional_values"]["polyunsaturated_fat"] = float(
-                polyunsaturated_fat3
-            )
+                polyunsaturated_fat3)
         if saturated_fat3 != None and saturated_fat3 != "":
             newfood3["nutritional_values"]["saturated_fat"] = float(
                 saturated_fat3)

@@ -45,19 +45,16 @@ def test_calculate_meal_plan_nutrition(mp, mpg_class):
     nutrition = mpg_class._calculate_meal_plan_nutrition(mp)
 
     for i in nutrition:
-        assert (
-            nutrition[i]
-            == mp[0]["nutritional_values"][i]
-            + mp[1]["nutritional_values"][i]
-            + mp[2]["nutritional_values"][i]
-        )
+        assert (nutrition[i] == mp[0]["nutritional_values"][i] +
+                mp[1]["nutritional_values"][i] +
+                mp[2]["nutritional_values"][i])
 
 
 def test_nutritional_values_RSS(sample_health_reqs, nv1, mpg_class):
     rss = mpg_class._nutritional_values_RSS(sample_health_reqs, nv1)
     real_rss = 0
     for i in nv1:
-        real_rss += (sample_health_reqs[i] - nv1[i]) ** 2
+        real_rss += (sample_health_reqs[i] - nv1[i])**2
     real_rss /= len(nv1)
     assert rss == real_rss
 
@@ -66,7 +63,7 @@ def test_recipe_data_RSS(sample_health_reqs, rd1, mpg_class):
     rss = mpg_class._recipe_RSS(sample_health_reqs, rd1)
     real_rss = 0
     for i in sample_health_reqs:
-        real_rss += (sample_health_reqs[i] - rd1["nutritional_values"][i]) ** 2
+        real_rss += (sample_health_reqs[i] - rd1["nutritional_values"][i])**2
     real_rss /= len(sample_health_reqs)
     assert rss == real_rss
 
@@ -77,8 +74,7 @@ def test_meal_plan_RSS(sample_health_reqs, mp, mpg_class):
     real_rss = 0
     for i in mp:
         for j in i["nutritional_values"]:
-            real_rss += (i["nutritional_values"][j] -
-                         sample_health_reqs[j]) ** 2
+            real_rss += (i["nutritional_values"][j] - sample_health_reqs[j])**2
         real_rss /= len(i["nutritional_values"])
     real_rss /= len(mp)
     assert real_rss == rss
@@ -94,39 +90,30 @@ def test_meal_plan_RSS(sample_health_reqs, mp, mpg_class):
         ([1.1, 2.2, 3.3], [4.4, 5.5, 6.6], [7.7, 8.8, 9.9]),
     ],
 )
-def test_balance_health_requirements(
-    calorie_split, protein_split, carbs_split, nv1, mpg_class
-):
+def test_balance_health_requirements(calorie_split, protein_split, carbs_split,
+                                     nv1, mpg_class):
     health_requirements = nv1
     hr_breakfast, hr_lunch, hr_dinner = mpg_class._balance_health_requirements(
-        calorie_split, protein_split, carbs_split, health_requirements
-    )
+        calorie_split, protein_split, carbs_split, health_requirements)
+    assert (hr_breakfast["calories"] == health_requirements["calories"] *
+            calorie_split[0])
+    assert hr_breakfast[
+        "protein"] == health_requirements["protein"] * protein_split[0]
     assert (
-        hr_breakfast["calories"] == health_requirements["calories"] *
-        calorie_split[0]
-    )
-    assert hr_breakfast["protein"] == health_requirements["protein"] * \
-        protein_split[0]
-    assert (
-        hr_breakfast["carbohydrate"]
-        == health_requirements["carbohydrate"] * carbs_split[0]
-    )
-    assert hr_lunch["calories"] == health_requirements["calories"] * \
-        calorie_split[1]
-    assert hr_lunch["protein"] == health_requirements["protein"] * \
-        protein_split[1]
-    assert (
-        hr_lunch["carbohydrate"] == health_requirements["carbohydrate"] *
-        carbs_split[1]
-    )
-    assert hr_dinner["calories"] == health_requirements["calories"] * \
-        calorie_split[2]
-    assert hr_dinner["protein"] == health_requirements["protein"] * \
-        protein_split[2]
-    assert (
-        hr_dinner["carbohydrate"]
-        == health_requirements["carbohydrate"] * carbs_split[2]
-    )
+        hr_breakfast["carbohydrate"] == health_requirements["carbohydrate"] *
+        carbs_split[0])
+    assert hr_lunch[
+        "calories"] == health_requirements["calories"] * calorie_split[1]
+    assert hr_lunch[
+        "protein"] == health_requirements["protein"] * protein_split[1]
+    assert (hr_lunch["carbohydrate"] == health_requirements["carbohydrate"] *
+            carbs_split[1])
+    assert hr_dinner[
+        "calories"] == health_requirements["calories"] * calorie_split[2]
+    assert hr_dinner[
+        "protein"] == health_requirements["protein"] * protein_split[2]
+    assert (hr_dinner["carbohydrate"] == health_requirements["carbohydrate"] *
+            carbs_split[2])
     return
 
 
@@ -158,23 +145,22 @@ def test_scale_recipe(scale, scalable_num, sussy_ing, rd1, mpg_class):
 
     # six asserstions, one for each ingredient
     assert fractions.Fraction(
-        rd1["ingredients"][0].split(" ")[0]
-    ) == fractions.Fraction(str(1 / 4 * scale))
+        rd1["ingredients"][0].split(" ")[0]) == fractions.Fraction(
+            str(1 / 4 * scale))
     assert fractions.Fraction(
-        rd1["ingredients"][1].split(" ")[0]
-    ) == fractions.Fraction(str(3 * scale))
+        rd1["ingredients"][1].split(" ")[0]) == fractions.Fraction(
+            str(3 * scale))
     assert fractions.Fraction(
-        rd1["ingredients"][2].split(" ")[0]
-    ) == fractions.Fraction(str(4 * scale))
+        rd1["ingredients"][2].split(" ")[0]) == fractions.Fraction(
+            str(4 * scale))
     assert rd1["ingredients"][3].split(" ")[0] == "Pound"
     assert fractions.Fraction(
-        rd1["ingredients"][4].split(" ")[0]
-    ) == fractions.Fraction(str(scalable_num * scale))
+        rd1["ingredients"][4].split(" ")[0]) == fractions.Fraction(
+            str(scalable_num * scale))
     if sussy_ing.split(" ")[0].replace(".", "").replace("/", "").isdigit():
-        assert (
-            fractions.Fraction(rd1["ingredients"][5].split(" ")[0])
-            == fractions.Fraction(sussy_ing.split(" ")[0]) * scale
-        )
+        assert (fractions.Fraction(
+            rd1["ingredients"][5].split(" ")[0]) == fractions.Fraction(
+                sussy_ing.split(" ")[0]) * scale)
     else:
         assert rd1["ingredients"][5] == sussy_ing
     return
