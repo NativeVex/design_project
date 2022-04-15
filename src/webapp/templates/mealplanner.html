@@ -276,52 +276,6 @@
       </form>
 
       <br>
-      <script>
-        (function () {
-            'use strict';
-            var init = function () {                
-                var caloriesslider = new rSlider({
-                    target: '#caloriesslider',
-                    values: {min: 0, max: 100},
-                    step: 10,
-                    set: [20, 60],
-                    scale: true,
-                    labels: false,
-                    onChange: function (vals) {
-                        document.getElementById("caloriesvalues").innerHTML=caloriesslider.getValue();
-                    }
-                });
-                var carbsslider = new rSlider({
-                    target: '#carbsslider',
-                    values: {min: 0, max: 100},
-                    step: 10,
-                    range: true,
-                    set: [20, 60],
-                    scale: true,
-                    labels: false,
-                    onChange: function (vals) {
-                        document.getElementById("carbsvalues").innerHTML=carbsslider.getValue();
-                    }
-                });
-                var proteinsslider = new rSlider({
-                    target: '#proteinsslider',
-                    values: {min: 0, max: 100},
-                    step: 10,
-                    range: true,
-                    set: [20, 60],
-                    scale: true,
-                    labels: false,
-                    onChange: function (vals) {
-                        document.getElementById("proteinsvalues").innerHTML=proteinsslider.getValue();
-                    }
-                });
-
-            };
-            window.onload = init;
-        })();
-
-        
-        </script>
         <script>
           function showfats() {
             document.getElementById("fats").style.display="block";
