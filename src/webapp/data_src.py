@@ -22,6 +22,8 @@ class DataStructures:
 
     def meal_plan(meals=3):
         return [DataStructures.recipe_data() for i in range(meals)]
-     
+
     def meal_plan_split():
-        return json.loads('{"calorie_split": [0.25, 0.25, 0.5], "protein_split": [0.25, 0.25, 0.5], "carbs_split": [0.25, 0.25, 0.5]}')
+        return json.loads(
+            '{"calorie_split": [0.25, 0.25, 0.5], "protein_split": [0.25, 0.25, 0.5], "carbs_split": [0.25, 0.25, 0.5]}'
+        )

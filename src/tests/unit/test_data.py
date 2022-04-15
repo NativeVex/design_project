@@ -20,7 +20,7 @@ def test_nutritional_values(nv1):
     template_nv = DataStructures.nutritional_values()
     for i in template_nv:
         assert i in nv1
-        assert type(nv1[i]) == type(template_nv[i]) #Will catch ints
+        assert type(nv1[i]) == type(template_nv[i])  # Will catch ints
 
 
 def test_recipe_data(rd1):
@@ -46,7 +46,6 @@ def test_recipe_data(rd1):
         assert type(i) == str
 
 
-
 def test_meal_plan(mp):
     """
     This test ensures that a meal_plan structure passed in is valid.
@@ -57,6 +56,7 @@ def test_meal_plan(mp):
 
 @pytest.mark.xfail(reason="testing bad nutritional values")
 class TestBadNVs:
+
     def test_good_nutritional_values(self, nv1):
         test_nutritional_values(nv1)
 
@@ -128,7 +128,7 @@ class TestBadMPs:
     def test_good_meal_plan(self, mp):
         test_meal_plan(mp)
 
-    def test_empty_mp(self): #Should pass
+    def test_empty_mp(self):  # Should pass
         mp = []
         test_meal_plan(mp)
 
