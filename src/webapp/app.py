@@ -27,12 +27,12 @@ from wtforms import (
 )
 
 from webapp.data_src import DataStructures
-from webapp.exerciseplan import ExerciseplanGenerator
+#from webapp.exerciseplan import ExerciseplanGenerator
 from webapp.mealplan import (
     MealplanGenerator,
-    get_mealplan,
+#    get_mealplan,
     get_recipes_from_db,
-    save_mealplan,
+#    save_mealplan,
 )
 from webapp.models import Recipes, User, db
 
