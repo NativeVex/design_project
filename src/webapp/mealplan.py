@@ -1,18 +1,20 @@
+import copy
+import fractions
 import itertools
 import json
 import math
 import os
 import random
 import sys
-import fractions
-import copy
 
 from webapp import data_src
 from webapp.data_src import DataStructures
 from webapp.models import Recipes, User, db
 
 
-def save_mealplan(email: str, mealplan: DataStructures.meal_plan) -> DataStructures.meal_plan:
+def save_mealplan(
+        email: str,
+        mealplan: DataStructures.meal_plan) -> DataStructures.meal_plan:
     user = User.query.filter_by(email=email).first()
 
     if user:
@@ -20,15 +22,14 @@ def save_mealplan(email: str, mealplan: DataStructures.meal_plan) -> DataStructu
     else:
         return None
 
-def get_mealplan(email: str)-> DataStructures.meal_plan:
+
+def get_mealplan(email: str) -> DataStructures.meal_plan:
     user = User.query.filter_by(email=email).first()
 
     if user:
         mealplan = user.get_mealplan()
         return mealplan
     return None
-   
-
 
 
 # TODO: make this actually connect to a DB and pull recipes. Might need to add inputs to do a preliminary filtering of the DB first.

@@ -26,7 +26,11 @@ class User(db.Model):
     registered_on = db.Column(db.DateTime)
     mealplan = db.Column(db.String)
 
-    def __init__(self, email: str, username: str, password_plaintext: str,mealplan=""):
+    def __init__(self,
+                 email: str,
+                 username: str,
+                 password_plaintext: str,
+                 mealplan=""):
         """Create a new User object using the email address and hashing the
         plaintext password using Werkzeug.Security.
         """
@@ -66,15 +70,16 @@ class User(db.Model):
     def get_id(self):
         """Return the user ID as a unicode string (`str`)."""
         return str(self.id)
-    
+
     def add_mealplan(self, mealplan: str):
-        self.mealplan=mealplan
+        self.mealplan = mealplan
 
     def get_mealplan(self):
         if self.mealplan:
             return json.loads(self.mealplan)
         else:
             print("no")
+
 
 class Recipes(db.Model):
     __tablename__ = "recipes"
