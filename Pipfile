@@ -11,6 +11,7 @@ pytest = "*"
 design_project_b23 = {editable = true, path = "."}
 flask_sqlalchemy = "*"
 setuptools = {editable = true, path = "."}
+pytest-lazy-fixture = "*"
 
 [dev-packages]
 pyright = "*"

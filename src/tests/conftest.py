@@ -11,6 +11,7 @@ from webapp.app import app, db
 from webapp.data_src import DataStructures
 from webapp.mealplan import MealplanGenerator
 from webapp.models import Recipes, User
+from webapp.exerciseplan import ExerciseplanGenerator
 
 # Functions to test that a given datastructure is valid
 # Written to be used in other test code
@@ -177,3 +178,47 @@ def mp(rd1, rd2, rd3):
 @pytest.fixture
 def sample_health_reqs(nv1):
     return nv1
+
+@pytest.fixture
+def e1():
+    e1 = DataStructures.exercise()
+    e1["name"] = "Test Exercise 1"
+    e1["targetmusclegroups"] = ["biceps", "triceps", "abs", "glutes"]
+    e1["level"] = 3
+    e1["sets"] = 12
+    e1["reps"] = 42
+    return e1
+
+@pytest.fixture
+def e2():
+    e2 = DataStructures.exercise()
+    e2["name"] = "Test Exercise 2"
+    e2["targetmusclegroups"] = ["biceps", "triceps", "quads", "glutes"]
+    e2["level"] = 3
+    e2["sets"] = 12
+    e2["reps"] = 42
+    return e2
+
+@pytest.fixture
+def e3():
+    e3 = DataStructures.exercise()
+    e3["name"] = "Test Exercise 3"
+    e3["targetmusclegroups"] = ["traps", "hamstrings", "quads"]
+    e3["level"] = 3
+    e3["sets"] = 12
+    e3["reps"] = 42
+    return e3
+
+@pytest.fixture
+def er1():
+    er = DataStructures.exercise_reqs()
+    er["days"]["Monday"] = True
+    er["days"]["Wednesday"] = True
+    er["days"]["Friday"] = True
+    er["level"] = 3
+    er["targetmusclegroups"] = ["biceps", "triceps", "abs", "glutes"]
+    return er
+
+@pytest.fixture
+def epg_class(er1):
+    return ExerciseplanGenerator(json.dumps(er1))

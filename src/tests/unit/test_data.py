@@ -8,6 +8,7 @@ import pytest
 
 from webapp.data_src import DataStructures
 from webapp.mealplan import MealplanGenerator
+from webapp.exerciseplan import ExerciseplanGenerator
 
 # Functions to test that a given datastructure is valid
 # Written to be used in other test code
@@ -128,9 +129,21 @@ def test_delim3():
 
 
 class TestGoodData:
-
     def test_all(self, mp):
         test_meal_plan(mp)
         for i in mp:
             test_recipe_data(i)
             test_nutritional_values(i["nutritional value"])
+
+def test_delim4():
+    pass
+
+def test_exercise(e1):
+    template = DataStructures.exercise()
+    for i in e1:
+        assert type(e1[i]) == type(template[i])
+
+def test_exercise_reqs(er1):
+    template = DataStructures.exercise_reqs()
+    for i in er1:
+        assert type(er1[i]) == type(template[i])
