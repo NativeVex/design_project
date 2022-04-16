@@ -24,15 +24,16 @@ class User(db.Model):
     username = db.Column(db.String)
     password_hashed = db.Column(db.String(128))
     registered_on = db.Column(db.DateTime)
+    mealplan = db.Column(db.String)
 
-    def __init__(self, email: str, username: str, password_plaintext: str):
+    def __init__(self, email: str, username: str, password_plaintext: str, mealplan = ""):
         """Create a new User object using the email address and hashing the
         plaintext password using Werkzeug.Security.
         """
         self.email = email
         self.username = username
-
         self.password_hashed = self._generate_password_hash(password_plaintext)
+        self.mealplan = mealplan
 
     def is_password_correct(self, password_plaintext: str):
         return check_password_hash(self.password_hashed, password_plaintext)
@@ -65,13 +66,18 @@ class User(db.Model):
     def get_id(self):
         """Return the user ID as a unicode string (`str`)."""
         return str(self.id)
+    
+    def add_mealplan(self, mealplan: str):
+        self.mealplan = mealplan
 
+    def get_mealplan(self):
+        return json.loads(self.mealplan)
 
 class Recipes(db.Model):
     __tablename__ = "recipes"
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    name = db.Column(db.String(100), unique=True)
+    name = db.Column(db.String(100))
     directions = db.Column(db.String)
     ingredients = db.Column(db.String)
     calcium = db.Column(db.Float)
@@ -94,90 +100,37 @@ class Recipes(db.Model):
     number_of_servings = db.Column(db.Integer)
     type = db.Column(db.String)
 
-    def __init__(
-        self,
-        name="",
-        directions=[],
-        ingredients=[],
-        calories=0.0,
-        carbohydrate=0.0,
-        protein=0.0,
-        cholesterol=0.0,
-        fat=0.0,
-        fiber=0.0,
-        iron=0.0,
-        monounsaturated_fat=0.0,
-        polyunsaturated_fat=0.0,
-        potassium=0.0,
-        calcium=0.0,
-        saturated_fat=0.0,
-        sodium=0.0,
-        sugar=0.0,
-        trans_fat=0.0,
-        vitamin_a=0.0,
-        vitamin_c=0.0,
-        number_of_servings=0,
-        type="",
-        json_str=""
-    ):
-        """Create a new Mealplan object using the email address and hashing the
-        plaintext password using Werkzeug.Security.
-        """
-        if json_str == "":
-            self.name = name
-            self.directions = json.dumps(directions)
-            self.ingredients = json.dumps(ingredients)
-            self.calories = calories
-            self.carbohydrate = carbohydrate
-            self.protein = protein
-            self.cholesterol = cholesterol
-            self.fat = fat
-            self.fiber = fiber
-            self.iron = iron
-            self.monounsaturated_fat = monounsaturated_fat
-            self.polyunsaturated_fat = polyunsaturated_fat
-            self.potassium = potassium
-            self.calcium = calcium
-            self.saturated_fat = saturated_fat
-            self.sodium = sodium
-            self.sugar = sugar
-            self.trans_fat = trans_fat
-            self.vitamin_a = vitamin_a
-            self.vitamin_c = vitamin_c
-            self.number_of_servings = number_of_servings
-            self.type = json.dumps(type)
-        else:
-            data_dict = json.loads(json_str)
-            self.name = data_dict["name"]
-            self.directions = json.dumps(data_dict["directions"])
-            self.ingredients = json.dumps(data_dict["ingredients"])
-            self.number_of_servings = data_dict["number_of_servings"]
-            self.type = data_dict["type"]
+    def __init__(self, json_str):
+        data_dict = json.loads(json_str)
+        self.name = data_dict["name"]
+        self.directions = json.dumps(data_dict["directions"])
+        self.ingredients = json.dumps(data_dict["ingredients"])
+        self.number_of_servings = data_dict["number_of_servings"]
+        self.type = json.dumps(data_dict["type"])
 
-            self.calories = data_dict["nutritional_value"]["calories"]
-            self.carbohydrate = data_dict["nutritional_value"]["carbohydrate"]
-            self.protein = data_dict["nutritional_value"]["protein"]
-            self.cholesterol = data_dict["nutritional_value"]["cholesterol"]
-            self.fat = data_dict["nutritional_value"]["fat"]
-            self.fiber = data_dict["nutritional_value"]["fiber"]
-            self.iron = data_dict["nutritional_value"]["iron"]
-            self.monounsaturated_fat = data_dict["nutritional_value"][
-                "monounsaturated_fat"]
-            self.polyunsaturated_fat = data_dict["nutritional_value"][
-                "polyunsaturated_fat"]
-            self.potassium = data_dict["nutritional_value"]["potassium"]
-            self.calcium = data_dict["nutritional_value"]["calcium"]
-            self.saturated_fat = data_dict["nutritional_value"]["saturated_fat"]
-            self.sodium = data_dict["nutritional_value"]["sodium"]
-            self.sugar = data_dict["nutritional_value"]["sugar"]
-            self.trans_fat = data_dict["nutritional_value"]["trans_fat"]
-            self.vitamin_a = data_dict["nutritional_value"]["vitamin_a"]
-            self.vitamin_c = data_dict["nutritional_value"]["vitamin_c"]
+        self.calories = data_dict["nutritional_values"]["calories"]
+        self.carbohydrate = data_dict["nutritional_values"]["carbohydrate"]
+        self.protein = data_dict["nutritional_values"]["protein"]
+        self.cholesterol = data_dict["nutritional_values"]["cholesterol"]
+        self.fat = data_dict["nutritional_values"]["fat"]
+        self.fiber = data_dict["nutritional_values"]["fiber"]
+        self.iron = data_dict["nutritional_values"]["iron"]
+        self.monounsaturated_fat = data_dict["nutritional_values"][
+            "monounsaturated_fat"]
+        self.polyunsaturated_fat = data_dict["nutritional_values"][
+            "polyunsaturated_fat"]
+        self.potassium = data_dict["nutritional_values"]["potassium"]
+        self.calcium = data_dict["nutritional_values"]["calcium"]
+        self.saturated_fat = data_dict["nutritional_values"]["saturated_fat"]
+        self.sodium = data_dict["nutritional_values"]["sodium"]
+        self.sugar = data_dict["nutritional_values"]["sugar"]
+        self.trans_fat = data_dict["nutritional_values"]["trans_fat"]
+        self.vitamin_a = data_dict["nutritional_values"]["vitamin_a"]
+        self.vitamin_c = data_dict["nutritional_values"]["vitamin_c"]
 
     def get_id(self):
         """Return the user ID as a unicode string (`str`)."""
         return str(self.id)
-
 
 class Exercise(db.Model):
     __tablename__ = "exercise"

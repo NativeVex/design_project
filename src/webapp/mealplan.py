@@ -67,18 +67,22 @@ def get_recipes_from_db(
     return recipes
 
 
-def save_mealplan(email: str, mealplan: DataStructures.mealplan) -> DataStructures.meal_plan:
-    user = User.query.filter_by(email=email).first()
+def save_mealplan(email: str, mealplan):
+    user = db.session.query(User).filter_by(email=email).first()
 
     if user:
         user.add_mealplan(json.dumps(mealplan))
+    db.session.add(user)
+    db.session.commit()
     return mealplan
 
-def get_mealplan(email: str)-> DataStructures.meal_plan:
-    user = User.query.filter_by(email=email).first()
+def get_mealplan(email: str):
+    user = db.session.query(User).filter_by(email=email).first()
 
     if user:
         mealplan = user.get_mealplan()
+    db.session.add(user)
+    db.session.commit()
     return mealplan
 
 def add_recipe(
@@ -104,32 +108,33 @@ def add_recipe(
             vitamin_c=0.0,
             number_of_servings=0,
             type=[]):
-    new_recipe = Recipes(
-                        name, 
-                        directions, 
-                        ingredients,
-                        calories,
-                        carbohydrate,
-                        protein,
-                        cholesterol,
-                        fat,
-                        fiber,
-                        iron,
-                        monounsaturated_fat,
-                        polyunsaturated_fat,
-                        potassium,
-                        calcium,
-                        saturated_fat,
-                        sodium,
-                        sugar,
-                        trans_fat,
-                        vitamin_a,
-                        vitamin_c,
-                        number_of_servings,
-                        type)
-    db.session.add(new_recipe)
+    skeleton = DataStructures.recipe_data()
+    skeleton["name"] = name
+    skeleton["directions"] = directions
+    skeleton["ingredients"] = ingredients
+    skeleton["nutritional_values"]["calcium"] = calcium
+    skeleton["nutritional_values"]["calories"] = calories
+    skeleton["nutritional_values"]["carbohydrate"] = carbohydrate
+    skeleton["nutritional_values"]["cholesterol"] = cholesterol
+    skeleton["nutritional_values"]["protein"] = protein
+    skeleton["nutritional_values"]["fat"] = fat
+    skeleton["nutritional_values"]["fiber"] = fiber
+    skeleton["nutritional_values"]["iron"] = iron
+    skeleton["nutritional_values"]["monounsaturated_fat"] = monounsaturated_fat
+    skeleton["nutritional_values"]["polyunsaturated_fat"] = polyunsaturated_fat
+    skeleton["nutritional_values"]["potassium"] = potassium
+    skeleton["nutritional_values"]["saturated_fat"] = saturated_fat
+    skeleton["nutritional_values"]["sodium"] = sodium
+    skeleton["nutritional_values"]["sugar"] = sugar
+    skeleton["nutritional_values"]["trans_fat"] = trans_fat
+    skeleton["nutritional_values"]["vitamin_a"] = vitamin_a
+    skeleton["nutritional_values"]["vitamin_c"] = vitamin_c
+    skeleton["number_of_servings"] = number_of_servings
+    skeleton["type"] = type
+
+    db.session.add(Recipes(json.dumps(skeleton)))
     db.session.commit()
-    
+    return 
 
 class MealplanGenerator(data_src.DataStructures):
     recipes = []
@@ -314,7 +319,7 @@ class MealplanGenerator(data_src.DataStructures):
 
 
     # this is the "head" of the code
-    def gen_meal_plan(self) -> DataStructures.meal_plan:
+    def gen_meal_plan(self):
         """Generates a mealplan based on the health requirements that the class was created with
 
         For each of 3 meals, picks the meal option that best matches the user's desired intake for that meal.
@@ -322,7 +327,6 @@ class MealplanGenerator(data_src.DataStructures):
 
         TODO: add snacks to lower mealplan RSS
         """
-        best_meal_plan: DataStructures.meal_plan
         best_meal_plan = DataStructures.meal_plan(4)
 
         # TODO

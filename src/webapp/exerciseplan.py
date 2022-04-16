@@ -23,8 +23,7 @@ def get_exercises_from_db():
     return exercises
 
 def add_exercise_to_db(name: str, targetmusclegroups: list, level=0, sets=0, reps=0):
-    new_exercise = Exercise(name, targetmusclegroups, level, sets, reps)
-    db.session.add(new_exercise)
+    db.session.add(Exercise(name, targetmusclegroups, level, sets, reps))
     db.session.commit()
     return
 

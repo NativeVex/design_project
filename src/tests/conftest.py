@@ -8,10 +8,10 @@ from curses.ascii import SO
 import pytest
 import pathlib
 
-from webapp.app import app, db
+from webapp.app import app
 from webapp.data_src import DataStructures
 from webapp.mealplan import MealplanGenerator
-from webapp.models import Recipes, User, Exercise
+from webapp.models import Recipes, User, Exercise, db
 
 # Functions to test that a given datastructure is valid
 # Written to be used in other test code
@@ -66,7 +66,7 @@ def init_database(test_client):
     yield
 
 @pytest.fixture()
-def init_database_recipes(test_client, request):
+def init_database_load(test_client, request):
     # Create the database and the database table
     # and add two sample recipes
     file = pathlib.Path(request.node.fspath)
@@ -82,29 +82,18 @@ def init_database_recipes(test_client, request):
             for i in fixme["nutritional_values"]:
                 fixme["nutritional_values"][i] = float(
                     fixme["nutritional_values"][i])
-            new_recipe = Recipes(json_str=json.dumps(fixme))
+            new_recipe = Recipes(json.dumps(fixme))
             db.session.add(new_recipe)
-    db.session.commit()
 
-    yield
-
-@pytest.fixture()
-def init_database_exercises(test_client, request):
-    # Create the database and the database table
-    file = pathlib.Path(request.node.fspath)
     data = file.with_name('homeworkouts_org_exercises.json')
-
-    db.drop_all()
-    db.init_app(app)
-    db.create_all(app=app)
     
     with data.open() as r:
         for jsline in r:
             new_exercise = Exercise(json_str=jsline)
             db.session.add(new_exercise)
     db.session.commit()
-
     yield
+    
 
 
 @pytest.fixture()
