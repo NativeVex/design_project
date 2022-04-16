@@ -17,10 +17,10 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from wtforms import Form, StringField, IntegerField,DecimalField,DecimalRangeField,BooleanField,SelectField,SubmitField, validators
 
 from webapp.data_src import DataStructures
-from webapp.mealplan import MealplanGenerator
+from webapp.mealplan import MealplanGenerator, get_mealplan,get_recipes_from_db, save_mealplan
 from webapp.exerciseplan import ExerciseplanGenerator
 
-from webapp.models import User, db
+from webapp.models import Recipes, User, db
 
 app = Flask(__name__, instance_relative_config=True)
 
@@ -32,6 +32,8 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///db.sqlite"
 
 db.init_app(app)
 db.create_all(app=app)
+
+
 
 
 class signupform(Form):
@@ -76,7 +78,7 @@ def login():
     if request.method == "POST":
         email = request.form["email"]
         password = request.form["password"]
-
+        session["email"]=email
         user = User.query.filter_by(email=email).first()
 
         # check if the user actually exists
@@ -108,10 +110,15 @@ def logout():
     """
 
     session.pop("username", None)  # removes session username
+    session.pop("email", None)  # removes temporary session exerciseplan
     session.pop("tempmealplan", None)  # removes temporary session mealplan
     session.pop("tempexerciseplan", None)  # removes temporary session exerciseplan
     session.pop("savedmealplan", None)  # removes saved session mealplan
     session.pop("savedexerciseplan", None)  # removes saved session exerciseplan
+    session.pop("currenthealthrequirements", None)  # removes current session healthrequirements
+    session.pop("oldhealthrequirements", None)  # removes old healthrequirements
+    session.pop("newhealthrequirements", None)  # removes new healthrequirements
+
     return redirect("/")
 
 
@@ -123,16 +130,91 @@ def points():
     """
     return render_template("points.html")
 
+@app.route("/changehealthrequirements",methods=["GET","POST"])
+def changehealthrequirements():
+    """This function gets current health configurations for the user
 
-@app.route("/saveduserinfo/")
+    """
+    form=dietform(request.form)
+    currenthealthrequirements=DataStructures.getcurrenthealthrequirementsfromdb()
+    session["newhealthrequirements"]=currenthealthrequirements
+    session["currenthealthrequirements"]=currenthealthrequirements
+    return render_template("healthrequirements.html",form=form,currenthealthrequirements=currenthealthrequirements)
+
+@app.route("/getoldhealthrequirements",methods=["GET","POST"])
+def getoldhealthrequirements():
+    """This function gets previous health configurations for the user
+
+    """
+    form=dietform(request.form)
+    currenthealthrequirements=DataStructures.getcurrenthealthrequirementsfromdb()
+    oldhealthrequirements=DataStructures.getoldhealthrequirementsfromdb()
+    session["oldhealthrequirements"]=oldhealthrequirements
+
+    
+    return render_template("healthrequirements.html",form=form,currenthealthrequirements=currenthealthrequirements,oldhealthrequirements=oldhealthrequirements)
+
+@app.route("/savenewhealthrequirements",methods=["GET","POST"])
+def savenewhealthrequirements():
+    """This function saves new health configurations from user
+
+    """
+    form=dietform(request.form)
+    lst=[]
+    if request.method == "POST":
+
+        newhealthrequirements=DataStructures.nutritional_values()
+        newhealthrequirements["calories"]=float(form.Calories.data)
+        newhealthrequirements["carbohydrate"]=float(form.Carbs.data)
+        newhealthrequirements["protein"]=float(form.Proteins.data)
+        if(form.fat.data!=None):
+            newhealthrequirements["fat"]=float(form.fat.data)
+        if(form.Cholesterol.data!=None):
+            newhealthrequirements["cholesterol"]=float(form.Cholesterol.data)
+        if(form.Sodium.data!=None):
+            newhealthrequirements["sodium"]=float(form.Sodium.data)
+        if(form.Vitamina.data!=None):
+            newhealthrequirements["vitamin_a"]=float(form.Vitamina.data)
+        if(form.Vitaminc.data!=None):
+            newhealthrequirements["vitamin_c"]=float(form.Vitaminc.data)
+        if(form.Calcium.data!=None):
+            newhealthrequirements["calcium"]=float(form.Calcium.data)
+        if(form.fiber.data!=None):
+            newhealthrequirements["fiber"]=float(form.fiber.data)
+        if(form.monounsaturated_fat.data!=None):
+            newhealthrequirements["monounsaturated_fat"]=float(form.monounsaturated_fat.data)
+        if(form.polyunsaturated_fat.data!=None):
+            newhealthrequirements["polyunsaturated_fat"]=float(form.polyunsaturated_fat.data)
+        if(form.saturated_fat.data!=None):
+            newhealthrequirements["saturated_fat"]=float(form.saturated_fat.data)
+        if(form.sugar.data!=None):
+            newhealthrequirements["sugar"]=float(form.sugar.data)
+        if(form.trans_fat.data!=None):
+            newhealthrequirements["trans_fat"]=float(form.trans_fat.data)
+        if(form.Iron.data!=None):
+            newhealthrequirements["iron"]=float(form.Iron.data)
+        if(form.Potassium.data!=None):
+            newhealthrequirements["potassium"]=float(form.Potassium.data)
+        
+        session["oldhealthrequirements"]=session["currenthealthrequirements"]
+        session["newhealthrequirements"]=newhealthrequirements
+        session["currenthealthrequirements"]=newhealthrequirements
+        message="New health requirements are saved!"
+    return render_template("healthrequirements.html",form=form,newrequirements=session["newhealthrequirements"],message=message)
+
+
+
+@app.route("/saveduserinfo/",methods=["GET"])
 def saveduserinfo():
     """This function goes to the saveduserinfo page where
     the user sees their saved meal plan and their saved
     exercise plan
 
     """
-    
-    return render_template("saveduserinfo.html")
+    email=session["email"]
+    session["savedmealplan"]=get_mealplan(email)
+    print(session["savedmealplan"])
+    return render_template("saveduserinfo.html",mealplan=session["savedmealplan"])
 
 
 @app.route("/signup/", methods=["GET", "POST"])
@@ -278,23 +360,27 @@ def mealplan():
         newjsoninfo=json.dumps(jsoninfo)
         mpg = MealplanGenerator(newjsoninfo,newjsonsplitdata)
         mealplan = mpg.gen_meal_plan()
-        newmealplan=json.loads(mealplan)
-        session["tempmealplan"]=newmealplan
-        return render_template("mealplans.html", bestmealplan=newmealplan,newjsonsplitdata=newjsonsplitdata,newjsoninfo=newjsoninfo)
+        session["tempmealplan"]=mealplan
+        newmeal=json.loads(mealplan)
+        return render_template("mealplans.html",bestmealplan=newmeal,newjsonsplitdata=jsondata,newjsoninfo=jsoninfo)
     elif request.method == "GET":
         return render_template("mealplans.html")
 
 
-@app.route("/savemealplan", methods=["GET"])
+@app.route("/savemealplan", methods=["GET","POST"])
 def savemealplan():
     """This function goes to the saveduserinfo page where
     the user can see their saved meal plan
 
     """
-    session["savedmealplan"]=session["tempmealplan"]
-    if request.method == "GET":
+    email=session["email"]
+    mealplan=session["tempmealplan"]
+    print(email)
+    save_mealplan(email,mealplan)
+    session["savedmealplan"]=mealplan
+    
          # replacing single quotes with double quotes to change string to json format
-        return redirect(url_for('saveduserinfo'))
+    return redirect(url_for('saveduserinfo'))
 
 
 class exerciseform(Form):
@@ -555,216 +641,8 @@ def listitems():
     
     """
     if request.method == "POST":
-        mealplan=DataStructures.meal_plan()                                     #getting new mealplan to add to database
-        newfoodname1=request.form.get("newfoodname1")
-        newfoodingredients1=request.form.get("newfoodingredients1")
-        newfooddirections1=request.form.get("newfooddirections1")
-        newfood1numberofservings=request.form.get("newfood1numberofservings")
-        newfood1type=request.form.get("newfood1type")
-
-        newfoodcalories1=request.form.get("Calories1")
-        newfoodcarbs1=request.form.get("Carbs1")
-        newfoodproteins1=request.form.get("Proteins1")
-        fat1=request.form.get("fats1")
-        cholesterol1=request.form.get("cholesterols1")
-        sodium1=request.form.get("sodiums1")
-        vitamina1=request.form.get("vitamina1")
-        vitaminc1=request.form.get("vitaminc1")
-        calcium1=request.form.get("calciums1")
-        fiber1=request.form.get("fiber1")
-        monounsaturated_fat1=request.form.get("monounsaturated_fat1")
-        polyunsaturated_fat1=request.form.get("polyunsaturated_fat1")
-        saturated_fat1=request.form.get("saturated_fat1")
-        sugar1=request.form.get("sugar1")
-        trans_fat1=request.form.get("trans_fat1")
-        iron1=request.form.get("iron1")
-        potassium1=request.form.get("potassium1")
-        newfood1=DataStructures.recipe_data()
-        newfood1["name"]=newfoodname1
-        newfood1["ingredients"]=[newfoodingredients1]
-        newfood1["directions"]=[newfooddirections1]
-        if(newfood1numberofservings!='' and newfood1numberofservings!=None):
-            newfood1["number_of_servings"]=int(newfood1numberofservings)
-        newfood1["type"]=newfood1type
-
-        if(newfoodcalories1!=None and newfoodcalories1!=''):
-            newfood1["nutritional_values"]["calories"] = float(newfoodcalories1)
-        if(newfoodcarbs1!=None and newfoodcarbs1!=''):
-            newfood1["nutritional_values"]["carbohydrate"] = float(newfoodcarbs1)
-        if(newfoodproteins1!=None and newfoodproteins1!=''):
-            newfood1["nutritional_values"]["protein"] = float(newfoodproteins1)
-        if(fat1!=None and fat1!=''):
-            newfood1["nutritional_values"]["fat"] = float(fat1)
-        if(cholesterol1!=None and cholesterol1!=''):
-            newfood1["nutritional_values"]["cholesterol"] = float(cholesterol1)
-        if(sodium1!=None and sodium1!=''):
-            newfood1["nutritional_values"]["sodium"] = float(sodium1)
-        if(vitamina1!=None and vitamina1!=''):
-            newfood1["nutritional_values"]["vitamin_a"] = float(vitamina1)
-        if(vitaminc1!=None and vitaminc1!=''):
-            newfood1["nutritional_values"]["vitamin_c"] = float(vitaminc1)
-        if(calcium1!=None and calcium1!=''):
-            newfood1["nutritional_values"]["calcium"] = float(calcium1)
-        if(fiber1!=None and fiber1!=''):
-            newfood1["nutritional_values"]["fiber"] = float(fiber1)
-        if(monounsaturated_fat1!=None and monounsaturated_fat1!=''):
-            newfood1["nutritional_values"]["monounsaturated_fat"] = float(monounsaturated_fat1)
-        if(polyunsaturated_fat1!=None and polyunsaturated_fat1!=''):
-            newfood1["nutritional_values"]["polyunsaturated_fat"] = float(polyunsaturated_fat1)
-        if(saturated_fat1!=None and saturated_fat1!=''):
-            newfood1["nutritional_values"]["saturated_fat"] = float(saturated_fat1)
-        if(sugar1!=None and sugar1!=''):
-            newfood1["nutritional_values"]["sugar"] = float(sugar1)
-        if(trans_fat1!=None and trans_fat1!=''):
-            newfood1["nutritional_values"]["trans_fat"] = float(trans_fat1)
-        if(iron1!=None and iron1!=''):
-            newfood1["nutritional_values"]["iron1"] = float(iron1)
-        if(potassium1!=None and potassium1!=''):
-            newfood1["nutritional_values"]["potassium"] = float(potassium1)
         
-        mealplan[0]=json.dumps(newfood1)
-        
-        newfoodname2=request.form.get("newfoodname2")
-        newfoodingredients2=request.form.get("newfoodingredients2")
-        newfooddirections2=request.form.get("newfooddirections2")
-        newfood2numberofservings=request.form.get("newfood2numberofservings")
-        newfood2type=request.form.get("newfood2type")
-
-        newfoodcalories2=request.form.get("Calories2")
-        newfoodcarbs2=request.form.get("Carbs2")
-        newfoodproteins2=request.form.get("Proteins2")
-        fat2=request.form.get("fats2")
-        cholesterol2=request.form.get("cholesterols2")
-        sodium2=request.form.get("sodiums2")
-        vitamina2=request.form.get("vitamina2")
-        vitaminc2=request.form.get("vitaminc2")
-        calcium2=request.form.get("calciums2")
-        fiber2=request.form.get("fiber2")
-        monounsaturated_fat2=request.form.get("monounsaturated_fat2")
-        polyunsaturated_fat2=request.form.get("polyunsaturated_fat2")
-        saturated_fat2=request.form.get("saturated_fat2")
-        sugar2=request.form.get("sugar2")
-        trans_fat2=request.form.get("trans_fat2")
-        iron2=request.form.get("iron2")
-        potassium2=request.form.get("potassium2")
-        newfood2=DataStructures.recipe_data()
-        newfood2["name"]=newfoodname2
-        newfood2["ingredients"]=[newfoodingredients2]
-        newfood2["directions"]=[newfooddirections2]
-        if(newfood2numberofservings!='' and newfood2numberofservings!=None):
-            newfood2["number_of_servings"]=int(newfood2numberofservings)
-        newfood2["type"]=newfood2type
-
-        if(newfoodcalories2!=None and newfoodcalories2!=''):
-            newfood2["nutritional_values"]["calories"] = float(newfoodcalories2)
-        if(newfoodcarbs2!=None and newfoodcarbs2!=''):
-            newfood2["nutritional_values"]["carbohydrate"] = float(newfoodcarbs2)
-        if(newfoodproteins2!=None and newfoodproteins2!=''):
-            newfood2["nutritional_values"]["protein"] = float(newfoodproteins2)
-        if(fat2!=None and fat2!=''):
-            newfood2["nutritional_values"]["fat"] = float(fat2)
-        if(cholesterol2!=None and cholesterol2!=''):
-            newfood2["nutritional_values"]["cholesterol"] = float(cholesterol2)
-        if(sodium2!=None and sodium2!=''):
-            newfood2["nutritional_values"]["sodium"] = float(sodium2)
-        if(vitamina2!=None and vitamina2!=''):
-            newfood2["nutritional_values"]["vitamin_a"] = float(vitamina2)
-        if(vitaminc2!=None and vitaminc2!=''):
-            newfood2["nutritional_values"]["vitamin_c"] = float(vitaminc2)
-        if(calcium2!=None and calcium2!=''):
-            newfood2["nutritional_values"]["calcium"] = float(calcium2)
-        if(fiber2!=None and fiber2!=''):
-            newfood2["nutritional_values"]["fiber"] = float(fiber2)
-        if(monounsaturated_fat2!=None and monounsaturated_fat2!=''):
-            newfood2["nutritional_values"]["monounsaturated_fat"] = float(monounsaturated_fat2)
-        if(polyunsaturated_fat2!=None and polyunsaturated_fat2!=''):
-            newfood2["nutritional_values"]["polyunsaturated_fat"] = float(polyunsaturated_fat2)
-        if(saturated_fat2!=None and saturated_fat2!=''):
-            newfood2["nutritional_values"]["saturated_fat"] = float(saturated_fat2)
-        if(sugar2!=None and sugar2!=''):
-            newfood2["nutritional_values"]["sugar"] = float(sugar2)
-        if(trans_fat2!=None and trans_fat2!=''):
-            newfood1["nutritional_values"]["trans_fat"] = float(trans_fat2)
-        if(iron2!=None and iron2!=''):
-            newfood2["nutritional_values"]["iron1"] = float(iron2)
-        if(potassium2!=None and potassium2!=''):
-            newfood2["nutritional_values"]["potassium"] = float(potassium2)
-
-        mealplan[1]=json.dumps(newfood2)
-        
-        newfoodname3=request.form.get("newfoodname3")
-        newfoodingredients3=request.form.get("newfoodingredients3")
-        newfooddirections3=request.form.get("newfooddirections3")
-        newfood3numberofservings=request.form.get("newfood3numberofservings")
-        newfood3type=request.form.get("newfood3type")
-
-        newfoodcalories3=request.form.get("Calories3")
-        newfoodcarbs3=request.form.get("Carbs3")
-        newfoodproteins3=request.form.get("Proteins3")
-        fat3=request.form.get("fats3")
-        cholesterol3=request.form.get("cholesterols3")
-        sodium3=request.form.get("sodiums3")
-        vitamina3=request.form.get("vitamina3")
-        vitaminc3=request.form.get("vitaminc3")
-        calcium3=request.form.get("calciums3")
-        fiber3=request.form.get("fiber3")
-        monounsaturated_fat3=request.form.get("monounsaturated_fat3")
-        polyunsaturated_fat3=request.form.get("polyunsaturated_fat3")
-        saturated_fat3=request.form.get("saturated_fat3")
-        sugar3=request.form.get("sugar3")
-        trans_fat3=request.form.get("trans_fat3")
-        iron3=request.form.get("iron3")
-        potassium3=request.form.get("potassium3")
-        newfood3=DataStructures.recipe_data()
-        newfood3["name"]=newfoodname3
-        newfood3["ingredients"]=[newfoodingredients3]
-        newfood3["directions"]=[newfooddirections3]
-        if(newfood3numberofservings!='' and newfood3numberofservings!=None):
-            newfood3["number_of_servings"]=int(newfood3numberofservings)
-        newfood3["type"]=newfood3type
-
-        if(newfoodcalories3!=None and newfoodcalories3!=''):
-            newfood3["nutritional_values"]["calories"] = float(newfoodcalories3)
-        if(newfoodcarbs3!=None and newfoodcarbs3!=''):
-            newfood3["nutritional_values"]["carbohydrate"] = float(newfoodcarbs3)
-        if(newfoodproteins3!=None and newfoodproteins3!=''):
-            newfood3["nutritional_values"]["protein"] = float(newfoodproteins3)
-        if(fat3!=None and fat3!=''):
-            newfood3["nutritional_values"]["fat"] = float(fat3)
-        if(cholesterol3!=None and cholesterol3!=''):
-            newfood3["nutritional_values"]["cholesterol"] = float(cholesterol3)
-        if(sodium3!=None and sodium3!=''):
-            newfood3["nutritional_values"]["sodium"] = float(sodium3)
-        if(vitamina3!=None and vitamina3!=''):
-            newfood3["nutritional_values"]["vitamin_a"] = float(vitamina3)
-        if(vitaminc3!=None and vitaminc3!=''):
-            newfood3["nutritional_values"]["vitamin_c"] = float(vitaminc3)
-        if(calcium3!=None and calcium3!=''):
-            newfood3["nutritional_values"]["calcium"] = float(calcium3)
-        if(fiber3!=None and fiber3!=''):
-            newfood3["nutritional_values"]["fiber"] = float(fiber3)
-        if(monounsaturated_fat3!=None and monounsaturated_fat3!=''):
-            newfood3["nutritional_values"]["monounsaturated_fat"] = float(monounsaturated_fat3)
-        if(polyunsaturated_fat3!=None and polyunsaturated_fat3!=''):
-            newfood3["nutritional_values"]["polyunsaturated_fat"] = float(polyunsaturated_fat3)
-        if(saturated_fat3!=None and saturated_fat3!=''):
-            newfood3["nutritional_values"]["saturated_fat"] = float(saturated_fat3)
-        if(sugar3!=None and sugar3!=''):
-            newfood3["nutritional_values"]["sugar"] = float(sugar3)
-        if(trans_fat3!=None and trans_fat3!=''):
-            newfood1["nutritional_values"]["trans_fat"] = float(trans_fat3)
-        if(iron3!=None and iron3!=''):
-            newfood3["nutritional_values"]["iron1"] = float(iron3)
-        if(potassium3!=None and potassium3!=''):
-            newfood3["nutritional_values"]["potassium"] = float(potassium3)
-        mealplan[2]=json.dumps(newfood3)
-    
-    
-        
-        
-       
-        
-        return render_template("shoppinglist.html",mealplan=mealplan)
+        return render_template("shoppinglist.html")
     elif request.method == "GET":
         return render_template("shoppinglist.html")
 
