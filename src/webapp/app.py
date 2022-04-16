@@ -1,39 +1,22 @@
 import json
-from cmath import log
-from random import randint
-from time import strftime
 
-from flask import (
-    Flask,
-    flash,
-    jsonify,
-    redirect,
-    render_template,
-    request,
-    session,
-    url_for,
-)
-from werkzeug.security import check_password_hash, generate_password_hash
+from flask import Flask, redirect, render_template, request, session, url_for
+from werkzeug.security import check_password_hash
 from wtforms import (
     BooleanField,
     DecimalField,
-    DecimalRangeField,
     Form,
     IntegerField,
     SelectField,
     StringField,
-    SubmitField,
     validators,
 )
 
 from webapp.data_src import DataStructures
 
 # from webapp.exerciseplan import ExerciseplanGenerator
-from webapp.mealplan import (  # get_mealplan,; save_mealplan,
-    MealplanGenerator,
-    get_recipes_from_db,
-)
-from webapp.models import Recipes, User, db
+from webapp.mealplan import MealplanGenerator, save_mealplan  # get_mealplan,;
+from webapp.models import User, db
 
 app = Flask(__name__, instance_relative_config=True)
 
@@ -86,6 +69,10 @@ def login():
     in a username and password entered by the user to login
     and then redirects to the page where users enter their health requirements
 
+    Use Case #1: #2mrbjah
+
+    Flaws:
+    - Fails to insert user variable result into session specific storage object 'g'. Trivial fix.
     """
     if request.method == "POST":
         email = request.form["email"]
@@ -119,6 +106,7 @@ def logout():
     """This function logs the user out by removing
     the session username and redirecting to the home login page
 
+    Use Case #1: #2mrbjah
     """
 
     session.pop("username", None)  # removes session username
@@ -137,19 +125,12 @@ def points():
     """This function shows a calendar of the points earned by
     users
 
+    Use Case: ???
+
+    Flaws:
+    - UNLINKED. Not production code.
     """
     return render_template("points.html")
-
-
-@app.route("/saveduserinfo/")
-def saveduserinfo():
-    """This function goes to the saveduserinfo page where
-    the user sees their saved meal plan and their saved
-    exercise plan
-
-    """
-
-    return render_template("saveduserinfo.html")
 
 
 @app.route("/signup/", methods=["GET", "POST"])
@@ -158,6 +139,7 @@ def signup():
     the user sees a form where they can sign up using their email,
     username, and password
 
+    Use Case #2: #2mrbja5
     """
     usersignupform = signupform(request.form)
     if request.method == "POST":
@@ -190,18 +172,43 @@ def signup():
     return render_template("signup.html", form=usersignupform)
 
 
+@app.route("/saveduserinfo/")
+def saveduserinfo():
+    """This function goes to the saveduserinfo page where
+    the user sees their saved meal plan and their saved
+    exercise plan
+
+    Use Cases #3 & #4: (#2mrbjar, #2mrbjce)
+
+    Use Case #3:
+    - Display top meal plan (#2mrbntd)
+    Use Case #4:
+    - Display top exercise plan (#2mrbqah)
+
+    Flaws:
+    - Incomplete. Bindings present in template, but no mock.
+    """
+    return render_template("saveduserinfo.html")
+
+
 @app.route("/diet/", methods=["GET", "POST"])
 def diet():
     """This function goes to the mealplanner page where
     the user sees a form where they can enter their diet requirements
 
+    Use Case #6: (#2mrbjbt)
+    Tasks:
+    - N/A - Appears to mock.
+
+    Flaws:
+    - Incomplete. No POST handler.
+    - Control flow proceeds from this page "/diet" to use case 3's "/mealplan".
+      This does not reflect final control flow of the project.
     """
     """
     message=request.args['message']
     return render_template("mealplanner.html", message=message)
 
-    
-    
     """
     form = dietform(request.form)
     return render_template("mealplanner.html", form=form)
@@ -213,6 +220,14 @@ def mealplan():
     the user their generated meal plan from their entered
     diet requirements
 
+    Use Case #3: (#2mrbjar)
+    Tasks:
+    - Generate meal plan web page (#2mrbmj3)
+    - Display top meal plan (#2mrbntd)
+
+    Flaws:
+    - Docstring doesn't appear to be english
+    - mypy/pyright is complaining on jsoninfo assign TODO
     """
     form = dietform(request.form)
     if request.method == "POST":
@@ -312,6 +327,12 @@ def savemealplan():
     """This function goes to the saveduserinfo page where
     the user can see their saved meal plan
 
+    Use Case #3: (#2mrbjar)
+    Tasks:
+    - Save Mealplan (#2mrbntt)
+
+    Flaws:
+    - Incomplete. Does not save mealplan to DB.
     """
     email = session["email"]
     mealplan = session["tempmealplan"]
@@ -375,6 +396,12 @@ def saveexerciseplan():
     """This function takes the generated best meal plan and saves it to
     the userinfo page where they can see their saved meal plan.
 
+    Use Case #4: (#2mrbjce)
+    Tasks:
+    - Save exercise plan (#2mrbqam)
+
+    Flaws:
+    - Incomplete. Does not save mealplan to DB.
     """
     session["savedexerciseplan"] = session["tempexerciseplan"]
     if request.method == "GET":
@@ -386,6 +413,10 @@ def exerciseplan():
     """This function takes in user input on user's exercise
     requirements and uses a mock function to generate the best exercise
     plan and show it to users
+
+    Use Case #4: (#2mrbjce)
+    Tasks:
+    - Save exercise plan (#2mrbqam)
 
     """
     form = exerciseform(request.form)

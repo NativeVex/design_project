@@ -1,5 +1,6 @@
 import json
 from datetime import datetime
+from typing import Union
 
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -74,11 +75,11 @@ class User(db.Model):
     def add_mealplan(self, mealplan: str):
         self.mealplan = mealplan
 
-    def get_mealplan(self):
+    def get_mealplan(self) -> Union[str, None]:
         if self.mealplan:
             return json.loads(self.mealplan)
         else:
-            print("no")
+            return None
 
 
 class Recipes(db.Model):
@@ -106,7 +107,7 @@ class Recipes(db.Model):
     vitamin_a = db.Column(db.Float)
     vitamin_c = db.Column(db.Float)
     number_of_servings = db.Column(db.Integer)
-    type = db.Column(db.String)
+    atype = db.Column(db.String)
 
     def __init__(
         self,
@@ -131,7 +132,7 @@ class Recipes(db.Model):
         number_of_servings=0,
         directions="",
         ingredients="",
-        type="",
+        atype="",
     ):
         """Create a new Mealplan object using the email address and hashing the
         plaintext password using Werkzeug.Security.
@@ -157,7 +158,7 @@ class Recipes(db.Model):
         self.vitamin_a = vitamin_a
         self.vitamin_c = vitamin_c
         self.number_of_servings = number_of_servings
-        self.type = type
+        self.atype = atype
 
     def __init__(self, json_str):
         data_dict = json.loads(json_str)
@@ -165,7 +166,7 @@ class Recipes(db.Model):
         self.directions = json.dumps(data_dict["directions"])
         self.ingredients = json.dumps(data_dict["ingredients"])
         self.number_of_servings = data_dict["number_of_servings"]
-        self.type = json.dumps(data_dict["type"])
+        self.atype = json.dumps(data_dict["type"])
 
         self.calories = data_dict["nutritional_values"]["calories"]
         self.carbohydrate = data_dict["nutritional_values"]["carbohydrate"]
