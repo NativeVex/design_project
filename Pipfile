@@ -15,6 +15,8 @@ setuptools = {editable = true, path = "."}
 [dev-packages]
 pyright = "*"
 ipython = "*"
+beautifulsoup4 = "*"
+pandas = "*"
 
 [requires]
 python_version = "3.9"
@@ -26,7 +28,6 @@ hrku-bld = "heroku container:push web --app design-project-b23"
 hrku-run = "heroku container:release web --app design-project-b23"
 hrku-open = "heroku open -a design-project-b23"
 hrku-logs = "heroku logs --tail -a design-project-b23"
-
 # DOCKER
 lcl = "bash -c \"pipenv run dkr-kill; pipenv run dkr-rm; pipenv run dkr-bld && pipenv run dkr-run\""
 dkr-bld = "docker build -t design_project/demo ."
@@ -39,7 +40,6 @@ dkr-rm = "bash -c \"pipenv run dkr-kill && (docker ps -a | awk '{print $1}' | ta
 vgt-hard-reset = "vagrant.exe destroy && vagrant.exe up --provision-with build"
 vgt-port-fwd = "ssh -NTR 8080:localhost:8080 vagrant@localhost"
 vgt-dkr-repl = "vagrant.exe ssh -c 'cd /vagrant && pipenv run dkr-bld && pipenv run dkr-run"
-
 # FLASK LOCALLY
-# pipenv run flask run # this has been made to work with addition of a .env
-tests = "pytest tests --ignore=tests/TODO --pdb"
+flsk=  "pipenv run flask run" # this has been made to work with addition of a .env
+tests = "pytest tests --ignore=tests/TODO --pdb --pdbcls=IPython.terminal.debugger:Pdb"
