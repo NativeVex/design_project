@@ -7,6 +7,7 @@ afaik.
 
 """
 
+
 def test_login_success(test_client):
     """
     GIVEN a Flask application configured for testing
@@ -21,6 +22,7 @@ def test_login_success(test_client):
     assert response.status_code == 200
     assert b"Enter your Diet/Nutrition Preferences" in response.data
 
+
 def test_login_failed(test_client):
     """
     GIVEN a Flask application configured for testing
@@ -33,4 +35,3 @@ def test_login_failed(test_client):
                                 follow_redirects=True)
     assert response.status_code == 200
     assert b"Please check your login details and try again." in response.data
-

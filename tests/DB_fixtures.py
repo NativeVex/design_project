@@ -1,11 +1,13 @@
 # --- DB FIXTURES
 import pytest
-from webapp.app import app, db
 from flask import Flask
+
+from webapp.app import app, db
+
 
 @pytest.fixture()
 def test_client():
-    """ Universal setup """
+    """Universal setup"""
     flask_app = app
 
     # Create a test client using the Flask application configured for testing
@@ -13,8 +15,6 @@ def test_client():
         # Establish an application context
         with flask_app.app_context():
             yield testing_client
-
-
 
 
 @pytest.fixture()
@@ -41,6 +41,7 @@ def init_database(test_client):
 
 #     return app
 
+
 @pytest.fixture()
 def login_default_user(test_client):
     test_client.post(
@@ -50,5 +51,3 @@ def login_default_user(test_client):
     )
     yield
     test_client.get("/logout", follow_redirects=True)
-
-

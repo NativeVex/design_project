@@ -7,6 +7,3 @@ def test_diet_page(test_client):
     response = test_client.get("/diet/", follow_redirects=True)
     assert response.status_code == 200
     assert b"Enter your Diet/Nutrition Preferences" in response.data
-
-
-

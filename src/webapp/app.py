@@ -1,13 +1,6 @@
 import json
 
-from flask import (
-    Flask,
-    redirect,
-    render_template,
-    request,
-    session,
-    url_for,
-)
+from flask import Flask, redirect, render_template, request, session, url_for
 from werkzeug.security import check_password_hash
 from wtforms import (
     BooleanField,
@@ -22,10 +15,7 @@ from wtforms import (
 from webapp.data_src import DataStructures
 
 # from webapp.exerciseplan import ExerciseplanGenerator
-from webapp.mealplan import (  # get_mealplan,; 
-    MealplanGenerator,
-    save_mealplan,
-)
+from webapp.mealplan import MealplanGenerator, save_mealplan  # get_mealplan,;
 from webapp.models import User, db
 
 app = Flask(__name__, instance_relative_config=True)
@@ -181,6 +171,7 @@ def signup():
             """
     return render_template("signup.html", form=usersignupform)
 
+
 @app.route("/saveduserinfo/")
 def saveduserinfo():
     """This function goes to the saveduserinfo page where
@@ -198,6 +189,7 @@ def saveduserinfo():
     - Incomplete. Bindings present in template, but no mock.
     """
     return render_template("saveduserinfo.html")
+
 
 @app.route("/diet/", methods=["GET", "POST"])
 def diet():

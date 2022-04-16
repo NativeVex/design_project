@@ -6,8 +6,8 @@ import math
 import os
 import random
 import sys
+from typing import Iterable, List, Tuple
 
-from typing import List, Tuple, Iterable
 from webapp import data_src
 from webapp.data_src import DataStructures
 from webapp.models import Recipes, User, db
@@ -98,12 +98,13 @@ def get_recipes_from_db(
 
 
 class MealplanGenerator(data_src.DataStructures):
-    """ TODO Description of this class here
+    """TODO Description of this class here
 
     Use Case #3: (#2mrbjar)
     Tasks:
     - Send user health requirements (#2mrbmnz)
     """
+
     recipes: List[dict] = []
     breakfasts = []
     lunches = []
