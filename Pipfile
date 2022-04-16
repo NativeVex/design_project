@@ -42,4 +42,4 @@ vgt-dkr-repl = "vagrant.exe ssh -c 'cd /vagrant && pipenv run dkr-bld && pipenv 
 
 # FLASK LOCALLY
 # pipenv run flask run # this has been made to work with addition of a .env
-# pipenv run pytest
+tests = "pytest tests --ignore=tests/TODO"
