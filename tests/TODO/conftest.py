@@ -120,6 +120,7 @@ def init_database_recipes(test_client):
 
 @pytest.fixture()
 def login_default_user(test_client):
+    """ PORTED """
     test_client.post(
         "/login",
         data=dict(email="tomliuhyyd@gmail.com", password="qwerty123"),

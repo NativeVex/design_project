@@ -1,6 +1,7 @@
 # --- DB FIXTURES
 import pytest
 from webapp.app import app, db
+from flask import Flask
 
 @pytest.fixture()
 def test_client():
@@ -25,17 +26,29 @@ def init_database(test_client):
     db.drop_all()
 
 
-@pytest.fixture
-def test_client():
-    app = Flask(__name__)
-    app.config.from_pyfile(config_filename)
+# @pytest.fixture
+# def test_client():
+#     app = Flask(__name__)
+#     app.config.from_pyfile(config_filename)
 
-    from yourapplication.model import db
-    db.init_app(app)
+#     from yourapplication.model import db
+#     db.init_app(app)
 
-    from yourapplication.views.admin import admin
-    from yourapplication.views.frontend import frontend
-    app.register_blueprint(admin)
-    app.register_blueprint(frontend)
+#     from yourapplication.views.admin import admin
+#     from yourapplication.views.frontend import frontend
+#     app.register_blueprint(admin)
+#     app.register_blueprint(frontend)
 
-    return app
+#     return app
+
+@pytest.fixture()
+def login_default_user(test_client):
+    test_client.post(
+        "/login",
+        data=dict(email="tomliuhyyd@gmail.com", password="qwerty123"),
+        follow_redirects=True,
+    )
+    yield
+    test_client.get("/logout", follow_redirects=True)
+
+
