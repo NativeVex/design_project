@@ -14,7 +14,7 @@ from webapp.models import Recipes, User, db
 
 def save_mealplan(
         email: str,
-        mealplan: DataStructures.meal_plan) -> DataStructures.meal_plan:
+        mealplan: DataStructures.meal_plan) -> DataStructures.meal_plan():
     user = User.query.filter_by(email=email).first()
 
     if user:
@@ -23,7 +23,7 @@ def save_mealplan(
         return None
 
 
-def get_mealplan(email: str) -> DataStructures.meal_plan:
+def get_mealplan(email: str) -> DataStructures.meal_plan():
     user = User.query.filter_by(email=email).first()
 
     if user:
@@ -286,13 +286,12 @@ class MealplanGenerator(data_src.DataStructures):
                                              scale)
 
     # this is the "head" of the code
-    def gen_meal_plan(self) -> DataStructures.meal_plan:
+    def gen_meal_plan(self) -> DataStructures.meal_plan():
         """Generates a mealplan based on the health requirements that the class was created with
         For each of 3 meals, picks the meal option that best matches the user's desired intake for that meal.
         Put each of the best meals together to generate a mealplan
         TODO: add snacks to lower mealplan RSS
         """
-        best_meal_plan: DataStructures.meal_plan
         best_meal_plan = DataStructures.meal_plan(4)
 
         # TODO
