@@ -1,13 +1,13 @@
-import pytest
 import base64
 import random
+
 import pytest
+
 from webapp.data_src import DataStructures
 
 # Functions to test that a given datastructure is valid
 # Written to be used in other test code
 random.seed(0)
-
 
 
 @pytest.fixture
@@ -21,7 +21,8 @@ def nv1():
 @pytest.fixture
 def nv2():
     nutritionalvalues = DataStructures.nutritional_values()
-    for i in nutritionalvalues: nutritionalvalues[i] = random.random() * 200
+    for i in nutritionalvalues:
+        nutritionalvalues[i] = random.random() * 200
     return nutritionalvalues
 
 
