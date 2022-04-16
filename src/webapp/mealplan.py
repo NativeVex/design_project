@@ -327,7 +327,7 @@ class MealplanGenerator(data_src.DataStructures):
 
         TODO: add snacks to lower mealplan RSS
         """
-        best_meal_plan = DataStructures.meal_plan(4)
+        best_meal_plan = [DataStructures.recipe_data() for i in range(4)]
 
         # TODO
         # Ability to add arbitrary # of snacks (favor coming at the RSS from the low end? Third slider so they can say how much they wanna snack?)
