@@ -1,6 +1,6 @@
-from webapp.app import  app, db
-from webapp.models import Recipes
+from webapp.app import app, db
 from webapp.mealplan import get_recipes_from_db
+from webapp.models import Recipes
 
 
 def test_recipeQuery(test_client, init_database_recipes):

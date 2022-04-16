@@ -1,7 +1,8 @@
 import json
 
-from webapp.app import  app, db
-#from webapp.models import Recipes
+from webapp.app import app, db
+
+# from webapp.models import Recipes
 from webapp.mealplan import get_recipes_from_db
 
 
