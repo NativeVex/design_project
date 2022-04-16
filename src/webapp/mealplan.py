@@ -7,6 +7,7 @@ import os
 import random
 import sys
 
+from typing import List, Tuple, Iterable
 from webapp import data_src
 from webapp.data_src import DataStructures
 from webapp.models import Recipes, User, db
@@ -42,7 +43,14 @@ def get_recipes_from_db(
     Carbs_min=0,
     Proteins_max=9999,
     Proteins_min=0,
-):
+) -> List[str]:
+    """Function for Query recipies from DB
+
+    Use Case #3: (#2mrbjar)
+    Tasks:
+    - Query recipes from DB (#2mrbnpx)
+    """
+
     recipes = []
 
     queried_recipes = Recipes.query.filter(
@@ -90,7 +98,13 @@ def get_recipes_from_db(
 
 
 class MealplanGenerator(data_src.DataStructures):
-    recipes = []
+    """ TODO Description of this class here
+
+    Use Case #3: (#2mrbjar)
+    Tasks:
+    - Send user health requirements (#2mrbmnz)
+    """
+    recipes: List[dict] = []
     breakfasts = []
     lunches = []
     main_dishes = []
@@ -286,13 +300,17 @@ class MealplanGenerator(data_src.DataStructures):
                                              scale)
 
     # this is the "head" of the code
-    def gen_meal_plan(self) -> DataStructures.meal_plan:
+    def gen_meal_plan(self) -> str:
         """Generates a mealplan based on the health requirements that the class was created with
         For each of 3 meals, picks the meal option that best matches the user's desired intake for that meal.
         Put each of the best meals together to generate a mealplan
         TODO: add snacks to lower mealplan RSS
+
+        Use Case #3: (#2mrbjar)
+        Tasks:
+        - Generate meal plan (#2mrbnt9)
         """
-        best_meal_plan: DataStructures.meal_plan
+        best_meal_plan: Tuple[dict, dict, dict, dict] | None
         best_meal_plan = DataStructures.meal_plan(4)
 
         # TODO

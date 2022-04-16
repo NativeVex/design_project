@@ -64,10 +64,10 @@ def test_client():
 @pytest.fixture()
 def init_database(test_client):
     # Create the database and the database table
-    db.drop_all()
     db.init_app(app)
     db.create_all(app=app)
     yield
+    db.drop_all()
 
 
 @pytest.fixture()

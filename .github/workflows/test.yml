@@ -28,11 +28,13 @@ jobs:
 
       - name: Install requirements
         run: |
-          python3.9 -m pipenv install --deploy --ignore-pipfile
-#      - name: Install pytest
-#        run: |
-#          python -m pip install pytest
+         python3.9 -m pipenv install --deploy --ignore-pipfile
+
+      - name: Scuffed debugging
+        run: |
+          ls -lah
+          pwd
 
       - name: Run pytest
         run: |
-          python3.9 -m pipenv run pytest 
+          python3.9 -m pipenv run pytest tests --ignore=tests/TODO
