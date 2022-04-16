@@ -7,13 +7,19 @@ import copy
 
 from webapp import data_src
 from webapp.data_src import DataStructures
+from webapp.models import Exercise
 
 
 def get_exercises_from_db():
     exercises = []
-    with open("homeworkouts_org_exercises.json") as file:
-        for line in file:
-            exercises.append(line)
+    queried_exercises = Exercise.query()
+    for exercise in queried_exercises:
+        skeleton = DataStructures.exercise()
+        skeleton["name"] = exercise.name
+        skeleton["targetmusclegroups"] = json.loads(exercise.targetmusclegroups)
+        skeleton["level"] = exercise.level
+        skeleton["sets"] = exercise.sets
+        skeleton["reps"] = exercise.reps
     return exercises
 
 class ExerciseplanGenerator(data_src.DataStructures):

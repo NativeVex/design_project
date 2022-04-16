@@ -6,11 +6,12 @@ import sys
 from curses.ascii import SO
 
 import pytest
+import pathlib
 
 from webapp.app import app, db
 from webapp.data_src import DataStructures
 from webapp.mealplan import MealplanGenerator
-from webapp.models import Recipes, User
+from webapp.models import Recipes, User, Exercise
 
 # Functions to test that a given datastructure is valid
 # Written to be used in other test code
@@ -36,7 +37,7 @@ def json_recipe_list(recipe_list):
 
 @pytest.fixture
 def mpg_class(nv1):
-    return MealplanGenerator(json.dumps(nv1))
+    return MealplanGenerator(json.dumps(nv1), '{"calorie_split": [0.25, 0.25, 0.5], "protein_split": [0.25, 0.25, 0.5], "carbs_split": [0.25, 0.25, 0.5]}')
 
 
 @pytest.fixture()
@@ -64,44 +65,45 @@ def init_database(test_client):
     db.create_all(app=app)
     yield
 
-
 @pytest.fixture()
-def init_database_recipes(test_client):
+def init_database_recipes(test_client, request):
     # Create the database and the database table
     # and add two sample recipes
+    file = pathlib.Path(request.node.fspath)
+    data = file.with_name('r2.json')
+
     db.drop_all()
     db.init_app(app)
     db.create_all(app=app)
-
-    adobo_chicken = Recipes(
-        name="Adobo Chicken",
-        Calories=107.0,
-        Carbs=2.48,
-        Proteins=11.88,
-        fat=4.93,
-        Sodium=392.0,
-        Vitamina=9.0,
-        Calcium=14.0,
-        Iron=1.05,
-        Potassium=147.0,
-    )
-    ice_cream_sandwich = Recipes(
-        name="Ice Cream Sandwich",
-        Calories=143.0,
-        Carbs=21.75,
-        Proteins=2.61,
-        fat=5.6,
-        Cholesterol=20.0,
-        Sodium=37.0,
-        Vitamina=53.0,
-        Calcium=60.0,
-        Iron=0.28,
-        Potassium=122.0,
-    )
-
-    db.session.add(adobo_chicken)
-    db.session.add(ice_cream_sandwich)
+    
+    with data.open() as r:
+        for jsline in r:
+            fixme = json.loads(jsline.strip())
+            for i in fixme["nutritional_values"]:
+                fixme["nutritional_values"][i] = float(
+                    fixme["nutritional_values"][i])
+            new_recipe = Recipes(json.dumps(fixme))
+            db.session.add(new_recipe)
     db.session.commit()
+
+    yield
+
+@pytest.fixture()
+def init_database_exercises(test_client, request):
+    # Create the database and the database table
+    file = pathlib.Path(request.node.fspath)
+    data = file.with_name('homeworkouts_org_exercises.json')
+
+    db.drop_all()
+    db.init_app(app)
+    db.create_all(app=app)
+    
+    with data.open() as r:
+        for jsline in r:
+            new_exercise = Exercise(jsline)
+            db.session.add(new_exercise)
+    db.session.commit()
+
     yield
 
 
@@ -136,10 +138,14 @@ def nv2(test_client, init_database_recipes):
 def rd1(nv1):
     recipe = DataStructures.recipe_data()
     recipe["name"] = str(base64.b64encode(random.randbytes(20)))
+    recipe["number_of_servings"] = 4
+    recipe["type"] = ["Breakfast"]
     for i in range(random.randint(3, 20)):
         recipe["ingredients"].append(
             str(base64.b64encode(random.randbytes(20))))
-    recipe["nutritional value"] = nv1
+        recipe["directions"].append(
+            str(base64.b64encode(random.randbytes(20))))
+    recipe["nutritional_values"] = nv1
     return recipe
 
 
@@ -147,10 +153,14 @@ def rd1(nv1):
 def rd2(nv1):
     recipe = DataStructures.recipe_data()
     recipe["name"] = str(base64.b64encode(random.randbytes(20)))
+    recipe["number_of_servings"] = 33
+    recipe["type"] = ["Lunch", "Main Dish"]
     for i in range(random.randint(3, 20)):
         recipe["ingredients"].append(
             str(base64.b64encode(random.randbytes(20))))
-    recipe["nutritional value"] = nv1
+        recipe["directions"].append(
+            str(base64.b64encode(random.randbytes(20))))
+    recipe["nutritional_values"] = nv1
     return recipe
 
 
@@ -158,10 +168,14 @@ def rd2(nv1):
 def rd3(nv1):
     recipe = DataStructures.recipe_data()
     recipe["name"] = str(base64.b64encode(random.randbytes(20)))
+    recipe["number_of_servings"] = 0.67
+    recipe["type"] = ["Lunch", "Side Dish", "Snack"]
     for i in range(random.randint(3, 20)):
         recipe["ingredients"].append(
             str(base64.b64encode(random.randbytes(20))))
-    recipe["nutritional value"] = nv1
+        recipe["directions"].append(
+            str(base64.b64encode(random.randbytes(20))))
+    recipe["nutritional_values"] = nv1
     return recipe
 
 

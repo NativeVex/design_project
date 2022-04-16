@@ -148,8 +148,8 @@ class Recipes(db.Model):
     def __init__(self, json_str):
         data_dict = json.loads(json_str)
         self.name = data_dict["name"]
-        self.directions = str(data_dict["directions"])
-        self.ingredients = str(data_dict["ingredients"])
+        self.directions = json.dumps(data_dict["directions"])
+        self.ingredients = json.dumps(data_dict["ingredients"])
         self.number_of_servings = data_dict["number_of_servings"]
         self.type = data_dict["type"]
 
@@ -175,4 +175,34 @@ class Recipes(db.Model):
 
     def get_id(self):
         """Return the user ID as a unicode string (`str`)."""
+        return str(self.id)
+
+
+class Exercise(db.Model):
+    __tablename__ = "exercise"
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    name = db.Column(db.String)
+    targetmusclegroups = db.Column(db.String)
+    level = db.Column(db.Integer)
+    sets = db.Column(db.Integer)
+    reps = db.Column(db.Integer)
+
+    def __init__(self, name: str, targetmusclegroups: str, level = 0, sets = 0, reps = 0):
+        self.name = name
+        self.targetmusclegroups = targetmusclegroups
+        self.level = level
+        self.sets = sets
+        self.reps = reps
+
+    def __init__(self, json_str):
+        data_dict = json.loads(json_str)
+        self.name = data_dict["name"]
+        self.targetmusclegroups = json.dumps(data_dict["targetmusclegroups"])
+        self.level = data_dict["level"]
+        self.sets = data_dict["sets"]
+        self.reps = data_dict["reps"]
+
+    def get_id(self):
+        """Return the exercise ID as a unicode string (`str`)."""
         return str(self.id)

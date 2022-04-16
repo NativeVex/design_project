@@ -87,18 +87,18 @@ def test_login_failed(test_client):
     assert b"Please check your login details and try again." in response.data
 
 
-def test_generatemealplan(test_client):
-    """
-    GIVEN a Flask application configured for testing
-    WHEN the '/mealplan' page is posted to (POST) when the user enters health requirements data
+# def test_generatemealplan(test_client):
+#     """
+#     GIVEN a Flask application configured for testing
+#     WHEN the '/mealplan' page is posted to (POST) when the user enters health requirements data
 
-    """
-    response = test_client.post(
-        "/mealplan",
-        data=dict(Calories="2000", Carbs="20", Proteins="6"),
-        follow_redirects=True,
-    )
-    assert response.status_code == 200
+#     """
+#     response = test_client.post(
+#         "/mealplan",
+#         data=dict(Calories="2000", Carbs="20", Proteins="6"),
+#         follow_redirects=True,
+#     )
+#     assert response.status_code == 200
 
 
 def test_points_page(test_client):
