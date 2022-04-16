@@ -524,27 +524,18 @@ def addexercise():
     
     """
     if request.method == "POST":
-           #getting new exericse to add to database
-        name=request.form["name"]
+        dayschecked=request.form.getlist("days")   #getting new exericse to add to database
         intensity=request.form["intensity"]
-        sets=request.form["sets"]
-        reps=request.form["reps"]
         selectedtargetmuscles = request.form.getlist("muscles")
-        exercisedata=DataStructures.exercise()
-        
-        if(name!='' and name!=None):
-            exercisedata["name"]=name
-        if(intensity!='' and intensity!=None):
+        exercisedata=DataStructures.exercise_reqs()
+        exercisedata["days"]=dayschecked
+        if(intensity!=''):
             exercisedata["level"]=int(intensity)
-        if(sets!='' and sets!=None):
-            exercisedata["sets"]=int(sets)
-        if(reps!='' and reps!=None):
-            exercisedata["reps"]=int(reps)
         exercisedata["targetmusclegroups"]=selectedtargetmuscles
         newexercise=json.dumps(exercisedata)
         newaddedexercise=json.loads(newexercise)     
                                                     #add exercise to database
-        return render_template("shoppinglist.html",exercise=newaddedexercise,intensity=intensity,muscles=selectedtargetmuscles)
+        return render_template("shoppinglist.html",exercise=newaddedexercise,days=dayschecked,intensity=intensity,muscles=selectedtargetmuscles)
 
 
 
