@@ -20,7 +20,7 @@ jobs:
 
       - name: Install Pipenv
         run: |
-          python3.9 -m pip install pipenv
+          python3.9 -m pip install pipenv --dev
 
       - name: Install our code as a package
         run: |
