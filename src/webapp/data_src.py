@@ -20,7 +20,7 @@ class DataStructures:
         skeleton["nutritional_values"] = DataStructures.nutritional_values()
         return skeleton
 
-    def meal_plan(meals=3):
+    def mealplan(meals=3):
         return [DataStructures.recipe_data() for i in range(meals)]
 
     def exercise():

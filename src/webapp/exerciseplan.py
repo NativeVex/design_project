@@ -7,7 +7,7 @@ import copy
 
 from webapp import data_src
 from webapp.data_src import DataStructures
-from webapp.models import Exercise
+from webapp.models import Exercise, db
 
 
 def get_exercises_from_db():
@@ -21,6 +21,12 @@ def get_exercises_from_db():
         skeleton["sets"] = exercise.sets
         skeleton["reps"] = exercise.reps
     return exercises
+
+def add_exercise_to_db(name: str, targetmusclegroups: list, level=0, sets=0, reps=0):
+    new_exercise = Exercise(name, targetmusclegroups, level, sets, reps)
+    db.session.add(new_exercise)
+    db.session.commit()
+    return
 
 class ExerciseplanGenerator(data_src.DataStructures):
     user_requirements = None

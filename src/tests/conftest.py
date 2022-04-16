@@ -82,7 +82,7 @@ def init_database_recipes(test_client, request):
             for i in fixme["nutritional_values"]:
                 fixme["nutritional_values"][i] = float(
                     fixme["nutritional_values"][i])
-            new_recipe = Recipes(json.dumps(fixme))
+            new_recipe = Recipes(json_str=json.dumps(fixme))
             db.session.add(new_recipe)
     db.session.commit()
 
@@ -100,7 +100,7 @@ def init_database_exercises(test_client, request):
     
     with data.open() as r:
         for jsline in r:
-            new_exercise = Exercise(jsline)
+            new_exercise = Exercise(json_str=jsline)
             db.session.add(new_exercise)
     db.session.commit()
 
@@ -119,7 +119,7 @@ def login_default_user(test_client):
 
 
 @pytest.fixture
-def nv1(test_client, init_database_recipes):
+def nv1(test_client):
     nutritionalvalues = DataStructures.nutritional_values()
     for i in nutritionalvalues:
         nutritionalvalues[i] = random.random() * 200
@@ -127,7 +127,7 @@ def nv1(test_client, init_database_recipes):
 
 
 @pytest.fixture
-def nv2(test_client, init_database_recipes):
+def nv2(test_client):
     nutritionalvalues = DataStructures.nutritional_values()
     for i in nutritionalvalues:
         nutritionalvalues[i] = random.random() * 200
