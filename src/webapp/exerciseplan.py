@@ -12,7 +12,7 @@ from webapp.models import Exercise, db
 
 def get_exercises_from_db():
     exercises = []
-    queried_exercises = Exercise.query()
+    queried_exercises = db.session.query(Exercise).all()
     for exercise in queried_exercises:
         skeleton = DataStructures.exercise()
         skeleton["name"] = exercise.name
