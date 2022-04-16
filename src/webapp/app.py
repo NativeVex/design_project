@@ -58,6 +58,10 @@ def login():
     in a username and password entered by the user to login
     and then redirects to the page where users enter their health requirements
 
+    Use Case #1: #2mrbjah
+
+    Flaws:
+    - Fails to insert user variable result into session specific storage object 'g'. Trivial fix.
     """
     if request.method == "POST":
         email = request.form["email"]
@@ -91,6 +95,7 @@ def logout():
     """This function logs the user out by removing
     the session username and redirecting to the home login page
 
+    Use Case #1: #2mrbjah
     """
 
     session.pop("username", None)  # removes session username
@@ -102,18 +107,12 @@ def points():
     """This function shows a calendar of the points earned by
     users
 
+    Use Case: ???
+
+    Flaws:
+    - UNLINKED. Not production code.
     """
     return render_template("points.html")
-
-
-@app.route("/saveduserinfo/")
-def saveduserinfo():
-    """This function goes to the saveduserinfo page where
-    the user sees their saved meal plan and their saved
-    exercise plan
-
-    """
-    return render_template("saveduserinfo.html")
 
 
 @app.route("/signup/", methods=["GET", "POST"])
@@ -122,6 +121,7 @@ def signup():
     the user sees a form where they can sign up using their email,
     username, and password
 
+    Use Case #2: #2mrbja5
     """
     usersignupform = signupform(request.form)
     if request.method == "POST":
@@ -153,19 +153,42 @@ def signup():
             """
     return render_template("signup.html", form=usersignupform)
 
+@app.route("/saveduserinfo/")
+def saveduserinfo():
+    """This function goes to the saveduserinfo page where
+    the user sees their saved meal plan and their saved
+    exercise plan
+
+    Use Cases #3 & #4: (#2mrbjar, #2mrbjce)
+
+    Use Case #3:
+    - Display top meal plan (#2mrbntd)
+    Use Case #4:
+    - Display top exercise plan (#2mrbqah)
+
+    Flaws:
+    - Incomplete. Bindings present in template, but no mock.
+    """
+    return render_template("saveduserinfo.html")
 
 @app.route("/diet/", methods=["GET", "POST"])
 def diet():
     """This function goes to the mealplanner page where
     the user sees a form where they can enter their diet requirements
 
+    Use Case #6: (#2mrbjbt)
+    Tasks:
+    - N/A - Appears to mock.
+
+    Flaws:
+    - Incomplete. No POST handler.
+    - Control flow proceeds from this page "/diet" to use case 3's "/mealplan".
+      This does not reflect final control flow of the project.
     """
     """
     message=request.args['message']
     return render_template("mealplanner.html", message=message)
 
-    
-    
     """
     form = dietform(request.form)
     return render_template("mealplanner.html", form=form)
@@ -177,11 +200,19 @@ def mealplan():
     the user their generated meal plan from their entered
     diet requirements
 
+    Use Case #3: (#2mrbjar)
+    Tasks:
+    - Generate meal plan web page (#2mrbmj3)
+    - Display top meal plan (#2mrbntd)
+
+    Flaws:
+    - Docstring doesn't appear to be english
+    - mypy/pyright is complaining on jsoninfo assign TODO
     """
     if request.method == "POST":
-        Calories = request.form.get("Calories")
-        Carbs = request.form.get("Carbs")
-        protein = request.form.get("Proteins")
+        Calories = str(request.form.get("Calories")) # I was getting some type complaints here - Artur
+        Carbs = str(request.form.get("Carbs"))
+        protein = str(request.form.get("Proteins"))
         list1 = [1, 2, 3]
 
         jsoninfo = DataStructures.nutritional_values()
@@ -190,8 +221,8 @@ def mealplan():
         jsoninfo["protein"] = int(protein)
         jsonstring = json.dumps(jsoninfo)
         mpg = MealplanGenerator(jsonstring)
-        mealplan = mpg.gen_meal_plan()
-        jsondata = json.loads(mealplan)
+        mealplan = mpg.gen_meal_plan() # Frontend -> Backend (#2mrbmj3)
+        jsondata = json.loads(mealplan) # Backend -> Frontend (#2mrbntd)
         return render_template("mealplans.html", bestmealplan=jsondata)
     elif request.method == "GET":
         return render_template("mealplans.html")
@@ -202,6 +233,12 @@ def savemealplan():
     """This function goes to the saveduserinfo page where
     the user can see their saved meal plan
 
+    Use Case #3: (#2mrbjar)
+    Tasks:
+    - Save Mealplan (#2mrbntt)
+
+    Flaws:
+    - Incomplete. Does not save mealplan to DB.
     """
 
     if request.method == "POST":
@@ -218,6 +255,12 @@ def saveexerciseplan():
     """This function takes the generated best meal plan and saves it to
     the userinfo page where they can see their saved meal plan.
 
+    Use Case #4: (#2mrbjce)
+    Tasks:
+    - Save exercise plan (#2mrbqam)
+
+    Flaws:
+    - Incomplete. Does not save mealplan to DB.
     """
 
     if request.method == "POST":
@@ -235,6 +278,10 @@ def exerciseplan():
     """This function takes in user input on user's exercise
     requirements and uses a mock function to generate the best exercise
     plan and show it to users
+
+    Use Case #4: (#2mrbjce)
+    Tasks:
+    - Save exercise plan (#2mrbqam)
 
     """
     if request.method == "POST":

@@ -4,6 +4,7 @@ import os
 import random
 import sys
 
+from typing import List, Tuple, Iterable
 from webapp import data_src
 from webapp.data_src import DataStructures
 
@@ -11,7 +12,13 @@ from webapp.data_src import DataStructures
 # TODO: make this actually connect to a DB and pull recipes. Might need to add inputs to do a preliminary filtering of the DB first.
 # Idea for DB source: https://www.fatsecret.com/calories-nutrition/search?q=(encoded string)
 # This returns an array of JSON strings. Do we instead want one giant json string? Good question.
-def get_recipes_from_db():
+def get_recipes_from_db() -> List[str]:
+    """Mock function for Query recipies from DB
+
+    Use Case #3: (#2mrbjar)
+    Tasks:
+    - Mocks Query recipes from DB (#2mrbnpx)
+    """
     # Hard coded recipes for now
     recipes = []
     recipes.append(
@@ -57,7 +64,13 @@ def get_recipes_from_db():
 
 
 class MealplanGenerator(data_src.DataStructures):
-    recipes = []
+    """ TODO Description of this class here
+
+    Use Case #3: (#2mrbjar)
+    Tasks:
+    - Send user health requirements (#2mrbmnz)
+    """
+    recipes: List[dict] = []
     user_health_requirements = None
 
     def __init__(self, json_health_requirements):
@@ -136,14 +149,18 @@ class MealplanGenerator(data_src.DataStructures):
         # RSS += random.random() * 2
 
     # this is the "head" of the code
-    def gen_meal_plan(self) -> DataStructures.meal_plan:
+    def gen_meal_plan(self) -> str:
         """Generates a mealplan based on the health requirements that the class was created with
 
         Creates n choose k different mealplans based on recipes gotten from DB, then calculates the
         RSS of each of these wrt the user's heatlh requirements. Returns the best mealplan, with the
         lowest RSS
+
+        Use Case #3: (#2mrbjar)
+        Tasks:
+        - Generate meal plan (#2mrbnt9)
         """
-        best_meal_plan: DataStructures.meal_plan
+        best_meal_plan: Tuple[dict, dict, dict] | None = None
 
         # n choose k reqs. For this proof of concept n is number of recipes and k is 3. Thus there are
         # n! / (k!(n-k)!) answers. This is obviously impossible to compute for any significant number of recipes.
@@ -152,8 +169,7 @@ class MealplanGenerator(data_src.DataStructures):
         # We can assess the quality of a meal plan given the RSS of the meal plan wrt the reqs. With this we can compare
         # two meal plans and pick the better one.
         meals_per_meal_plan = 3
-        possible_meal_plans_iterator = itertools.combinations(
-            self.recipes, meals_per_meal_plan)
+        possible_meal_plans_iterator: Iterable[Tuple[dict, dict, dict]] = itertools.combinations(self.recipes, meals_per_meal_plan)
 
         # print all possible meal plans
         lowest_RSS = 1000000000000
@@ -163,5 +179,6 @@ class MealplanGenerator(data_src.DataStructures):
             if current_meal_plan_RSS < lowest_RSS:
                 lowest_RSS = current_meal_plan_RSS
                 best_meal_plan = i
-
+        if best_meal_plan is None:
+            raise Exception("all possible mealplan iterators were over RSS 1000000000000")
         return json.dumps(best_meal_plan)
