@@ -598,6 +598,33 @@ def addfood():
         if(numberofservings!='' and numberofservings!=None):
             newrecipe["number_of_servings"]=int(numberofservings)
         newrecipe["type"]=foodtype  
+        add_recipe(
+            newrecipe["name"],
+            newrecipe["directions"],
+            newrecipe["ingredients"],
+            newrecipe["nutritional_values"]["calories"],
+            newrecipe["nutritional_values"]["carbohydrate"],
+            newrecipe["nutritional_values"]["protein"],
+            newrecipe["nutritional_values"]["cholesterol"],
+            newrecipe["nutritional_values"]["fat"],
+            newrecipe["nutritional_values"]["fiber"],
+            newrecipe["nutritional_values"]["iron"],
+            newrecipe["nutritional_values"]["monounsaturated_fat"],
+            newrecipe["nutritional_values"]["polyunsaturated_fat"],
+            newrecipe["nutritional_values"]["potassium"],
+            newrecipe["nutritional_values"]["calcium"],
+            newrecipe["nutritional_values"]["saturated_fat"],
+            newrecipe["nutritional_values"]["sodium"],
+            newrecipe["nutritional_values"]["sugar"],
+            newrecipe["nutritional_values"]["trans_fat"],
+            newrecipe["nutritional_values"]["vitamin_a"],
+            newrecipe["nutritional_values"]["vitamin_c"],
+            newrecipe["number_of_servings"],
+            newrecipe["type"]
+            )
+            #message="food recipe added!"                        
+                                    
+                                    
                                     #add newfoodrecipe to database
         return render_template("shoppinglist.html",jsonrecipe=newrecipe)
     
@@ -627,9 +654,8 @@ def addexercise():
         if(reps!='' and reps!=None):
             exercisedata["reps"]=int(reps)
         exercisedata["targetmusclegroups"]=selectedtargetmuscles
-        newexercise=json.dumps(exercisedata)
-        newaddedexercise=json.loads(newexercise)     
-                                                    #add exercise to database
+        #add_exercise_to_db(exercisedata["name"],exercisedata["targetmusclegroups"],exercisedata["level"],exercisedata["sets"],exercisedata["reps"])    
+        #message="exercise added!"                                            #add exercise to database
         return render_template("shoppinglist.html",exercise=newaddedexercise,intensity=intensity,muscles=selectedtargetmuscles)
 
 
