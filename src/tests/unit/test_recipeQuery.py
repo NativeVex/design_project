@@ -8,6 +8,6 @@ def test_recipeQuery(test_client, init_database_recipes):
     WHEN the query is called
     THEN test if query success
     """
-    recipes = Recipes.query.filter(Recipes.Calories > 0,
-                                   Recipes.Calories < 1000)
-    assert recipes[1].Calories == 143.0
+    recipes = Recipes.query.filter(Recipes.calories > 0,
+                                   Recipes.calories < 1000)
+    assert recipes[1].calories == 143.0

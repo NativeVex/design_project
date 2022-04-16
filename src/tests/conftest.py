@@ -35,8 +35,13 @@ def json_recipe_list(recipe_list):
 
 
 @pytest.fixture
-def mpg_class(nv1):
-    return MealplanGenerator(json.dumps(nv1), '{"calorie_split": [0.25, 0.25, 0.5], "protein_split": [0.25, 0.25, 0.5], "carbs_split": [0.25, 0.25, 0.5]}')
+def s1():
+    return '{"calorie_split": [0.25, 0.25, 0.5], "protein_split": [0.25, 0.25, 0.5], "carbs_split": [0.25, 0.25, 0.5]}'
+
+
+@pytest.fixture
+def mpg_class(nv1, s1):
+    return MealplanGenerator(json.dumps(nv1), s1)
 
 
 @pytest.fixture()
@@ -72,7 +77,7 @@ def init_database_recipes(test_client):
     db.drop_all()
     db.init_app(app)
     db.create_all(app=app)
-    
+
     adobo_chicken_dict = DataStructures.recipe_data()
     adobo_chicken_dict["name"] = "Adobo Chicken"
     adobo_chicken_dict["ingredients"] = ["Chicken", "Adobo Sauce"]
@@ -103,12 +108,8 @@ def init_database_recipes(test_client):
     ice_cream_sandwich_dict["nutritional_values"]["vitamin_a"] = 53.0
     ice_cream_sandwich_dict["number_of_servings"] = 1
     ice_cream_sandwich_dict["type"] = ["Snack"]
-    adobo_chicken = Recipes(
-            json.dumps(adobo_chicken_dict)
-    )
-    ice_cream_sandwich = Recipes(
-            json.dumps(ice_cream_sandwich_dict)
-    )
+    adobo_chicken = Recipes(json.dumps(adobo_chicken_dict))
+    ice_cream_sandwich = Recipes(json.dumps(ice_cream_sandwich_dict))
 
     db.session.add(adobo_chicken)
     db.session.add(ice_cream_sandwich)
@@ -152,8 +153,8 @@ def rd1(nv1):
     for i in range(random.randint(3, 20)):
         recipe["ingredients"].append(
             str(base64.b64encode(random.randbytes(20))))
-        recipe["directions"].append(
-            str(base64.b64encode(random.randbytes(20))))
+        recipe["directions"].append(str(base64.b64encode(
+            random.randbytes(20))))
     recipe["nutritional_values"] = nv1
     return recipe
 
@@ -167,8 +168,8 @@ def rd2(nv1):
     for i in range(random.randint(3, 20)):
         recipe["ingredients"].append(
             str(base64.b64encode(random.randbytes(20))))
-        recipe["directions"].append(
-            str(base64.b64encode(random.randbytes(20))))
+        recipe["directions"].append(str(base64.b64encode(
+            random.randbytes(20))))
     recipe["nutritional_values"] = nv1
     return recipe
 
@@ -182,8 +183,8 @@ def rd3(nv1):
     for i in range(random.randint(3, 20)):
         recipe["ingredients"].append(
             str(base64.b64encode(random.randbytes(20))))
-        recipe["directions"].append(
-            str(base64.b64encode(random.randbytes(20))))
+        recipe["directions"].append(str(base64.b64encode(
+            random.randbytes(20))))
     recipe["nutritional_values"] = nv1
     return recipe
 
@@ -198,5 +199,14 @@ def mp(rd1, rd2, rd3):
 
 
 @pytest.fixture
-def sample_health_reqs(nv1):
-    return nv1
+def sample_health_reqs():
+    return DataStructures.default_nutritional_values()
+
+
+def sample_recipe_source():
+    return [json.dumps(rd1()), json.dumps(rd2()), json.dumps(rd3())]
+
+
+@pytest.fixture
+def sample_recipe_source_fcn():
+    return sample_recipe_source

@@ -14,10 +14,10 @@ def test_getRecipes(test_client, init_database_recipes):
     for i in range(len(recipes)):
         recipes[i] = json.loads(recipes[i])
     assert type(recipes[0]) == type({"": str, "": [], "": {}})
-    assert recipes[0]["nutritional value"]["calories"] == 107.0
-    assert recipes[1]["nutritional value"]["calories"] == 143.0
+    assert recipes[0]["nutritional_values"]["calories"] == 107.0
+    assert recipes[1]["nutritional_values"]["calories"] == 143.0
 
     recipes = get_recipes_from_db(Proteins_max=5)
     for i in range(len(recipes)):
         recipes[i] = json.loads(recipes[i])
-    assert recipes[0]["nutritional value"]["sodium"] == 37.0
+    assert recipes[0]["nutritional_values"]["sodium"] == 37.0

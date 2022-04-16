@@ -24,15 +24,20 @@ class User(db.Model):
     username = db.Column(db.String)
     password_hashed = db.Column(db.String(128))
     registered_on = db.Column(db.DateTime)
+    mealplan = db.Column(db.String)
 
-    def __init__(self, email: str, username: str, password_plaintext: str):
+    def __init__(self,
+                 email: str,
+                 username: str,
+                 password_plaintext: str,
+                 mealplan=""):
         """Create a new User object using the email address and hashing the
         plaintext password using Werkzeug.Security.
         """
         self.email = email
         self.username = username
-
         self.password_hashed = self._generate_password_hash(password_plaintext)
+        self.mealplan = mealplan
 
     def is_password_correct(self, password_plaintext: str):
         return check_password_hash(self.password_hashed, password_plaintext)
@@ -66,12 +71,21 @@ class User(db.Model):
         """Return the user ID as a unicode string (`str`)."""
         return str(self.id)
 
+    def add_mealplan(self, mealplan: str):
+        self.mealplan = mealplan
+
+    def get_mealplan(self):
+        if self.mealplan:
+            return json.loads(self.mealplan)
+        else:
+            print("no")
+
 
 class Recipes(db.Model):
     __tablename__ = "recipes"
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    name = db.Column(db.String(100), unique=True)
+    name = db.Column(db.String(100))
     directions = db.Column(db.String)
     ingredients = db.Column(db.String)
     calcium = db.Column(db.Float)
@@ -97,8 +111,6 @@ class Recipes(db.Model):
     def __init__(
         self,
         name: str,
-        directions: list,
-        ingredients: list,
         calories: float,
         carbohydrate: float,
         protein: float,
@@ -117,14 +129,16 @@ class Recipes(db.Model):
         vitamin_a=0.0,
         vitamin_c=0.0,
         number_of_servings=0,
+        directions="",
+        ingredients="",
         type="",
     ):
         """Create a new Mealplan object using the email address and hashing the
         plaintext password using Werkzeug.Security.
         """
         self.name = name
-        self.directions = str(directions)
-        self.ingredients = str(ingredients)
+        self.directions = directions
+        self.ingredients = ingredients
         self.calories = calories
         self.carbohydrate = carbohydrate
         self.protein = protein
@@ -148,8 +162,8 @@ class Recipes(db.Model):
     def __init__(self, json_str):
         data_dict = json.loads(json_str)
         self.name = data_dict["name"]
-        self.directions = str(data_dict["directions"])
-        self.ingredients = str(data_dict["ingredients"])
+        self.directions = json.dumps(data_dict["directions"])
+        self.ingredients = json.dumps(data_dict["ingredients"])
         self.number_of_servings = data_dict["number_of_servings"]
         self.type = json.dumps(data_dict["type"])
 
