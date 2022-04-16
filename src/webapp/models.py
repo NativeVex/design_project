@@ -73,12 +73,12 @@ class User(db.Model):
 
     def add_mealplan(self, mealplan: str):
         self.mealplan = mealplan
+        return
 
     def get_mealplan(self):
         if self.mealplan:
             return json.loads(self.mealplan)
-        else:
-            print("no")
+        return
 
 
 class Recipes(db.Model):
@@ -107,57 +107,6 @@ class Recipes(db.Model):
     vitamin_c = db.Column(db.Float)
     number_of_servings = db.Column(db.Integer)
     type = db.Column(db.String)
-
-    def __init__(
-        self,
-        name: str,
-        calories: float,
-        carbohydrate: float,
-        protein: float,
-        cholesterol=0.0,
-        fat=0.0,
-        fiber=0.0,
-        iron=0.0,
-        monounsaturated_fat=0.0,
-        polyunsaturated_fat=0.0,
-        potassium=0.0,
-        calcium=0.0,
-        saturated_fat=0.0,
-        sodium=0.0,
-        sugar=0.0,
-        trans_fat=0.0,
-        vitamin_a=0.0,
-        vitamin_c=0.0,
-        number_of_servings=0,
-        directions="",
-        ingredients="",
-        type="",
-    ):
-        """Create a new Mealplan object using the email address and hashing the
-        plaintext password using Werkzeug.Security.
-        """
-        self.name = name
-        self.directions = directions
-        self.ingredients = ingredients
-        self.calories = calories
-        self.carbohydrate = carbohydrate
-        self.protein = protein
-        self.cholesterol = cholesterol
-        self.fat = fat
-        self.fiber = fiber
-        self.iron = iron
-        self.monounsaturated_fat = monounsaturated_fat
-        self.polyunsaturated_fat = polyunsaturated_fat
-        self.potassium = potassium
-        self.calcium = calcium
-        self.saturated_fat = saturated_fat
-        self.sodium = sodium
-        self.sugar = sugar
-        self.trans_fat = trans_fat
-        self.vitamin_a = vitamin_a
-        self.vitamin_c = vitamin_c
-        self.number_of_servings = number_of_servings
-        self.type = type
 
     def __init__(self, json_str):
         data_dict = json.loads(json_str)
