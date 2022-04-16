@@ -31,21 +31,12 @@ def get_exercises_from_db():
     crunches["sets"] = 3
     crunches["reps"] = 30
     exercises.append(json.dumps(crunches))
-<<<<<<< HEAD
-=======
     push_up = DataStructures.exercise()
->>>>>>> exerciseplan
     push_up["name"] = "Push Ups"
     push_up["targetmusclegroups"] = ["core", "arms", "chest", "shoulders"]
     push_up["level"] = 2
     push_up["sets"] = 3
     push_up["reps"] = 15
-<<<<<<< HEAD
-
-
-
-#class ExerciseplanGenerator(data_src.DataStructures):
-=======
     exercises.append(json.dumps(push_up))
     return exercises
 
@@ -101,4 +92,3 @@ class ExerciseplanGenerator(data_src.DataStructures):
             if self.user_requirements["days"][i]:
                 to_return[i] = self._gen_exercises_for_day()
         return to_return
->>>>>>> exerciseplan

@@ -65,14 +65,14 @@ def get_recipes_from_db(
     return recipes
 
 
-def save_mealplan(email: str, mealplan: DataStructures.mealplan) -> DataStructures.meal_plan:
+def save_mealplan(email: str, mealplan):
     user = User.query.filter_by(email=email).first()
 
     if user:
         user.add_mealplan(json.dumps(mealplan))
     return mealplan
 
-def get_mealplan(email: str)-> DataStructures.meal_plan:
+def get_mealplan(email: str):
     user = User.query.filter_by(email=email).first()
 
     if user:

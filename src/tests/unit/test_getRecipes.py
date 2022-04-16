@@ -18,5 +18,5 @@ def test_getRecipes(test_client, init_database_recipes):
     recipes = get_recipes_from_db()
     for i in range(len(recipes)):
         recipes[i] = json.loads(recipes[i])
-    assert recipes[0]["nutritional_values"]["fat"] == 1.61
+    assert recipes[0]["nutritional_values"]["fat"] == 1.69
     
