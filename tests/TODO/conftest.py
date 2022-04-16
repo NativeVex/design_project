@@ -63,6 +63,7 @@ def test_client():
 
 @pytest.fixture()
 def init_database(test_client):
+    """ PORTED """
     # Create the database and the database table
     db.init_app(app)
     db.create_all(app=app)
