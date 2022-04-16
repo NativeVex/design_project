@@ -27,7 +27,7 @@ def get_recipes_from_db(
 ):
     recipes = []
 
-    queried_recipes = Recipes.query.filter(
+    queried_recipes = db.session.query(Recipes).filter(
         Recipes.calories > Calories_min,
         Recipes.calories < Calories_max,
         Recipes.carbohydrate > Carbs_min,

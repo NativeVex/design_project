@@ -10,9 +10,17 @@ from webapp.data_src import DataStructures
 from webapp.models import Exercise, db
 
 
-def get_exercises_from_db():
+def get_exercises_from_db(
+    level_max=9999,
+    level_min=0,
+):
     exercises = []
-    queried_exercises = db.session.query(Exercise).all()
+
+    queried_exercises = db.session.query(Exercise).filter(
+        Exercise.level < level_max,
+        Exercise.level > level_min,
+    )
+
     for exercise in queried_exercises:
         skeleton = DataStructures.exercise()
         skeleton["name"] = exercise.name
@@ -20,6 +28,8 @@ def get_exercises_from_db():
         skeleton["level"] = exercise.level
         skeleton["sets"] = exercise.sets
         skeleton["reps"] = exercise.reps
+        exercises.append(json.dumps(skeleton))
+
     return exercises
 
 def add_exercise_to_db(name: str, targetmusclegroups: list, level=0, sets=0, reps=0):
