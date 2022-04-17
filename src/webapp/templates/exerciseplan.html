@@ -28,18 +28,41 @@
         <form action="/exercises/" method="">
           <button name="btn" class="btn-primary btn-lg" type="submit">Generate new exercise plan</button>
       </form> 
-        {% if bestexerciseplan is defined %}
-      <table class="table table-bordered" style="background-color:white;border-color:black">
-        <tbody>
-          <h5 class="card-header" style="background-color:black;color:white;">Sunday Exercises</h5>
-              <div class="card-body">
-              {% for exercise in bestexerciseplan['Sunday'] %}
+        <div class="card">
+          {% if bestexerciseplan is defined %}
+          
+
+          
+            <h5 class="card-header" style="background-color:black;color:white;">Sunday Exercises</h5>
+            <div class="card-body">
+            {% for exercise in bestexerciseplan['Sunday'] %}
+            <div class="card">
+              <h5 class="card-title"> Name: {{exercise['name']}}</h5>
+              <h5 class="card-title"> Level: {{exercise['level']}}</h5>
+              <h5 class="card-title"> Sets: {{exercise['sets']}}</h5>
+              <h5 class="card-title"> Reps: {{exercise['reps']}}</h5>
+              {% for musclegroup in exercise['targetmusclegroups'] %}
+
+              <h5 class="card-title"> Target Muscle Group: {{musclegroup}}</h5>
+              {% endfor %}
+
+              
+            </div>
+            {% endfor %}
+          </div>
+          </div>
+          
+
+          <div class="card" style="margin-top:10px;">
+            <h5 class="card-header" style="background-color:black;color:white;">Monday Exercises</h5>
+            <div class="card-body">
+              {% for exercise in bestexerciseplan['Monday'] %}
               <div class="card">
                 <h5 class="card-title"> Name: {{exercise['name']}}</h5>
                 <h5 class="card-title"> Level: {{exercise['level']}}</h5>
                 <h5 class="card-title"> Sets: {{exercise['sets']}}</h5>
                 <h5 class="card-title"> Reps: {{exercise['reps']}}</h5>
-                {% for musclegroup in exercise['targetmusclegroup'] %}
+                {% for musclegroup in exercise['targetmusclegroups'] %}
   
                 <h5 class="card-title"> Target Muscle Group: {{musclegroup}}</h5>
                 {% endfor %}
@@ -48,129 +71,102 @@
               </div>
               {% endfor %}
             </div>
-            </div>
-            
+          </div>
+          <div class="card" style="margin-top:10px;">
+            <h5 class="card-header" style="background-color:black;color:white;">Tuesday Exercises</h5>
+            <div class="card-body">
+              {% for exercise in bestexerciseplan['Tuesday'] %}
+              <div class="card">
+                <h5 class="card-title"> Name: {{exercise['name']}}</h5>
+                <h5 class="card-title"> Level: {{exercise['level']}}</h5>
+                <h5 class="card-title"> Sets: {{exercise['sets']}}</h5>
+                <h5 class="card-title"> Reps: {{exercise['reps']}}</h5>
+                {% for musclegroup in exercise['targetmusclegroups'] %}
   
-            <div class="card" style="margin-top:10px;">
-              <h5 class="card-header" style="background-color:black;color:white;">Monday Exercises</h5>
-              <div class="card-body">
-                {% for exercise in bestexerciseplan['Monday'] %}
-                <div class="card">
-                  <h5 class="card-title"> Name: {{exercise['name']}}</h5>
-                  <h5 class="card-title"> Level: {{exercise['level']}}</h5>
-                  <h5 class="card-title"> Sets: {{exercise['sets']}}</h5>
-                  <h5 class="card-title"> Reps: {{exercise['reps']}}</h5>
-                  {% for musclegroup in exercise['targetmusclegroups'] %}
-    
-                  <h5 class="card-title"> Target Muscle Group: {{musclegroup}}</h5>
-                  {% endfor %}
-    
-                  
-                </div>
+                <h5 class="card-title"> Target Muscle Group: {{musclegroup}}</h5>
                 {% endfor %}
-              </div>
-            </div>
-            <div class="card" style="margin-top:10px;">
-              <h5 class="card-header" style="background-color:black;color:white;">Tuesday Exercises</h5>
-              <div class="card-body">
-                {% for exercise in bestexerciseplan['Tuesday'] %}
-                <div class="card">
-                  <h5 class="card-title"> Name: {{exercise['name']}}</h5>
-                  <h5 class="card-title"> Level: {{exercise['level']}}</h5>
-                  <h5 class="card-title"> Sets: {{exercise['sets']}}</h5>
-                  <h5 class="card-title"> Reps: {{exercise['reps']}}</h5>
-                  {% for musclegroup in exercise['targetmusclegroups'] %}
-    
-                  <h5 class="card-title"> Target Muscle Group: {{musclegroup}}</h5>
-                  {% endfor %}
-    
-                  
-                </div>
-                {% endfor %}
-              </div>
-            </div>
-            <div class="card" style="margin-top:10px;">
-              <h5 class="card-header" style="background-color:black;color:white;">Wednesday Exercises</h5>
-              <div class="card-body">
-                {% for exercise in bestexerciseplan['Wednesday'] %}
-                <div class="card">
-                  <h5 class="card-title"> Name: {{exercise['name']}}</h5>
-                  <h5 class="card-title"> Level: {{exercise['level']}}</h5>
-                  <h5 class="card-title"> Sets: {{exercise['sets']}}</h5>
-                  <h5 class="card-title"> Reps: {{exercise['reps']}}</h5>
-                  {% for musclegroup in exercise['targetmusclegroups'] %}
-    
-                  <h5 class="card-title"> Target Muscle Group: {{musclegroup}}</h5>
-                  {% endfor %}
-    
-                  
-                </div>
-                {% endfor %}
-              </div>
-            </div>
-            <div class="card" style="margin-top:10px;">
-              <h5 class="card-header" style="background-color:black;color:white;">Thursday Exercises</h5>
-              <div class="card-body">
-                {% for exercise in bestexerciseplan['Thursday'] %}
-                <div class="card">
-                  <h5 class="card-title"> Name: {{exercise['name']}}</h5>
-                  <h5 class="card-title"> Level: {{exercise['level']}}</h5>
-                  <h5 class="card-title"> Sets: {{exercise['sets']}}</h5>
-                  <h5 class="card-title"> Reps: {{exercise['reps']}}</h5>
-                  {% for musclegroup in exercise['targetmusclegroups'] %}
-    
-                  <h5 class="card-title"> Target Muscle Group: {{musclegroup}}</h5>
-                  {% endfor %}
-    
-                  
-                </div>
-                {% endfor %}
-              </div>
-            </div>
-            <div class="card" style="margin-top:10px;">
-              <h5 class="card-header" style="background-color:black;color:white;">Friday Exercises</h5>
-              <div class="card-body">
-                {% for exercise in bestexerciseplan['Friday'] %}
-                <div class="card">
-                  <h5 class="card-title"> Name: {{exercise['name']}}</h5>
-                  <h5 class="card-title"> Level: {{exercise['level']}}</h5>
-                  <h5 class="card-title"> Sets: {{exercise['sets']}}</h5>
-                  <h5 class="card-title"> Reps: {{exercise['reps']}}</h5>
-                  {% for musclegroup in exercise['targetmusclegroups'] %}
-    
-                  <h5 class="card-title"> Target Muscle Group: {{musclegroup}}</h5>
-                  {% endfor %}
-    
-                  
-                </div>
-                {% endfor %}
-              </div>
-            </div>
-            <div class="card" style="margin-top:10px;">
-              <h5 class="card-header" style="background-color:black;color:white;">Saturday Exercises</h5>
-              <div class="card-body">
-                {% for exercise in bestexerciseplan['Saturday'] %}
-                <div class="card">
-                  <h5 class="card-title"> Name: {{exercise['name']}}</h5>
-                  <h5 class="card-title"> Level: {{exercise['level']}}</h5>
-                  <h5 class="card-title"> Sets: {{exercise['sets']}}</h5>
-                  <h5 class="card-title"> Reps: {{exercise['reps']}}</h5>
-                  {% for musclegroup in exercise['targetmusclegroups'] %}
-    
-                  <h5 class="card-title"> Target Muscle Group: {{musclegroup}}</h5>
-                  {% endfor %}
-    
-                  
-                </div>
-                {% endfor %}
-              </div>
-            </div>
-          {% endif %}
   
-          
+                
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+          <div class="card" style="margin-top:10px;">
+            <h5 class="card-header" style="background-color:black;color:white;">Wednesday Exercises</h5>
+            <div class="card-body">
+              {% for exercise in bestexerciseplan['Wednesday'] %}
+              <div class="card">
+                <h5 class="card-title"> Name: {{exercise['name']}}</h5>
+                <h5 class="card-title"> Level: {{exercise['level']}}</h5>
+                <h5 class="card-title"> Sets: {{exercise['sets']}}</h5>
+                <h5 class="card-title"> Reps: {{exercise['reps']}}</h5>
+                {% for musclegroup in exercise['targetmusclegroups'] %}
   
-        </tbody>
-      </table>
+                <h5 class="card-title"> Target Muscle Group: {{musclegroup}}</h5>
+                {% endfor %}
+  
+                
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+          <div class="card" style="margin-top:10px;">
+            <h5 class="card-header" style="background-color:black;color:white;">Thursday Exercises</h5>
+            <div class="card-body">
+              {% for exercise in bestexerciseplan['Thursday'] %}
+              <div class="card">
+                <h5 class="card-title"> Name: {{exercise['name']}}</h5>
+                <h5 class="card-title"> Level: {{exercise['level']}}</h5>
+                <h5 class="card-title"> Sets: {{exercise['sets']}}</h5>
+                <h5 class="card-title"> Reps: {{exercise['reps']}}</h5>
+                {% for musclegroup in exercise['targetmusclegroups'] %}
+  
+                <h5 class="card-title"> Target Muscle Group: {{musclegroup}}</h5>
+                {% endfor %}
+  
+                
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+          <div class="card" style="margin-top:10px;">
+            <h5 class="card-header" style="background-color:black;color:white;">Friday Exercises</h5>
+            <div class="card-body">
+              {% for exercise in bestexerciseplan['Friday'] %}
+              <div class="card">
+                <h5 class="card-title"> Name: {{exercise['name']}}</h5>
+                <h5 class="card-title"> Level: {{exercise['level']}}</h5>
+                <h5 class="card-title"> Sets: {{exercise['sets']}}</h5>
+                <h5 class="card-title"> Reps: {{exercise['reps']}}</h5>
+                {% for musclegroup in exercise['targetmusclegroups'] %}
+  
+                <h5 class="card-title"> Target Muscle Group: {{musclegroup}}</h5>
+                {% endfor %}
+  
+                
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+          <div class="card" style="margin-top:10px;">
+            <h5 class="card-header" style="background-color:black;color:white;">Saturday Exercises</h5>
+            <div class="card-body">
+              {% for exercise in bestexerciseplan['Saturday'] %}
+              <div class="card">
+                <h5 class="card-title"> Name: {{exercise['name']}}</h5>
+                <h5 class="card-title"> Level: {{exercise['level']}}</h5>
+                <h5 class="card-title"> Sets: {{exercise['sets']}}</h5>
+                <h5 class="card-title"> Reps: {{exercise['reps']}}</h5>
+                {% for musclegroup in exercise['targetmusclegroups'] %}
+  
+                <h5 class="card-title"> Target Muscle Group: {{musclegroup}}</h5>
+                {% endfor %}
+  
+                
+              </div>
+              {% endfor %}
+            </div>
+          </div>
           <form action="{{ url_for('saveexerciseplan') }}" method="get">
             <tbody>
                <tr>
@@ -188,5 +184,6 @@
 
   </body>
 </html>
+{% endif %}
 
           {% endblock %}   <!-- Put this at end of file-->

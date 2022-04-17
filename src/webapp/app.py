@@ -17,8 +17,8 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from wtforms import Form, StringField, IntegerField,DecimalField,DecimalRangeField,BooleanField,SelectField,SubmitField, validators
 
 from webapp.data_src import DataStructures
-from webapp.mealplan import MealplanGenerator, get_mealplan,get_recipes_from_db, save_mealplan
-from webapp.exerciseplan import ExerciseplanGenerator
+from webapp.mealplan import MealplanGenerator, get_mealplan,get_recipes_from_db, save_mealplan, add_recipe
+from webapp.exerciseplan import ExerciseplanGenerator, add_exercise_to_db
 
 from webapp.models import Recipes, User, db
 
@@ -622,11 +622,9 @@ def addfood():
             newrecipe["number_of_servings"],
             newrecipe["type"]
             )
-            #message="food recipe added!"                        
+        message="food recipe added!"                        
                                     
-                                    
-                                    #add newfoodrecipe to database
-        return render_template("shoppinglist.html",jsonrecipe=newrecipe)
+        return render_template("shoppinglist.html", message2=message)
     
 
 
@@ -654,9 +652,9 @@ def addexercise():
         if(reps!='' and reps!=None):
             exercisedata["reps"]=int(reps)
         exercisedata["targetmusclegroups"]=selectedtargetmuscles
-        #add_exercise_to_db(exercisedata["name"],exercisedata["targetmusclegroups"],exercisedata["level"],exercisedata["sets"],exercisedata["reps"])    
-        #message="exercise added!"                                            #add exercise to database
-        return render_template("shoppinglist.html",exercise=newaddedexercise,intensity=intensity,muscles=selectedtargetmuscles)
+        add_exercise_to_db(exercisedata["name"],exercisedata["targetmusclegroups"],exercisedata["level"],exercisedata["sets"],exercisedata["reps"])    
+        message="exercise added!"                                            #add exercise to database
+        return render_template("shoppinglist.html", message=message)
 
 
 
