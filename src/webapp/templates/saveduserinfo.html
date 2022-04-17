@@ -19,12 +19,12 @@ body { background-color:lightblue; }
 
   <div>
     <h2>Saved Weekly Meal Plan</h2>
-    {% if session["savedmealplan"] is defined %}
+    {% if savedmealplan is defined %}
 
     <table class="table table-bordered" style="background-color:white;border-color:black">
       <tbody>
         <tr>
-          {% for item in session["savedmealplan"] %}
+          {% for item in savedmealplan %}
           <td>Name: {{item['name']}}</td>
           <td>Ingredients: {% for food in item['ingredients'] %}
             {{food}}
@@ -76,13 +76,13 @@ body { background-color:lightblue; }
 
     </table>
     <h2>Saved Weekly Exercise Plan</h2>
-    {% if session["savedexerciseplan"] is defined %}
+    {% if savedexerciseplan is defined %}
 
     <table class="table table-bordered" style="background-color:white;border-color:black">
       <tbody>
         <h5 class="card-header" style="background-color:black;color:white;">Sunday Exercises</h5>
             <div class="card-body">
-            {% for exercise in session["savedexerciseplan"]['Sunday'] %}
+            {% for exercise in savedexerciseplan['Sunday'] %}
             <div class="card">
               <h5 class="card-title"> Name: {{exercise['name']}}</h5>
               <h5 class="card-title"> Level: {{exercise['level']}}</h5>
@@ -103,7 +103,7 @@ body { background-color:lightblue; }
           <div class="card" style="margin-top:10px;">
             <h5 class="card-header" style="background-color:black;color:white;">Monday Exercises</h5>
             <div class="card-body">
-              {% for exercise in session["savedexerciseplan"]['Monday'] %}
+              {% for exercise in savedexerciseplan['Monday'] %}
               <div class="card">
                 <h5 class="card-title"> Name: {{exercise['name']}}</h5>
                 <h5 class="card-title"> Level: {{exercise['level']}}</h5>
@@ -122,7 +122,7 @@ body { background-color:lightblue; }
           <div class="card" style="margin-top:10px;">
             <h5 class="card-header" style="background-color:black;color:white;">Tuesday Exercises</h5>
             <div class="card-body">
-              {% for exercise in session["savedexerciseplan"]['Tuesday'] %}
+              {% for exercise in savedexerciseplan['Tuesday'] %}
               <div class="card">
                 <h5 class="card-title"> Name: {{exercise['name']}}</h5>
                 <h5 class="card-title"> Level: {{exercise['level']}}</h5>
@@ -141,7 +141,7 @@ body { background-color:lightblue; }
           <div class="card" style="margin-top:10px;">
             <h5 class="card-header" style="background-color:black;color:white;">Wednesday Exercises</h5>
             <div class="card-body">
-              {% for exercise in session["savedexerciseplan"]['Wednesday'] %}
+              {% for exercise in savedexerciseplan['Wednesday'] %}
               <div class="card">
                 <h5 class="card-title"> Name: {{exercise['name']}}</h5>
                 <h5 class="card-title"> Level: {{exercise['level']}}</h5>
@@ -160,7 +160,7 @@ body { background-color:lightblue; }
           <div class="card" style="margin-top:10px;">
             <h5 class="card-header" style="background-color:black;color:white;">Thursday Exercises</h5>
             <div class="card-body">
-              {% for exercise in session["savedexerciseplan"]['Thursday'] %}
+              {% for exercise in savedexerciseplan['Thursday'] %}
               <div class="card">
                 <h5 class="card-title"> Name: {{exercise['name']}}</h5>
                 <h5 class="card-title"> Level: {{exercise['level']}}</h5>
@@ -179,7 +179,7 @@ body { background-color:lightblue; }
           <div class="card" style="margin-top:10px;">
             <h5 class="card-header" style="background-color:black;color:white;">Friday Exercises</h5>
             <div class="card-body">
-              {% for exercise in session["savedexerciseplan"]['Friday'] %}
+              {% for exercise in savedexerciseplan['Friday'] %}
               <div class="card">
                 <h5 class="card-title"> Name: {{exercise['name']}}</h5>
                 <h5 class="card-title"> Level: {{exercise['level']}}</h5>
@@ -198,7 +198,7 @@ body { background-color:lightblue; }
           <div class="card" style="margin-top:10px;">
             <h5 class="card-header" style="background-color:black;color:white;">Saturday Exercises</h5>
             <div class="card-body">
-              {% for exercise in session["savedexerciseplan"]['Saturday'] %}
+              {% for exercise in savedexerciseplan['Saturday'] %}
               <div class="card">
                 <h5 class="card-title"> Name: {{exercise['name']}}</h5>
                 <h5 class="card-title"> Level: {{exercise['level']}}</h5>
