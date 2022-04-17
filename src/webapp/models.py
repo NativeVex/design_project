@@ -25,8 +25,9 @@ class User(db.Model):
     password_hashed = db.Column(db.String(128))
     registered_on = db.Column(db.DateTime)
     mealplan = db.Column(db.String)
+    exerciseplan = db.Column(db.String)
 
-    def __init__(self, email: str, username: str, password_plaintext: str, mealplan = ""):
+    def __init__(self, email: str, username: str, password_plaintext: str, mealplan = "", exerciseplan = ""):
         """Create a new User object using the email address and hashing the
         plaintext password using Werkzeug.Security.
         """
@@ -34,6 +35,7 @@ class User(db.Model):
         self.username = username
         self.password_hashed = self._generate_password_hash(password_plaintext)
         self.mealplan = mealplan
+        self.exerciseplan = exerciseplan
 
     def is_password_correct(self, password_plaintext: str):
         return check_password_hash(self.password_hashed, password_plaintext)
@@ -67,11 +69,21 @@ class User(db.Model):
         """Return the user ID as a unicode string (`str`)."""
         return str(self.id)
     
-    def add_mealplan(self, mealplan: str):
-        self.mealplan = mealplan
+    def add_mealplan(self, mealplan):
+        self.mealplan = json.dumps(mealplan)
 
     def get_mealplan(self):
+        if self.mealplan == "":
+            return []
         return json.loads(self.mealplan)
+
+    def add_exerciseplan(self, exerciseplan):
+        self.exerciseplan = json.dumps(exerciseplan)
+    
+    def get_exerciseplan(self):
+        if self.exerciseplan == "":
+            return []
+        return json.loads(self.exerciseplan)
 
 class Recipes(db.Model):
     __tablename__ = "recipes"
