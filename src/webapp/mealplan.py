@@ -71,7 +71,7 @@ def save_mealplan(email: str, mealplan):
     user = db.session.query(User).filter_by(email=email).first()
 
     if user:
-        user.add_mealplan(json.dumps(mealplan))
+        user.add_mealplan(mealplan)
     db.session.add(user)
     db.session.commit()
     return mealplan
@@ -81,8 +81,6 @@ def get_mealplan(email: str):
 
     if user:
         mealplan = user.get_mealplan()
-    db.session.add(user)
-    db.session.commit()
     return mealplan
 
 def add_recipe(

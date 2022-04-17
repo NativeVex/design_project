@@ -7,7 +7,7 @@ import copy
 
 from webapp import data_src
 from webapp.data_src import DataStructures
-from webapp.models import Exercise, db
+from webapp.models import Exercise, User, db
 
 
 def get_exercises_from_db(
@@ -36,6 +36,22 @@ def add_exercise_to_db(name: str, targetmusclegroups: list, level=0, sets=0, rep
     db.session.add(Exercise(name, targetmusclegroups, level, sets, reps))
     db.session.commit()
     return
+
+def save_exerciseplan(email: str, exerciseplan):
+    user = db.session.query(User).filter_by(email=email).first()
+
+    if user:
+        user.add_exerciseplan(exerciseplan)
+    db.session.add(user)
+    db.session.commit()
+    return exerciseplan
+
+def get_exerciseplan(email: str):
+    user = db.session.query(User).filter_by(email=email).first()
+
+    if user:
+        exerciseplan = user.get_exerciseplan()
+    return exerciseplan
 
 class ExerciseplanGenerator(data_src.DataStructures):
     user_requirements = None
