@@ -357,7 +357,7 @@ def mealplan():
         mealplan = mpg.gen_meal_plan()
         session["tempmealplan"]=json.loads(mealplan)
         newmeal=json.loads(mealplan)
-        return render_template("mealplans.html",bestmealplan=newmeal,newjsonsplitdata=jsondata,newjsoninfo=jsoninfo)
+        return render_template("mealplans.html",bestmealplan=newmeal)
     elif request.method == "GET":
         return render_template("mealplans.html")
 
@@ -615,7 +615,7 @@ def addfood():
             newrecipe["number_of_servings"],
             newrecipe["type"]
             )
-        message="food recipe added!"                        
+        message="Food recipe added!"                        
                                     
         return render_template("shoppinglist.html", message2=message)
     
@@ -646,7 +646,7 @@ def addexercise():
             exercisedata["reps"]=int(reps)
         exercisedata["targetmusclegroups"]=selectedtargetmuscles
         add_exercise_to_db(exercisedata["name"],exercisedata["targetmusclegroups"],exercisedata["level"],exercisedata["sets"],exercisedata["reps"])    
-        message="exercise added!"                                            #add exercise to database
+        message="Exercise added!"                                            #add exercise to database
         return render_template("shoppinglist.html", message=message)
 
 
