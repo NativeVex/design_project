@@ -18,7 +18,7 @@ from wtforms import Form, StringField, IntegerField,DecimalField,DecimalRangeFie
 
 from webapp.data_src import DataStructures
 from webapp.mealplan import MealplanGenerator, get_mealplan,get_recipes_from_db, save_mealplan, add_recipe
-from webapp.exerciseplan import ExerciseplanGenerator, add_exercise_to_db
+from webapp.exerciseplan import ExerciseplanGenerator, add_exercise_to_db, get_exerciseplan, save_exerciseplan
 
 from webapp.models import Recipes, User, db
 
@@ -211,10 +211,10 @@ def saveduserinfo():
     exercise plan
 
     """
-    email=session["email"]
-    session["savedmealplan"]=get_mealplan(email)
-    print(session["savedmealplan"])
-    return render_template("saveduserinfo.html",mealplan=session["savedmealplan"])
+    savedmealplan = get_mealplan(session["email"])
+    savedexerciseplan = get_exerciseplan(session["email"])
+
+    return render_template("saveduserinfo.html", savedmealplan=savedmealplan, savedexerciseplan=savedexerciseplan)
 
 
 @app.route("/signup/", methods=["GET", "POST"])
@@ -315,13 +315,26 @@ def mealplan():
         if(form.Potassium.data!=None):
             jsoninfo["potassium"]=float(form.Potassium.data)
         caloriesbreakfast = request.form.get("caloriesbreakfastamount")
-        calorieslunch = request.form.get("calorieslunchamount")
+
+        # calorieslunch should be (2nd slider val - 1st slider val), like this:
+        calorieslunch = request.form.get("calorieslunchamount") - request.form.get("caloriesbreakfastamount")
+
+        # caloriesdinner should be (1 - 2nd slider val), like this:
+        caloriesdinner = 1 - request.form.get("calorieslunchamount")
+
+        # these checks are not needed
         if(((float(caloriesbreakfast))+(float(calorieslunch)))<1):
             caloriesdinner=1-(float(caloriesbreakfast)+float(calorieslunch))
         elif(((float(caloriesbreakfast))+(float(calorieslunch)))==1):
             caloriesdinner=0.0
         else:
             caloriesdinner=0.0
+
+        # ERROR CHECK for user: if calorieslunch < 0, do not allow submission!!!!!!: like this:
+        if calorieslunch < 0:
+            # ERROR MESSAGE
+            ...
+
         carbsbreakfast = request.form.get("carbsbreakfastamount")
         carbslunch = request.form.get("carbslunchamount")
         if(((float(carbsbreakfast))+(float(carbslunch)))<1):
@@ -360,7 +373,7 @@ def mealplan():
         newjsoninfo=json.dumps(jsoninfo)
         mpg = MealplanGenerator(newjsoninfo,newjsonsplitdata)
         mealplan = mpg.gen_meal_plan()
-        session["tempmealplan"]=mealplan
+        session["tempmealplan"]=json.loads(mealplan)
         newmeal=json.loads(mealplan)
         return render_template("mealplans.html",bestmealplan=newmeal,newjsonsplitdata=jsondata,newjsoninfo=jsoninfo)
     elif request.method == "GET":
@@ -376,8 +389,8 @@ def savemealplan():
     email=session["email"]
     mealplan=session["tempmealplan"]
     print(email)
-    save_mealplan(email,mealplan)
-    session["savedmealplan"]=mealplan
+    
+    session["savedmealplan"]=save_mealplan(email,mealplan)
     
          # replacing single quotes with double quotes to change string to json format
     return redirect(url_for('saveduserinfo'))
@@ -422,7 +435,8 @@ def saveexerciseplan():
     the userinfo page where they can see their saved meal plan.
 
     """
-    session["savedexerciseplan"]=session["tempexerciseplan"]
+    session["savedexerciseplan"] = save_exerciseplan(session["email"], session["tempexerciseplan"])
+
     if request.method == "GET":
         return redirect(url_for('saveduserinfo'))
 
