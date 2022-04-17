@@ -73,7 +73,6 @@ def login():
     """This function uses a post request to take
     in a username and password entered by the user to login
     and then redirects to the page where users enter their health requirements
-
     """
     if request.method == "POST":
         email = request.form["email"]
@@ -97,7 +96,6 @@ def login():
     """
     message=request.args['message']
     return render_template("login.html",message=message)
-
     """
     return render_template("login.html")
 
@@ -106,7 +104,6 @@ def login():
 def logout():
     """This function logs the user out by removing
     the session username and redirecting to the home login page
-
     """
 
     session.pop("username", None)  # removes session username
@@ -126,14 +123,12 @@ def logout():
 def points():
     """This function shows a calendar of the points earned by
     users
-
     """
     return render_template("points.html")
 
 @app.route("/changehealthrequirements",methods=["GET","POST"])
 def changehealthrequirements():
     """This function gets current health configurations for the user
-
     """
     form=dietform(request.form)
     currenthealthrequirements=DataStructures.getcurrenthealthrequirementsfromdb()
@@ -144,7 +139,6 @@ def changehealthrequirements():
 @app.route("/getoldhealthrequirements",methods=["GET","POST"])
 def getoldhealthrequirements():
     """This function gets previous health configurations for the user
-
     """
     form=dietform(request.form)
     currenthealthrequirements=DataStructures.getcurrenthealthrequirementsfromdb()
@@ -157,7 +151,6 @@ def getoldhealthrequirements():
 @app.route("/savenewhealthrequirements",methods=["GET","POST"])
 def savenewhealthrequirements():
     """This function saves new health configurations from user
-
     """
     form=dietform(request.form)
     lst=[]
@@ -209,7 +202,6 @@ def saveduserinfo():
     """This function goes to the saveduserinfo page where
     the user sees their saved meal plan and their saved
     exercise plan
-
     """
     savedmealplan = get_mealplan(session["email"])
     savedexerciseplan = get_exerciseplan(session["email"])
@@ -222,7 +214,6 @@ def signup():
     """This function goes to the signup page where
     the user sees a form where they can sign up using their email,
     username, and password
-
     """
     usersignupform = signupform(request.form)
     if request.method == "POST":
@@ -248,7 +239,6 @@ def signup():
             return redirect(url_for("login"))
             """
               return redirect(url_for('login', message = message))
-
             """
     return render_template("signup.html", form=usersignupform)
 
@@ -257,12 +247,10 @@ def signup():
 def diet():
     """This function goes to the mealplanner page where
     the user sees a form where they can enter their diet requirements
-
     """
     """
     message=request.args['message']
     return render_template("mealplanner.html", message=message)
-
     
     
     """
@@ -275,7 +263,6 @@ def mealplan():
     """This function goes to the mealplans page where
     the user their generated meal plan from their entered
     diet requirements
-
     """
     form = dietform(request.form)
     if request.method == "POST":
@@ -314,56 +301,51 @@ def mealplan():
             jsoninfo["iron"]=float(form.Iron.data)
         if(form.Potassium.data!=None):
             jsoninfo["potassium"]=float(form.Potassium.data)
+        
         caloriesbreakfast = request.form.get("caloriesbreakfastamount")
 
-        # calorieslunch should be (2nd slider val - 1st slider val), like this:
-        calorieslunch = request.form.get("calorieslunchamount") - request.form.get("caloriesbreakfastamount")
-
-        # caloriesdinner should be (1 - 2nd slider val), like this:
-        caloriesdinner = 1 - request.form.get("calorieslunchamount")
-
-        # these checks are not needed
-        if(((float(caloriesbreakfast))+(float(calorieslunch)))<1):
-            caloriesdinner=1-(float(caloriesbreakfast)+float(calorieslunch))
-        elif(((float(caloriesbreakfast))+(float(calorieslunch)))==1):
-            caloriesdinner=0.0
-        else:
-            caloriesdinner=0.0
-
-        # ERROR CHECK for user: if calorieslunch < 0, do not allow submission!!!!!!: like this:
+        firstslidervalue=float(request.form.get("caloriesbreakfastamount"))
+        secondslidervalue=float(request.form.get("calorieslunchamount"))
+        calorieslunch = secondslidervalue - firstslidervalue
         if calorieslunch < 0:
-            # ERROR MESSAGE
-            ...
+            message="Invalid Slider Values, Please Enter Values Again"
+            return render_template("mealplanner.html",form=form,message=message)
+        caloriesdinner = 1 - secondslidervalue
 
         carbsbreakfast = request.form.get("carbsbreakfastamount")
-        carbslunch = request.form.get("carbslunchamount")
-        if(((float(carbsbreakfast))+(float(carbslunch)))<1):
-            carbsdinner=1-(float(carbsbreakfast)+float(carbslunch))
-        elif(((float(carbsbreakfast))+(float(carbslunch)))==1):
-            carbsdinner=0.0
-        else:
-            carbsdinner=0.0
+
+        firstslidervalue2=float(request.form.get("carbsbreakfastamount"))
+        secondslidervalue2=float(request.form.get("carbslunchamount"))
+        carbslunch = secondslidervalue2 - firstslidervalue2
+        if carbslunch < 0:
+            message="Invalid Slider Values, Please Enter Values Again"
+            return render_template("mealplanner.html",form=form,message=message)
+        carbsdinner = 1 - secondslidervalue2
+    
         proteinsbreakfast = request.form.get("proteinsbreakfastamount")
-        proteinslunch = request.form.get("proteinslunchamount")
-        if(((float(proteinsbreakfast))+(float(proteinslunch)))<1):
-            proteinsdinner=1-(float(proteinsbreakfast)+float(proteinslunch))
-        elif(((float(proteinsbreakfast))+(float(proteinslunch)))==1):
-            proteinsdinner=0.0
-        else:
-            proteinsdinner=0.0
+        firstslidervalue3=float(request.form.get("proteinsbreakfastamount"))
+        secondslidervalue3=float(request.form.get("proteinslunchamount"))
+        proteinslunch = secondslidervalue3 - firstslidervalue3
+        if proteinslunch < 0:
+            message="Invalid Slider Values, Please Enter Values Again"
+            return render_template("mealplanner.html",form=form,message=message)
+        proteinsdinner = 1 - secondslidervalue3
+
+
+        
         list1 = [1, 2, 3]
         caloriesarr=[]
         carbsarr=[]
         proteinsarr=[]
-        caloriesarr.append(float(caloriesbreakfast))
-        caloriesarr.append(float(calorieslunch))
-        caloriesarr.append(round(float(caloriesdinner),1))
-        carbsarr.append(float(carbsbreakfast))
-        carbsarr.append(float(carbslunch))
-        carbsarr.append(round(float(carbsdinner),1))
-        proteinsarr.append(float(proteinsbreakfast))
-        proteinsarr.append(float(proteinslunch))
-        proteinsarr.append(round(float(proteinsdinner),1))
+        caloriesarr.append(round(float(caloriesbreakfast),2))
+        caloriesarr.append(round(float(calorieslunch),2))
+        caloriesarr.append(round(float(caloriesdinner),2))
+        carbsarr.append(round(float(carbsbreakfast),2))
+        carbsarr.append(round(float(carbslunch),2))
+        carbsarr.append(round(float(carbsdinner),2))
+        proteinsarr.append(round(float(proteinsbreakfast),2))
+        proteinsarr.append(round(float(proteinslunch),2))
+        proteinsarr.append(round(float(proteinsdinner),2))
 
         jsondata={}
         jsondata['calorie_split']=caloriesarr
@@ -384,7 +366,6 @@ def mealplan():
 def savemealplan():
     """This function goes to the saveduserinfo page where
     the user can see their saved meal plan
-
     """
     email=session["email"]
     mealplan=session["tempmealplan"]
@@ -433,7 +414,6 @@ class exerciseform(Form):
 def saveexerciseplan():
     """This function takes the generated best meal plan and saves it to
     the userinfo page where they can see their saved meal plan.
-
     """
     session["savedexerciseplan"] = save_exerciseplan(session["email"], session["tempexerciseplan"])
 
@@ -446,7 +426,6 @@ def exerciseplan():
     """This function takes in user input on user's exercise
     requirements and uses a mock function to generate the best exercise
     plan and show it to users
-
     """
     form=exerciseform(request.form)
     if request.method == "POST":
@@ -693,7 +672,6 @@ def listitems():
 def exercises():
     """This function shows the exercise requirements form
     to users where they can enter their exercise requirements
-
     """
     otherform = exerciseform(request.form)
 
