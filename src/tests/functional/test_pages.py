@@ -178,30 +178,6 @@ def test_add_food_item(test_client):
     )
     assert b"Food recipe added!" in response.data
     assert response.status_code == 200
-
-def test_change_health_requirements(test_client):
-    """
-    GIVEN a Flask application configured for testing
-    WHEN the '/changehealthrequirementss' page is posted to (POST) when the user enters health requirements data
-
-    """
-    response = test_client.get(    #going to change health requirements page to see current health configuration 
-        "/changehealthrequirements",
-        follow_redirects=True,
-    )
-    assert response.status_code==200
-    response1 = test_client.post(   #selecting old health requirements option to see old health configuration
-        "/getoldhealthrequirements",
-        follow_redirects=True,
-    )
-    assert response1.status_code==200
-    response2 = test_client.post(         #updating and saving new health configuration
-        "/savenewhealthrequirements",
-        data=dict(Calories="78.6", Carbs="47.9",Proteins="68.7",monounsaturated_fat="59.8",vitamin_a="45"),
-        follow_redirects=True,
-    )
-    assert b"59.8" in response2.data
-    assert response2.status_code == 200
     
 
 @pytest.mark.xfail(reason="not yet implemented")
