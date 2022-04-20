@@ -119,12 +119,6 @@ def logout():
     return redirect("/")
 
 
-@app.route("/points/")
-def points():
-    """This function shows a calendar of the points earned by
-    users
-    """
-    return render_template("points.html")
 
 @app.route("/changehealthrequirements",methods=["GET","POST"])
 def changehealthrequirements():
