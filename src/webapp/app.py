@@ -128,19 +128,11 @@ def changehealthrequirements():
     currenthealthrequirements=DataStructures.getcurrenthealthrequirementsfromdb()
     session["newhealthrequirements"]=currenthealthrequirements
     session["currenthealthrequirements"]=currenthealthrequirements
-    return render_template("healthrequirements.html",form=form,currenthealthrequirements=currenthealthrequirements)
-
-@app.route("/getoldhealthrequirements",methods=["GET","POST"])
-def getoldhealthrequirements():
-    """This function gets previous health configurations for the user
-    """
-    form=dietform(request.form)
-    currenthealthrequirements=DataStructures.getcurrenthealthrequirementsfromdb()
     oldhealthrequirements=DataStructures.getoldhealthrequirementsfromdb()
     session["oldhealthrequirements"]=oldhealthrequirements
+    return render_template("healthrequirements.html",form=form,currenthealthrequirements=currenthealthrequirements)
 
-    
-    return render_template("healthrequirements.html",form=form,currenthealthrequirements=currenthealthrequirements,oldhealthrequirements=oldhealthrequirements)
+
 
 @app.route("/savenewhealthrequirements",methods=["GET","POST"])
 def savenewhealthrequirements():
