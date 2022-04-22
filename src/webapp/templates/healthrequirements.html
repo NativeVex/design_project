@@ -18,83 +18,117 @@
 
     <div class="container-fluid" style="margin-top:10px;width:70%">
       <div>
+      
         <h2>{{message}}</h2>
-        <div class="card">
+        <div >
             <h2>Current Health Requirements</h2>
             {% if session["newhealthrequirements"] is defined %}
-            <div class="card-body">
-              <h5 class="card-title">Calories: {{session["newhealthrequirements"]["calories"]}}</h5>
-              <h5 class="card-title">Carbs: {{session["newhealthrequirements"]["carbohydrate"]}}</h5>
-              <h5 class="card-title">Proteins: {{session["newhealthrequirements"]["protein"]}}</h5>
-              Fat: <span>{{ session["newhealthrequirements"]['fat'] }}</span>
+            <table class="table table-bordered" style="background-color:white;border-color:black">
+              <tbody>
+                <tr>
+                  <td>Calories: <span>{{session["newhealthrequirements"]['calories']}}</span>
+                    <br>
+                       Carbs: <span>{{session["newhealthrequirements"]['carbohydrate']}}</span>
+                       <br>
+                       Protein: <span>{{ session["newhealthrequirements"]['protein'] }}</span>
+                    <br>
+                    Fat: <span>{{ session["newhealthrequirements"]['fat'] }}</span>
+                    <br>
+                    Cholesterol: <span>{{ session["newhealthrequirements"]['cholesterol'] }}</span>
+                    <br>
+                    Sodium: <span>{{ session["newhealthrequirements"]['sodium'] }}</span>
+                    <br>
+                    Vitamina: <span>{{ session["newhealthrequirements"]['vitamin_a'] }}</span>
+                    <br>
+                    Vitaminc: <span>{{ session["newhealthrequirements"]['vitamin_c'] }}</span>
+                    <br>
+                    Calcium: <span>{{ session["newhealthrequirements"]['calcium'] }}</span>
+                    <br>
+                    Fiber: <span>{{ session["newhealthrequirements"]['fiber'] }}</span>
+                    <br>
+                    monounsaturated fat: <span>{{ session["newhealthrequirements"]['monounsaturated_fat'] }}</span>
+                    <br>
+                    polyunsaturated fat: <span>{{ session["newhealthrequirements"]['polyunsaturated_fat'] }}</span>
+                    <br>
+                    Iron: <span>{{ session["newhealthrequirements"]['iron'] }}</span>
+                    <br>
+                    saturated fat: <span>{{ session["newhealthrequirements"]['saturated_fat'] }}</span>
+                    <br>
+                    sugar: <span>{{ session["newhealthrequirements"]['sugar'] }}</span>
+                    <br>
+                    trans fat: <span>{{ session["newhealthrequirements"]['trans_fat'] }}</span>
+                    <br>
+                    Potassium: <span>{{ session["newhealthrequirements"]['potassium'] }}</span>
+                    <br>
+                    <br>
+            Exercise Days: <span>{{ session["newhealthrequirements"]['days'] }}</span>
             <br>
-            Cholesterol: <span>{{ session["newhealthrequirements"]['cholesterol'] }}</span>
+            Exercise Intensity: <span>{{ session["newhealthrequirements"]['intensity'] }}</span>
             <br>
-            Sodium: <span>{{ session["newhealthrequirements"]['sodium'] }}</span>
+            Target Muscle Groups: <span>{{ session["newhealthrequirements"]['targetmusclegroup'] }}</span>
             <br>
-            Vitamina: <span>{{ session["newhealthrequirements"]['vitamin_a'] }}</span>
-            <br>
-            Vitaminc: <span>{{ session["newhealthrequirements"]['vitamin_c'] }}</span>
-            <br>
-            Calcium: <span>{{ session["newhealthrequirements"]['calcium'] }}</span>
-            <br>
-            Fiber: <span>{{ session["newhealthrequirements"]['fiber'] }}</span>
-            <br>
-            monounsaturated fat: <span>{{ session["newhealthrequirements"]['monounsaturated_fat'] }}</span>
-            <br>
-            polyunsaturated fat: <span>{{ session["newhealthrequirements"]['polyunsaturated_fat'] }}</span>
-            <br>
-            Iron: <span>{{ session["newhealthrequirements"]['iron'] }}</span>
-            <br>
-            saturated fat: <span>{{ session["newhealthrequirements"]['saturated_fat'] }}</span>
-            <br>
-            sugar: <span>{{ session["newhealthrequirements"]['sugar'] }}</span>
-            <br>
-            trans fat: <span>{{ session["newhealthrequirements"]['trans_fat'] }}</span>
-            <br>
-            Potassium: <span>{{ session["newhealthrequirements"]['potassium'] }}</span>
-            <br>
+                    </td>
+        
+                </tr>
+
+              </tbody>
+              </table>
               {% endif %}
-            </div>
+
           </div>
-          <div class="card">
-            <h2>Old Health Requirements</h2>
+            <h2 >Old Health Requirements</h2>
             {% if session["oldhealthrequirements"] is defined %}
-            <div class="card-body">
-              <h5 class="card-title">Calories: {{session["oldhealthrequirements"]["calories"]}}</h5>
-              <h5 class="card-title">Carbs: {{session["oldhealthrequirements"]["carbohydrate"]}}</h5>
-              <h5 class="card-title">Proteins: {{session["oldhealthrequirements"]["protein"]}}</h5>
-              Fat: <span>{{ session["newhealthrequirements"]['fat'] }}</span>
+            <table class="table table-bordered" style="background-color:white;border-color:black">
+              <tbody>
+                <tr>
+                  <td>Calories: <span>{{session["oldhealthrequirements"]['calories']}}</span>
+                    <br>
+                       Carbs: <span>{{session["oldhealthrequirements"]['carbohydrate']}}</span>
+                       <br>
+                       Protein: <span>{{ session["oldhealthrequirements"]['protein'] }}</span>
+                    <br>
+                    Fat: <span>{{ session["oldhealthrequirements"]['fat'] }}</span>
+                    <br>
+                    Cholesterol: <span>{{ session["oldhealthrequirements"]['cholesterol'] }}</span>
+                    <br>
+                    Sodium: <span>{{ session["oldhealthrequirements"]['sodium'] }}</span>
+                    <br>
+                    Vitamina: <span>{{ session["oldhealthrequirements"]['vitamin_a'] }}</span>
+                    <br>
+                    Vitaminc: <span>{{ session["oldhealthrequirements"]['vitamin_c'] }}</span>
+                    <br>
+                    Calcium: <span>{{ session["oldhealthrequirements"]['calcium'] }}</span>
+                    <br>
+                    Fiber: <span>{{ session["oldhealthrequirements"]['fiber'] }}</span>
+                    <br>
+                    monounsaturated fat: <span>{{ session["oldhealthrequirements"]['monounsaturated_fat'] }}</span>
+                    <br>
+                    polyunsaturated fat: <span>{{ session["oldhealthrequirements"]['polyunsaturated_fat'] }}</span>
+                    <br>
+                    Iron: <span>{{ session["oldhealthrequirements"]['iron'] }}</span>
+                    <br>
+                    saturated fat: <span>{{ session["oldhealthrequirements"]['saturated_fat'] }}</span>
+                    <br>
+                    sugar: <span>{{ session["oldhealthrequirements"]['sugar'] }}</span>
+                    <br>
+                    trans fat: <span>{{ session["oldhealthrequirements"]['trans_fat'] }}</span>
+                    <br>
+                    Potassium: <span>{{ session["oldhealthrequirements"]['potassium'] }}</span>
+                    <br>
+                    <br>
+            Exercise Days: <span>{{ session["oldhealthrequirements"]['days'] }}</span>
             <br>
-            Cholesterol: <span>{{ session["oldhealthrequirements"]['cholesterol'] }}</span>
+            Exercise Intensity: <span>{{ session["oldhealthrequirements"]['intensity'] }}</span>
             <br>
-            Sodium: <span>{{ session["oldhealthrequirements"]['sodium'] }}</span>
+            Target Muscle Groups: <span>{{ session["oldhealthrequirements"]['targetmusclegroup'] }}</span>
             <br>
-            Vitamina: <span>{{ session["oldhealthrequirements"]['vitamin_a'] }}</span>
-            <br>
-            Vitaminc: <span>{{ session["oldhealthrequirements"]['vitamin_c'] }}</span>
-            <br>
-            Calcium: <span>{{ session["oldhealthrequirements"]['calcium'] }}</span>
-            <br>
-            Fiber: <span>{{ session["oldhealthrequirements"]['fiber'] }}</span>
-            <br>
-            monounsaturated fat: <span>{{ session["oldhealthrequirements"]['monounsaturated_fat'] }}</span>
-            <br>
-            polyunsaturated fat: <span>{{ session["oldhealthrequirements"]['polyunsaturated_fat'] }}</span>
-            <br>
-            Iron: <span>{{ session["oldhealthrequirements"]['iron'] }}</span>
-            <br>
-            saturated fat: <span>{{ session["oldhealthrequirements"]['saturated_fat'] }}</span>
-            <br>
-            sugar: <span>{{ session["oldhealthrequirements"]['sugar'] }}</span>
-            <br>
-            trans fat: <span>{{ session["oldhealthrequirements"]['trans_fat'] }}</span>
-            <br>
-            Potassium: <span>{{ session["oldhealthrequirements"]['potassium'] }}</span>
-            <br>
+                    </td>
+        
+                </tr>
+
+              </tbody>
+              </table>
               {% endif %}
-            </div>
-          </div>
           
         </div>
         <form action="/savenewhealthrequirements" method="POST" role="form" id="info">
@@ -110,9 +144,21 @@
               <label for="Carbs" style="font-size:20px">{{form.Carbs.label}}</label>
               {{form.Carbs()}}
             <br>
+            <br>
           <label for="Proteins" style="font-size:20px">{{form.Proteins.label}}</label>
               {{form.Proteins()}}
         <br>
+        <br>
+        <br>
+        <label for="days">Exercise Days:</label>
+          <input type="text" class="form-control" id="days" name="days" placeholder="days?">
+          <br>
+          <label for="intensity">Intensity:</label>
+          <input type="number" min="0" class="form-control" id="intensity" name="intensity" placeholder="intensity?">
+          <br>
+          <label for="targetmusclegroup">Target Muscle Groups:</label>
+          <input type="text" class="form-control" id="targetmusclegroup" name="targetmusclegroup" placeholder="targetmusclegroup?">
+          <br>
           <div style="display:inline-block">
             <div style="background-color:white;" onmouseover="myFunction()">Choose other diet requirements</div>
             <div id="dietdetails" style="display:none;background-color:lightblue;color:black;padding:20px;">
