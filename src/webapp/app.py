@@ -138,7 +138,7 @@ def changehealthrequirements():
 def savenewhealthrequirements():
     """This function saves new health configurations from user
     """
-   form=dietform(request.form)
+    form=dietform(request.form)
     lst=[]
     if request.method == "POST":
 
