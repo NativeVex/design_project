@@ -138,42 +138,78 @@ def changehealthrequirements():
 def savenewhealthrequirements():
     """This function saves new health configurations from user
     """
-    form=dietform(request.form)
+   form=dietform(request.form)
     lst=[]
     if request.method == "POST":
 
-        newhealthrequirements=DataStructures.nutritional_values()
+        newhealthrequirements={}
         newhealthrequirements["calories"]=float(form.Calories.data)
         newhealthrequirements["carbohydrate"]=float(form.Carbs.data)
         newhealthrequirements["protein"]=float(form.Proteins.data)
+        newhealthrequirements["days"]=request.form.get("days")
+        newhealthrequirements["intensity"]=request.form.get("intensity")
+        newhealthrequirements["targetmusclegroup"]=request.form.get("targetmusclegroup")
+
         if(form.fat.data!=None):
             newhealthrequirements["fat"]=float(form.fat.data)
+        else:
+            newhealthrequirements["fat"]=0.0
+
         if(form.Cholesterol.data!=None):
             newhealthrequirements["cholesterol"]=float(form.Cholesterol.data)
+        else:
+            newhealthrequirements["cholesterol"]=0.0
         if(form.Sodium.data!=None):
             newhealthrequirements["sodium"]=float(form.Sodium.data)
+        else:
+            newhealthrequirements["sodium"]=0.0
+
         if(form.Vitamina.data!=None):
             newhealthrequirements["vitamin_a"]=float(form.Vitamina.data)
+        else:
+            newhealthrequirements["vitamin_a"]=0.0
         if(form.Vitaminc.data!=None):
             newhealthrequirements["vitamin_c"]=float(form.Vitaminc.data)
+        else:
+            newhealthrequirements["vitamin_c"]=0.0
+        
         if(form.Calcium.data!=None):
             newhealthrequirements["calcium"]=float(form.Calcium.data)
+        else:
+            newhealthrequirements["calcium"]=0.0
         if(form.fiber.data!=None):
             newhealthrequirements["fiber"]=float(form.fiber.data)
+        else:
+            newhealthrequirements["fiber"]=0.0
+        
         if(form.monounsaturated_fat.data!=None):
             newhealthrequirements["monounsaturated_fat"]=float(form.monounsaturated_fat.data)
+        else:
+            newhealthrequirements["monounsaturated_fat"]=0.0
         if(form.polyunsaturated_fat.data!=None):
             newhealthrequirements["polyunsaturated_fat"]=float(form.polyunsaturated_fat.data)
+        else:
+            newhealthrequirements["polyunsaturated_fat"]=0.0
         if(form.saturated_fat.data!=None):
             newhealthrequirements["saturated_fat"]=float(form.saturated_fat.data)
+        else:
+            newhealthrequirements["saturated_fat"]=0.0
         if(form.sugar.data!=None):
             newhealthrequirements["sugar"]=float(form.sugar.data)
+        else:
+            newhealthrequirements["sugar"]=0.0
         if(form.trans_fat.data!=None):
             newhealthrequirements["trans_fat"]=float(form.trans_fat.data)
+        else:
+            newhealthrequirements["trans_fat"]=0.0
         if(form.Iron.data!=None):
             newhealthrequirements["iron"]=float(form.Iron.data)
+        else:
+            newhealthrequirements["iron"]=0.0
         if(form.Potassium.data!=None):
             newhealthrequirements["potassium"]=float(form.Potassium.data)
+        else:
+            newhealthrequirements["potassium"]=0.0
         
         session["oldhealthrequirements"]=session["currenthealthrequirements"]
         session["newhealthrequirements"]=newhealthrequirements
