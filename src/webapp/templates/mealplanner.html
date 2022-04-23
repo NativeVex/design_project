@@ -6,53 +6,327 @@
      <title>Health Planner</title>
      <link rel="stylesheet" media="screen" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+     <link rel = "stylesheet" href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css">
+     <script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
+     <script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <script>
+      $(function() {
+         $( "#caloriesslider" ).slider({
+            min: 0,
+            max: 1,
+            values: [.2, .6 ],
+            step:.1,
+            slide: function(event, ui) {
+               $( "#caloriesbreakfastamount" ).val(ui.values[0]); //changing calories breakfast amount value
+               $( "#caloriesbreakfastnumber" ).text(ui.values[0]); //changing calories breakfast amount value
+               $( "#calorieslunchamount" ).val(ui.values[1]); //changing calories breakfast amount value
+               $( "#calorieslunchnumber" ).text(ui.values[1]); //changing calories breakfast amount value
 
-  </head>
+            }
+         });
+         $( "#caloriesbreakfastamount" ).val($( "#caloriesslider" ).slider( "values", 0 )); //initial calories breakfastamount value
+         $( "#caloriesbreakfastnumber" ).text($( "#caloriesslider" ).slider( "values", 0 )); //initial calories breakfastamount value
+         $( "#calorieslunchamount" ).val($( "#caloriesslider" ).slider( "values", 1 )); //initial calories lunch value
+         $( "#calorieslunchnumber" ).text($( "#caloriesslider" ).slider( "values", 1 )); //initial calories breakfastamount value
+
+      });
+      $(function() {
+        $( "#carbsslider" ).slider({
+            min: 0,
+            max: 1,
+            values: [.2, .6 ],
+            step:.1,
+            slide: function(event, ui) {
+               $( "#carbsbreakfastamount" ).val(ui.values[0]); //changing calories breakfast amount value
+               $( "#carbsbreakfastnumber" ).text(ui.values[0]); //changing calories breakfast amount value
+               $( "#carbslunchamount" ).val(ui.values[1]); //changing calories breakfast amount value
+               $( "#carbslunchnumber" ).text(ui.values[1]); //changing calories breakfast amount value
+
+            }
+         });
+         $( "#carbsbreakfastamount" ).val($( "#carbsslider" ).slider( "values", 0 )); //initial calories breakfastamount value
+         $( "#carbsbreakfastnumber" ).text($( "#carbsslider" ).slider( "values", 0 )); //initial calories breakfastamount value
+         $( "#carbslunchamount" ).val($( "#carbsslider" ).slider( "values", 1 )); //initial calories lunch value
+         $( "#carbslunchnumber" ).text($( "#carbsslider" ).slider( "values", 1 )); //initial calories breakfastamount value
+
+      });
+      $(function() {
+        $( "#proteinsslider" ).slider({
+            min: 0,
+            max: 1,
+            values: [.2, .6 ],
+            step:.1,
+            slide: function(event, ui) {
+               $( "#proteinsbreakfastamount" ).val(ui.values[0]); //changing calories breakfast amount value
+               $( "#proteinsbreakfastnumber" ).text(ui.values[0]); //changing calories breakfast amount value
+               $( "#proteinslunchamount" ).val(ui.values[1]); //changing calories breakfast amount value
+               $( "#proteinslunchnumber" ).text(ui.values[1]); //changing calories breakfast amount value
+
+            }
+         });
+         $( "#proteinsbreakfastamount" ).val($( "#proteinsslider" ).slider( "values", 0 )); //initial calories breakfastamount value
+         $( "#proteinsbreakfastnumber" ).text($( "#proteinsslider" ).slider( "values", 0 )); //initial calories breakfastamount value
+         $( "#proteinslunchamount" ).val($( "#proteinsslider" ).slider( "values", 1 )); //initial calories lunch value
+         $( "#proteinslunchnumber" ).text($( "#proteinsslider" ).slider( "values", 1 )); //initial calories breakfastamount value
+
+      });
+   </script>
+     </head>
+     
   <style>
     body { background-color:lightblue; } 
-  
-  
-  </style>
+    
+</style>
   <body>
-
+    {% if session.email is defined %}
+    <h2 style="background-color:white;color:black">Hello {{session["email"] }}</h2>
+    {% endif %}
     <br>
-    <div class="row align-items-center justify-content-center">
-    <div class="col-md-4" style="background-color:grey;color:black;border-radius:10px;width:60%">
-      <h1>{{message}}</h1>
-      <form  action="/mealplan" method="POST" role="form" id="formElem">
-        <h1 style="text-align:center;background-color:grey;color:black">Enter your Diet/Nutrition Preferences</h1>
 
+    <div class="row align-items-center justify-content-center">
+      <form action="{{ url_for('saveduserinfo') }}" method="get">
+        <tbody>
+          <tr>
+         <br>
+         <th><input type="submit" name="button" class="btn btn-success" value="View Your Meals/Exercises for the Week"></a></th>
+         </tr>
+       </tbody>
+      </form>
+    <div class="col-md-4" style="background-color:grey;color:black;border-radius:10px;width:60%">
+      <form  action="/mealplan" method="POST" role="form" id="info">
+        {{ form.csrf }}
+        <h1 style="text-align:center;background-color:grey;color:black">Enter your Diet/Nutrition Preferences</h1>
+        <br>
         <div class="form-group">
 
-          <label for="Calories">Calories:</label>
-          <input type="number" class="form-control" id="Calories" name="Calories" placeholder="Calories?">
+          <label for="Calories">{{form.Calories.label}}</label>
+          {{form.Calories()}}
             <br>
-          <label for="Carbs">Carbs:</label>
-          <input type="number" class="form-control" id="Carbs" name="Carbs" placeholder="Carbs?">
+          <label for="Carbs">{{form.Carbs.label}}</label>
+          {{form.Carbs()}}
 	    <br>
-	  <label for="Proteins">Proteins:</label>
-	  <input type="number" class="form-control" id="Proteins" name="Proteins" placeholder="Proteins?">
-	    <br>
-	  <label for="Fibers">Fibers:</label>
-	  <input type="number" class="form-control" id="Fibers" name="Fibers" placeholder="Fibers?">
-    <br> 
-    <label for="Allergies">Allergies:</label>
-    <input type="text" class="form-control" id="Allergies" name="Allergies" placeholder="Allergies?">
-    
+	  <label for="Proteins">{{form.Proteins.label}}</label>
+          {{form.Proteins()}}
+    <br>
+      <div style="display:inline-block">
+        <div style="background-color:white;" onmouseover="myFunction()">Choose other diet requirements</div>
+        <div id="dietdetails" style="display:none;background-color:lightblue;color:black;padding:20px;">
+        <a onclick="showfats()">Fat</a>
+          <a onclick="showcholesterol()">Cholesterol</a>
+          <a onclick="showsodium()">sodium</a>
+          <a onclick="showvitamina()">vitamina</a>
+          <a onclick="showvitaminc()">vitaminc</a>
+          <a onclick="showcalcium()">calcium</a>
+          <a onclick="showfiber()">fiber</a>
+          <a onclick="showmonounsaturated_fat()">monounsaturated fat</a>
+          <a onclick="showpolyunsaturated_fat()">polyunsaturated fat</a>
+          <a onclick="showsaturated_fat()">saturated fat</a>
+          <a onclick="showsugar()">sugar</a>
+          <a onclick="showtrans_fat()">trans fat</a>
+          <a onclick="showiron()">iron</a>
+          <a onclick="showpotassium()">Potassium</a>
+
+
+        </div>
+      </div>
+      <br>
+      <div id="fats" style="display:none;">
+      <label for="fat">{{form.fat.label}}</label>
+      {{form.fat()}}  </div>
+  <br>
+  <div id="cholesterols" style="display:none;">
+    <label for="Proteins">{{form.Cholesterol.label}}</label>
+    {{form.Cholesterol()}}</div>
+<br>
+  <div id="sodiums" style="display:none;">
+    <label for="sodiums">{{form.Sodium.label}}</label>
+    {{form.Sodium()}}</div>
+<br>
+  <div id="vitamina" style="display:none;">
+    <label for="vitamina">{{form.Vitamina.label}}</label>
+    {{form.Vitamina()}}</div>
+<br>
+<div id="vitaminc" style="display:none;">
+  <label for="vitaminc">{{form.Vitaminc.label}}</label>
+  {{form.Vitaminc()}}</div>
+<br>
+  <div id="calciums" style="display:none;">
+    <label for="calcium">{{form.Calcium.label}}</label>
+    {{form.Calcium()}}</div>
+<br>
+  <div id="fiber" style="display:none;">
+    <label for="fiber">{{form.fiber.label}}</label>
+    {{form.fiber()}}</div>
+<br>
+  <div id="monounsaturated_fat" style="display:none;">
+    <label for="monounsaturated_fat">{{form.monounsaturated_fat.label}}</label>
+    {{form.monounsaturated_fat()}}</div>
+<br>
+  <div id="polyunsaturated_fat" style="display:none;">
+    <label for="polyunsaturated_fat">{{form.polyunsaturated_fat.label}}</label>
+    {{form.polyunsaturated_fat()}}</div>
+<br>
+  <div id="irons" style="display:none;">
+    <label for="iron">{{form.Iron.label}}</label>
+    {{form.Iron()}}</div>
+<br>
+  <div id="saturated_fat" style="display:none;">
+    <label for="saturated_fat">{{form.saturated_fat.label}}</label>
+    {{form.saturated_fat()}}</div>
+<br>
+  <div id="sugar" style="display:none;">
+    <label for="sugar">{{form.sugar.label}}</label>
+    {{form.sugar()}}</div>
+<br>
+  <div id="trans_fat" style="display:none;">
+    <label for="trans_fat">{{form.trans_fat.label}}</label>
+  {{form.trans_fat()}}</div>
+<br>
+  <div id="potassiums" style="display:none;">
+    <label for="potassium">{{form.Potassium.label}}</label>
+    {{form.Potassium()}}</div>
+<br>
+<div class="form-group">
+  <label style="font-size:20px">Calories</label>
+  <div style="display:flex;">
+  <h5>First Meal Calories: </h5>
+  <h5  id = "caloriesbreakfastnumber" style="margin-left:5%"
+  ></h5></div>
+  <div style="display:flex;">
+    <h5>Second Meal Calories: </h5>
+    <h5  id = "calorieslunchnumber" style="margin-left:5%"
+    ></h5></div>
+  <input type = "hidden" id = "caloriesbreakfastamount" name="caloriesbreakfastamount">
+  <input type = "hidden" id="calorieslunchamount" name="calorieslunchamount">
+  <br>
+  <br>
+
+  <div style="background-color:black;" id = "caloriesslider"></div>
+  <ul style="display:flex;">
+    <li style="display:inline-block;margin-left:7%;">breakfast</li>
+    <li style="display:inline-block;margin-left:7%;">lunch</li>
+    <li style="display:inline-block;margin-left:10%;">Dinner</li>
+  </ul>
+
+  
+
+  <br>
+  <br>
+  <label style="font-size:20px">Carbs</label>
+  <div style="display:flex;">
+  <h5>First Meal Carbs: </h5>
+  <h5  id = "carbsbreakfastnumber" style="margin-left:5%"
+  ></h5></div>
+  <div style="display:flex;">
+    <h5>Second Meal Carbs: </h5>
+    <h5  id = "carbslunchnumber" style="margin-left:5%"
+    ></h5></div>
+  <input type = "hidden"  id="carbsbreakfastamount" name="carbsbreakfastamount">
+  <input type = "hidden"  id="carbslunchamount" name="carbslunchamount">
+  <br>
+  <br>
+
+  <div style="background-color:black;" id = "carbsslider"></div>
+  <ul style="display:flex;">
+    <li style="display:inline-block;margin-left:7%;">breakfast</li>
+    <li style="display:inline-block;margin-left:7%;">lunch</li>
+    <li style="display:inline-block;margin-left:10%;">Dinner</li>
+  </ul>
+  
+<br>
+<br>
+<label style="font-size:20px">Proteins</label>
+  <div style="display:flex;">
+  <h5>First Meal Proteins: </h5>
+  <h5  id = "proteinsbreakfastnumber" style="margin-left:5%"
+  ></h5></div>
+  <div style="display:flex;">
+    <h5>Second Meal Proteins: </h5>
+    <h5  id = "proteinslunchnumber" style="margin-left:5%"
+    ></h5></div>
+  <input type = "hidden" id="proteinsbreakfastamount" name="proteinsbreakfastamount">
+  <input type = "hidden" id="proteinslunchamount" name="proteinslunchamount">
+  <br>
+  <br>
+  
+
+  <div style="background-color:black;" id = "proteinsslider"></div>
+  <ul style="display:flex;">
+    <li style="display:inline-block;margin-left:7%;">breakfast</li>
+    <li style="display:inline-block;margin-left:7%;">lunch</li>
+    <li style="display:inline-block;margin-left:10%;">Dinner</li>
+  </ul>
+<br>
+<br>
+
+
+</div>
+
+	  
 	</div>
+  <br>
+  <br>
+        <br>
+        
 
         <br>													   
         <center>
-          <button type="submit" id="button" form="formElem">Submit</button>         </center>
+          <button type="submit" id="button" form="info">Submit</button>         </center>
       </form>
 
       <br>
-
+        <script>
+          function showfats() {
+            document.getElementById("fats").style.display="block";
+          }
+          function showcholesterol() {
+            document.getElementById("cholesterols").style.display="block";
+          }
+          function showsodium() {
+            document.getElementById("sodiums").style.display="block";
+          }
+          function showvitamina() {
+            document.getElementById("vitamina").style.display="block";
+          }
+          function showvitaminc() {
+            document.getElementById("vitaminc").style.display="block";
+          }
+          function showcalcium() {
+            document.getElementById("calciums").style.display="block";
+          }
+          function showfiber() {
+            document.getElementById("fiber").style.display="block";
+          }
+          function showpolyunsaturated_fat() {
+            document.getElementById("polyunsaturated_fat").style.display="block";
+          }
+          function showsaturated_fat() {
+            document.getElementById("saturated_fat").style.display="block";
+          }
+          function showiron() {
+            document.getElementById("irons").style.display="block";
+          }
+          function showmonounsaturated_fat() {
+            document.getElementById("monounsaturated_fat").style.display="block";
+          }
+          function showsugar() {
+            document.getElementById("sugar").style.display="block";
+          }
+          function showtrans_fat() {
+            document.getElementById("trans_fat").style.display="block";
+          }
+          function showpotassium() {
+            document.getElementById("potassiums").style.display="block";
+          }
+          function myFunction() {
+            document.getElementById("dietdetails").style.display="block";       
+            }
+                   
+          
+          </script>
       
-
-
-
+    
     </div>
     <br>
   </body>
