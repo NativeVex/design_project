@@ -1,3 +1,6 @@
+from dataclasses import dataclass
+
+
 def utility_webbrowser(html: str):
     import tempfile
     import webbrowser
@@ -10,7 +13,6 @@ def utility_webbrowser(html: str):
 
 # def test_old_UC3_E2E_1(test_client, login_default_user):
 #     """#2px3786
-
 
 #     Given a logged in user, request a mealplan and validate it satisfies your expectations.
 #     """
@@ -52,8 +54,6 @@ def utility_webbrowser(html: str):
 #     # TODO
 #     # 3. Validate data
 
-from dataclasses import dataclass
-
 
 def test_UC3_E2E_1(test_client, login_default_user):
     """#2px3786
@@ -93,7 +93,7 @@ def test_UC3_E2E_1(test_client, login_default_user):
     tbl_items = [
         x for x in [x for x in table[0].children if x != "\n"][0] if x != "\n"
     ][1:]
-    partitioned = [tbl_items[4 * i : 4 * (i + 1)] for i in range(3)]
+    partitioned = [tbl_items[4 * i: 4 * (i + 1)] for i in range(3)]
     dfs = []
     # replaces last index of partitioned with series
     for A in partitioned:
@@ -117,9 +117,11 @@ def test_UC3_E2E_1(test_client, login_default_user):
         "",
         pd.Series(
             [
-                float(data["Calories"]) * float(data["caloriesbreakfastamount"]),
+                float(data["Calories"]) *
+                float(data["caloriesbreakfastamount"]),
                 float(data["Carbs"]) * float(data["carbsbreakfastamount"]),
-                float(data["Proteins"]) * float(data["proteinsbreakfastamount"]),
+                float(data["Proteins"]) *
+                float(data["proteinsbreakfastamount"]),
             ],
             index=["Calories", "Carbs", "Proteins"],
         ),
@@ -139,13 +141,15 @@ def test_UC3_E2E_1(test_client, login_default_user):
     )
 
     derived_calories_dinner: float = 1 - (
-        float(data["calorieslunchamount"]) + float(data["caloriesbreakfastamount"])
+        float(data["calorieslunchamount"]) +
+        float(data["caloriesbreakfastamount"])
     )
     derived_carbs_dinner: float = 1 - (
         float(data["carbslunchamount"]) + float(data["carbsbreakfastamount"])
     )
     derived_proteins_dinner: float = 1 - (
-        float(data["proteinslunchamount"]) + float(data["proteinsbreakfastamount"])
+        float(data["proteinslunchamount"]) +
+        float(data["proteinsbreakfastamount"])
     )
     assert derived_proteins_dinner <= 1 and derived_proteins_dinner >= 0
     assert derived_carbs_dinner <= 1 and derived_carbs_dinner >= 0
@@ -166,15 +170,18 @@ def test_UC3_E2E_1(test_client, login_default_user):
 
     # Breakfast
     Breakfast = Meal(
-        dfs[0][0], dfs[0][1], dfs[0][2], dfs[0][3][["Calories", "Carbs", "Protein"]]
+        dfs[0][0], dfs[0][1], dfs[0][2], dfs[0][3][[
+            "Calories", "Carbs", "Protein"]]
     )
     # Lunch
     Lunch = Meal(
-        dfs[1][0], dfs[1][1], dfs[1][2], dfs[1][3][["Calories", "Carbs", "Protein"]]
+        dfs[1][0], dfs[1][1], dfs[1][2], dfs[1][3][[
+            "Calories", "Carbs", "Protein"]]
     )
     # Dinner
     Dinner = Meal(
-        dfs[2][0], dfs[2][1], dfs[2][2], dfs[2][3][["Calories", "Carbs", "Protein"]]
+        dfs[2][0], dfs[2][1], dfs[2][2], dfs[2][3][[
+            "Calories", "Carbs", "Protein"]]
     )
 
     def _generic_meal_check(Meal, Expected_Meal, scaling_factor):
