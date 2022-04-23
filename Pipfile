@@ -18,6 +18,7 @@ ipython = "*"
 beautifulsoup4 = "*"
 pandas = "*"
 deprecation = "*"
+black = "*"
 
 [requires]
 python_version = "3.9"
