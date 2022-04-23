@@ -17,6 +17,7 @@ pyright = "*"
 ipython = "*"
 beautifulsoup4 = "*"
 pandas = "*"
+deprecation = "*"
 
 [requires]
 python_version = "3.9"
@@ -42,4 +43,5 @@ vgt-port-fwd = "ssh -NTR 8080:localhost:8080 vagrant@localhost"
 vgt-dkr-repl = "vagrant.exe ssh -c 'cd /vagrant && pipenv run dkr-bld && pipenv run dkr-run"
 # FLASK LOCALLY
 flsk=  "pipenv run flask run" # this has been made to work with addition of a .env
-tests = "pytest tests --pdb --pdbcls=IPython.terminal.debugger:Pdb" #--ignore=tests/TODO"
+tests = "pytest tests --pdb --pdbcls=IPython.terminal.debugger:Pdb --ignore=tests/TODO"
+sqlitedbg = "sqlite3 src/webapp/db.sqlite \".tables\" \"\""

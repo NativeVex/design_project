@@ -2,52 +2,46 @@
 import pytest
 from flask import Flask
 
-from webapp.app import app, db
+from webapp.app import create_app, db
+from webapp.models import User
 
 
 @pytest.fixture()
 def test_client():
-    """Universal setup"""
-    flask_app = app
+    """
+    In the future, if we copy paste, can we link our sources? It makes
+    debugging a little more sane.
+    https://testdriven.io/blog/flask-pytest/
+    """
+
+    flask_app = create_app()
 
     # Create a test client using the Flask application configured for testing
     with flask_app.test_client() as testing_client:
         # Establish an application context
         with flask_app.app_context():
             yield testing_client
-
+            db.session.remove()
+            db.drop_all()
 
 @pytest.fixture()
-def init_database(test_client):
-    # Create the database and the database table
-    db.init_app(app)
-    db.create_all(app=app)
-    yield
-    db.drop_all()
+def register_sample_account(test_client, username = "ANYTHING", email = "anything@gmail.com", password = "some"):
+    sample = User(email=email, username=username, password_plaintext=password)
+    db.session.add(sample)
+    db.session.commit()
 
-
-# @pytest.fixture
-# def test_client():
-#     app = Flask(__name__)
-#     app.config.from_pyfile(config_filename)
-
-#     from yourapplication.model import db
-#     db.init_app(app)
-
-#     from yourapplication.views.admin import admin
-#     from yourapplication.views.frontend import frontend
-#     app.register_blueprint(admin)
-#     app.register_blueprint(frontend)
-
-#     return app
+# deleted init_database here b.c. there was functionality being duplicated from
+# setup function
 
 
 @pytest.fixture()
 def login_default_user(test_client):
     test_client.post(
         "/login",
-        data=dict(email="tomliuhyyd@gmail.com", password="qwerty123"),
+        data=dict(email="anything@gmail.com", password="some"),
         follow_redirects=True,
     )
     yield
     test_client.get("/logout", follow_redirects=True)
+
+
