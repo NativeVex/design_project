@@ -1,8 +1,11 @@
 import json
 from datetime import datetime
+from locale import currency
 
 from flask_sqlalchemy import SQLAlchemy
+from regex import D
 from werkzeug.security import check_password_hash, generate_password_hash
+from webapp.data_src import DataStructures
 
 db = SQLAlchemy()
 
@@ -26,8 +29,10 @@ class User(db.Model):
     registered_on = db.Column(db.DateTime)
     mealplan = db.Column(db.String)
     exerciseplan = db.Column(db.String)
+    curr_health_req = db.Column(db.String)
+    old_health_req = db.Column(db.String)
 
-    def __init__(self, email: str, username: str, password_plaintext: str, mealplan = "", exerciseplan = ""):
+    def __init__(self, email: str, username: str, password_plaintext: str, mealplan = "", exerciseplan = "", curr_health_req = "", old_health_req = ""):
         """Create a new User object using the email address and hashing the
         plaintext password using Werkzeug.Security.
         """
@@ -36,6 +41,8 @@ class User(db.Model):
         self.password_hashed = self._generate_password_hash(password_plaintext)
         self.mealplan = mealplan
         self.exerciseplan = exerciseplan
+        self.curr_health_req = curr_health_req
+        self.old_health_req = old_health_req
 
     def is_password_correct(self, password_plaintext: str):
         return check_password_hash(self.password_hashed, password_plaintext)
@@ -84,6 +91,21 @@ class User(db.Model):
         if self.exerciseplan == "":
             return []
         return json.loads(self.exerciseplan)
+
+    def get_curr_health_req(self):
+        if self.curr_health_req == "":
+            return DataStructures.health_requirement()
+        return json.loads(self.curr_health_req)
+
+    def get_old_health_req(self):
+        if self.old_health_req == "":
+            return DataStructures.health_requirement()
+        return json.loads(self.old_health_req)
+
+    def add_health_req(self, health_req):
+        self.old_health_req = self.curr_health_req
+        self.curr_health_req = json.dumps(health_req)
+        return
 
 class Recipes(db.Model):
     __tablename__ = "recipes"

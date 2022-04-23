@@ -1,5 +1,6 @@
 import json
 from cmath import log
+from locale import currency
 from random import randint
 from time import strftime
 
@@ -17,6 +18,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from wtforms import Form, StringField, IntegerField,DecimalField,DecimalRangeField,BooleanField,SelectField,SubmitField, validators
 
 from webapp.data_src import DataStructures
+from webapp.health_req import get_curr_health_req, get_old_health_req, save_health_req
 from webapp.mealplan import MealplanGenerator, get_mealplan,get_recipes_from_db, save_mealplan, add_recipe
 from webapp.exerciseplan import ExerciseplanGenerator, add_exercise_to_db, get_exerciseplan, save_exerciseplan
 
@@ -73,7 +75,6 @@ def login():
     """This function uses a post request to take
     in a username and password entered by the user to login
     and then redirects to the page where users enter their health requirements
-
     """
     if request.method == "POST":
         email = request.form["email"]
@@ -97,7 +98,6 @@ def login():
     """
     message=request.args['message']
     return render_template("login.html",message=message)
-
     """
     return render_template("login.html")
 
@@ -106,7 +106,6 @@ def login():
 def logout():
     """This function logs the user out by removing
     the session username and redirecting to the home login page
-
     """
 
     session.pop("username", None)  # removes session username
@@ -122,85 +121,106 @@ def logout():
     return redirect("/")
 
 
-@app.route("/points/")
-def points():
-    """This function shows a calendar of the points earned by
-    users
-
-    """
-    return render_template("points.html")
 
 @app.route("/changehealthrequirements",methods=["GET","POST"])
 def changehealthrequirements():
     """This function gets current health configurations for the user
-
     """
     form=dietform(request.form)
-    currenthealthrequirements=DataStructures.getcurrenthealthrequirementsfromdb()
-    session["newhealthrequirements"]=currenthealthrequirements
-    session["currenthealthrequirements"]=currenthealthrequirements
-    return render_template("healthrequirements.html",form=form,currenthealthrequirements=currenthealthrequirements)
+    email = session["email"]
 
-@app.route("/getoldhealthrequirements",methods=["GET","POST"])
-def getoldhealthrequirements():
-    """This function gets previous health configurations for the user
+    curr_health_req = get_curr_health_req(email)
 
-    """
-    form=dietform(request.form)
-    currenthealthrequirements=DataStructures.getcurrenthealthrequirementsfromdb()
-    oldhealthrequirements=DataStructures.getoldhealthrequirementsfromdb()
-    session["oldhealthrequirements"]=oldhealthrequirements
+    old_health_req = get_old_health_req(email)
 
-    
-    return render_template("healthrequirements.html",form=form,currenthealthrequirements=currenthealthrequirements,oldhealthrequirements=oldhealthrequirements)
+    return render_template("healthrequirements.html", form = form, curr_health_req = curr_health_req, old_health_req = old_health_req)
+
+
 
 @app.route("/savenewhealthrequirements",methods=["GET","POST"])
 def savenewhealthrequirements():
     """This function saves new health configurations from user
-
     """
     form=dietform(request.form)
-    lst=[]
+    email = session["email"]
+    
     if request.method == "POST":
+        new_health_req = DataStructures.health_requirement()
+        new_health_req["meal_req"]["calories"]=float(form.Calories.data)
+        new_health_req["meal_req"]["carbohydrate"]=float(form.Carbs.data)
+        new_health_req["meal_req"]["protein"]=float(form.Proteins.data)
+        new_health_req["exercise_req"]["days"]=request.form.get("days")
+        new_health_req["exercise_req"]["intensity"]=request.form.get("intensity")
+        new_health_req["exercise_req"]["targetmusclegroup"]=request.form.get("targetmusclegroup")
 
-        newhealthrequirements=DataStructures.nutritional_values()
-        newhealthrequirements["calories"]=float(form.Calories.data)
-        newhealthrequirements["carbohydrate"]=float(form.Carbs.data)
-        newhealthrequirements["protein"]=float(form.Proteins.data)
         if(form.fat.data!=None):
-            newhealthrequirements["fat"]=float(form.fat.data)
+            new_health_req["meal_req"]["fat"]=float(form.fat.data)
+        else:
+            new_health_req["meal_req"]["fat"]=0.0
+
         if(form.Cholesterol.data!=None):
-            newhealthrequirements["cholesterol"]=float(form.Cholesterol.data)
+            new_health_req["meal_req"]["cholesterol"]=float(form.Cholesterol.data)
+        else:
+            new_health_req["meal_req"]["cholesterol"]=0.0
         if(form.Sodium.data!=None):
-            newhealthrequirements["sodium"]=float(form.Sodium.data)
+            new_health_req["meal_req"]["sodium"]=float(form.Sodium.data)
+        else:
+            new_health_req["meal_req"]["sodium"]=0.0
+
         if(form.Vitamina.data!=None):
-            newhealthrequirements["vitamin_a"]=float(form.Vitamina.data)
+            new_health_req["meal_req"]["vitamin_a"]=float(form.Vitamina.data)
+        else:
+            new_health_req["meal_req"]["vitamin_a"]=0.0
         if(form.Vitaminc.data!=None):
-            newhealthrequirements["vitamin_c"]=float(form.Vitaminc.data)
-        if(form.Calcium.data!=None):
-            newhealthrequirements["calcium"]=float(form.Calcium.data)
-        if(form.fiber.data!=None):
-            newhealthrequirements["fiber"]=float(form.fiber.data)
-        if(form.monounsaturated_fat.data!=None):
-            newhealthrequirements["monounsaturated_fat"]=float(form.monounsaturated_fat.data)
-        if(form.polyunsaturated_fat.data!=None):
-            newhealthrequirements["polyunsaturated_fat"]=float(form.polyunsaturated_fat.data)
-        if(form.saturated_fat.data!=None):
-            newhealthrequirements["saturated_fat"]=float(form.saturated_fat.data)
-        if(form.sugar.data!=None):
-            newhealthrequirements["sugar"]=float(form.sugar.data)
-        if(form.trans_fat.data!=None):
-            newhealthrequirements["trans_fat"]=float(form.trans_fat.data)
-        if(form.Iron.data!=None):
-            newhealthrequirements["iron"]=float(form.Iron.data)
-        if(form.Potassium.data!=None):
-            newhealthrequirements["potassium"]=float(form.Potassium.data)
+            new_health_req["meal_req"]["vitamin_c"]=float(form.Vitaminc.data)
+        else:
+            new_health_req["meal_req"]["vitamin_c"]=0.0
         
-        session["oldhealthrequirements"]=session["currenthealthrequirements"]
-        session["newhealthrequirements"]=newhealthrequirements
-        session["currenthealthrequirements"]=newhealthrequirements
+        if(form.Calcium.data!=None):
+            new_health_req["meal_req"]["calcium"]=float(form.Calcium.data)
+        else:
+            new_health_req["meal_req"]["calcium"]=0.0
+        if(form.fiber.data!=None):
+            new_health_req["meal_req"]["fiber"]=float(form.fiber.data)
+        else:
+            new_health_req["meal_req"]["fiber"]=0.0
+        
+        if(form.monounsaturated_fat.data!=None):
+            new_health_req["meal_req"]["monounsaturated_fat"]=float(form.monounsaturated_fat.data)
+        else:
+            new_health_req["meal_req"]["monounsaturated_fat"]=0.0
+        if(form.polyunsaturated_fat.data!=None):
+            new_health_req["meal_req"]["polyunsaturated_fat"]=float(form.polyunsaturated_fat.data)
+        else:
+            new_health_req["meal_req"]["polyunsaturated_fat"]=0.0
+        if(form.saturated_fat.data!=None):
+            new_health_req["meal_req"]["saturated_fat"]=float(form.saturated_fat.data)
+        else:
+            new_health_req["meal_req"]["saturated_fat"]=0.0
+        if(form.sugar.data!=None):
+            new_health_req["meal_req"]["sugar"]=float(form.sugar.data)
+        else:
+            new_health_req["meal_req"]["sugar"]=0.0
+        if(form.trans_fat.data!=None):
+            new_health_req["meal_req"]["trans_fat"]=float(form.trans_fat.data)
+        else:
+            new_health_req["meal_req"]["trans_fat"]=0.0
+        if(form.Iron.data!=None):
+            new_health_req["meal_req"]["iron"]=float(form.Iron.data)
+        else:
+            new_health_req["meal_req"]["iron"]=0.0
+        if(form.Potassium.data!=None):
+            new_health_req["meal_req"]["potassium"]=float(form.Potassium.data)
+        else:
+            new_health_req["meal_req"]["potassium"]=0.0
+        
+        save_health_req(email, new_health_req)
+        
+        curr_health_req = get_curr_health_req(email)
+        old_health_req = get_old_health_req(email)
+        
         message="New health requirements are saved!"
-    return render_template("healthrequirements.html",form=form,newrequirements=session["newhealthrequirements"],message=message)
+    return render_template("healthrequirements.html", form=form, curr_health_req=curr_health_req, old_health_req=old_health_req, message=message)
 
 
 
@@ -209,7 +229,6 @@ def saveduserinfo():
     """This function goes to the saveduserinfo page where
     the user sees their saved meal plan and their saved
     exercise plan
-
     """
     savedmealplan = get_mealplan(session["email"])
     savedexerciseplan = get_exerciseplan(session["email"])
@@ -222,7 +241,6 @@ def signup():
     """This function goes to the signup page where
     the user sees a form where they can sign up using their email,
     username, and password
-
     """
     usersignupform = signupform(request.form)
     if request.method == "POST":
@@ -248,7 +266,6 @@ def signup():
             return redirect(url_for("login"))
             """
               return redirect(url_for('login', message = message))
-
             """
     return render_template("signup.html", form=usersignupform)
 
@@ -257,12 +274,10 @@ def signup():
 def diet():
     """This function goes to the mealplanner page where
     the user sees a form where they can enter their diet requirements
-
     """
     """
     message=request.args['message']
     return render_template("mealplanner.html", message=message)
-
     
     
     """
@@ -275,7 +290,6 @@ def mealplan():
     """This function goes to the mealplans page where
     the user their generated meal plan from their entered
     diet requirements
-
     """
     form = dietform(request.form)
     if request.method == "POST":
@@ -314,56 +328,51 @@ def mealplan():
             jsoninfo["iron"]=float(form.Iron.data)
         if(form.Potassium.data!=None):
             jsoninfo["potassium"]=float(form.Potassium.data)
+        
         caloriesbreakfast = request.form.get("caloriesbreakfastamount")
 
-        # calorieslunch should be (2nd slider val - 1st slider val), like this:
-        calorieslunch = request.form.get("calorieslunchamount") - request.form.get("caloriesbreakfastamount")
-
-        # caloriesdinner should be (1 - 2nd slider val), like this:
-        caloriesdinner = 1 - request.form.get("calorieslunchamount")
-
-        # these checks are not needed
-        if(((float(caloriesbreakfast))+(float(calorieslunch)))<1):
-            caloriesdinner=1-(float(caloriesbreakfast)+float(calorieslunch))
-        elif(((float(caloriesbreakfast))+(float(calorieslunch)))==1):
-            caloriesdinner=0.0
-        else:
-            caloriesdinner=0.0
-
-        # ERROR CHECK for user: if calorieslunch < 0, do not allow submission!!!!!!: like this:
+        firstslidervalue=float(request.form.get("caloriesbreakfastamount"))
+        secondslidervalue=float(request.form.get("calorieslunchamount"))
+        calorieslunch = secondslidervalue - firstslidervalue
         if calorieslunch < 0:
-            # ERROR MESSAGE
-            ...
+            message="Invalid Slider Values, Please Enter Values Again"
+            return render_template("mealplanner.html",form=form,message=message)
+        caloriesdinner = 1 - secondslidervalue
 
         carbsbreakfast = request.form.get("carbsbreakfastamount")
-        carbslunch = request.form.get("carbslunchamount")
-        if(((float(carbsbreakfast))+(float(carbslunch)))<1):
-            carbsdinner=1-(float(carbsbreakfast)+float(carbslunch))
-        elif(((float(carbsbreakfast))+(float(carbslunch)))==1):
-            carbsdinner=0.0
-        else:
-            carbsdinner=0.0
+
+        firstslidervalue2=float(request.form.get("carbsbreakfastamount"))
+        secondslidervalue2=float(request.form.get("carbslunchamount"))
+        carbslunch = secondslidervalue2 - firstslidervalue2
+        if carbslunch < 0:
+            message="Invalid Slider Values, Please Enter Values Again"
+            return render_template("mealplanner.html",form=form,message=message)
+        carbsdinner = 1 - secondslidervalue2
+    
         proteinsbreakfast = request.form.get("proteinsbreakfastamount")
-        proteinslunch = request.form.get("proteinslunchamount")
-        if(((float(proteinsbreakfast))+(float(proteinslunch)))<1):
-            proteinsdinner=1-(float(proteinsbreakfast)+float(proteinslunch))
-        elif(((float(proteinsbreakfast))+(float(proteinslunch)))==1):
-            proteinsdinner=0.0
-        else:
-            proteinsdinner=0.0
+        firstslidervalue3=float(request.form.get("proteinsbreakfastamount"))
+        secondslidervalue3=float(request.form.get("proteinslunchamount"))
+        proteinslunch = secondslidervalue3 - firstslidervalue3
+        if proteinslunch < 0:
+            message="Invalid Slider Values, Please Enter Values Again"
+            return render_template("mealplanner.html",form=form,message=message)
+        proteinsdinner = 1 - secondslidervalue3
+
+
+        
         list1 = [1, 2, 3]
         caloriesarr=[]
         carbsarr=[]
         proteinsarr=[]
-        caloriesarr.append(float(caloriesbreakfast))
-        caloriesarr.append(float(calorieslunch))
-        caloriesarr.append(round(float(caloriesdinner),1))
-        carbsarr.append(float(carbsbreakfast))
-        carbsarr.append(float(carbslunch))
-        carbsarr.append(round(float(carbsdinner),1))
-        proteinsarr.append(float(proteinsbreakfast))
-        proteinsarr.append(float(proteinslunch))
-        proteinsarr.append(round(float(proteinsdinner),1))
+        caloriesarr.append(round(float(caloriesbreakfast),2))
+        caloriesarr.append(round(float(calorieslunch),2))
+        caloriesarr.append(round(float(caloriesdinner),2))
+        carbsarr.append(round(float(carbsbreakfast),2))
+        carbsarr.append(round(float(carbslunch),2))
+        carbsarr.append(round(float(carbsdinner),2))
+        proteinsarr.append(round(float(proteinsbreakfast),2))
+        proteinsarr.append(round(float(proteinslunch),2))
+        proteinsarr.append(round(float(proteinsdinner),2))
 
         jsondata={}
         jsondata['calorie_split']=caloriesarr
@@ -375,7 +384,7 @@ def mealplan():
         mealplan = mpg.gen_meal_plan()
         session["tempmealplan"]=json.loads(mealplan)
         newmeal=json.loads(mealplan)
-        return render_template("mealplans.html",bestmealplan=newmeal,newjsonsplitdata=jsondata,newjsoninfo=jsoninfo)
+        return render_template("mealplans.html",bestmealplan=newmeal)
     elif request.method == "GET":
         return render_template("mealplans.html")
 
@@ -384,7 +393,6 @@ def mealplan():
 def savemealplan():
     """This function goes to the saveduserinfo page where
     the user can see their saved meal plan
-
     """
     email=session["email"]
     mealplan=session["tempmealplan"]
@@ -426,14 +434,10 @@ class exerciseform(Form):
     traps=BooleanField('traps')
 
 
-
-
-
 @app.route("/saveexerciseplan", methods=["GET"])
 def saveexerciseplan():
     """This function takes the generated best meal plan and saves it to
     the userinfo page where they can see their saved meal plan.
-
     """
     session["savedexerciseplan"] = save_exerciseplan(session["email"], session["tempexerciseplan"])
 
@@ -446,7 +450,6 @@ def exerciseplan():
     """This function takes in user input on user's exercise
     requirements and uses a mock function to generate the best exercise
     plan and show it to users
-
     """
     form=exerciseform(request.form)
     if request.method == "POST":
@@ -636,7 +639,7 @@ def addfood():
             newrecipe["number_of_servings"],
             newrecipe["type"]
             )
-        message="food recipe added!"                        
+        message="Food recipe added!"                        
                                     
         return render_template("shoppinglist.html", message2=message)
     
@@ -667,7 +670,7 @@ def addexercise():
             exercisedata["reps"]=int(reps)
         exercisedata["targetmusclegroups"]=selectedtargetmuscles
         add_exercise_to_db(exercisedata["name"],exercisedata["targetmusclegroups"],exercisedata["level"],exercisedata["sets"],exercisedata["reps"])    
-        message="exercise added!"                                            #add exercise to database
+        message="Exercise added!"                                            #add exercise to database
         return render_template("shoppinglist.html", message=message)
 
 
@@ -693,7 +696,6 @@ def listitems():
 def exercises():
     """This function shows the exercise requirements form
     to users where they can enter their exercise requirements
-
     """
     otherform = exerciseform(request.form)
 

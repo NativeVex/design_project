@@ -36,3 +36,9 @@ class DataStructures:
         skeleton = json.loads(
                 '{"days":{"Sunday":false, "Monday":false, "Tuesday":false,"Wednesday":false,"Thursday":false,"Friday":false,"Saturday":false},"targetmusclegroups":[],"level":0}')
         return skeleton
+
+    def health_requirement():
+        skeleton = json.loads('{"meal_req":"", "exercise_req":""}')
+        skeleton["meal_req"] = DataStructures.nutritional_values()
+        skeleton["exercise_req"] = DataStructures.exercise_reqs()
+        return skeleton

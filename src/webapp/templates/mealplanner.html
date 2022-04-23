@@ -16,7 +16,7 @@
             min: 0,
             max: 1,
             values: [.2, .6 ],
-            step:.1,
+            step:.05,
             slide: function(event, ui) {
                $( "#caloriesbreakfastamount" ).val(ui.values[0]); //changing calories breakfast amount value
                $( "#caloriesbreakfastnumber" ).text(ui.values[0]); //changing calories breakfast amount value
@@ -36,7 +36,7 @@
             min: 0,
             max: 1,
             values: [.2, .6 ],
-            step:.1,
+            step:.05,
             slide: function(event, ui) {
                $( "#carbsbreakfastamount" ).val(ui.values[0]); //changing calories breakfast amount value
                $( "#carbsbreakfastnumber" ).text(ui.values[0]); //changing calories breakfast amount value
@@ -56,7 +56,7 @@
             min: 0,
             max: 1,
             values: [.2, .6 ],
-            step:.1,
+            step:.05,
             slide: function(event, ui) {
                $( "#proteinsbreakfastamount" ).val(ui.values[0]); //changing calories breakfast amount value
                $( "#proteinsbreakfastnumber" ).text(ui.values[0]); //changing calories breakfast amount value
@@ -79,13 +79,30 @@
     
 </style>
   <body>
-    {% if session.name %}
-    <h2 style="background-color:white;color:black">Hello {{session["name"] }}</h2>
+    {% if session.email is defined %}
+    <h2 style="background-color:white;color:black">Hello {{session["email"] }}</h2>
     {% endif %}
     <br>
+    <h2>{{message}}</h2>
     <div class="my-js-slider"></div>
+    <form action="{{ url_for('changehealthrequirements') }}" method="get">
+      <tbody>
+         <tr>
+        <br>
+        <th><input type="submit" name="button" class="btn btn-success" value="Change Health Requirements"></a></th>
+        </tr>
+      </tbody>
+  </form>
 
     <div class="row align-items-center justify-content-center">
+      <form action="{{ url_for('saveduserinfo') }}" method="get">
+        <tbody>
+          <tr>
+         <br>
+         <th><input type="submit" name="button" class="btn btn-success" value="View Your Meals/Exercises for the Week"></a></th>
+         </tr>
+       </tbody>
+      </form>
     <div class="col-md-4" style="background-color:grey;color:black;border-radius:10px;width:60%">
       <form  action="/mealplan" method="POST" role="form" id="info">
         {{ form.csrf }}
@@ -269,52 +286,7 @@
       </form>
 
       <br>
-      <script>
-        (function () {
-            'use strict';
-            var init = function () {                
-                var caloriesslider = new rSlider({
-                    target: '#caloriesslider',
-                    values: {min: 0, max: 100},
-                    step: 10,
-                    set: [20, 60],
-                    scale: true,
-                    labels: false,
-                    onChange: function (vals) {
-                        document.getElementById("caloriesvalues").innerHTML=caloriesslider.getValue();
-                    }
-                });
-                var carbsslider = new rSlider({
-                    target: '#carbsslider',
-                    values: {min: 0, max: 100},
-                    step: 10,
-                    range: true,
-                    set: [20, 60],
-                    scale: true,
-                    labels: false,
-                    onChange: function (vals) {
-                        document.getElementById("carbsvalues").innerHTML=carbsslider.getValue();
-                    }
-                });
-                var proteinsslider = new rSlider({
-                    target: '#proteinsslider',
-                    values: {min: 0, max: 100},
-                    step: 10,
-                    range: true,
-                    set: [20, 60],
-                    scale: true,
-                    labels: false,
-                    onChange: function (vals) {
-                        document.getElementById("proteinsvalues").innerHTML=proteinsslider.getValue();
-                    }
-                });
-
-            };
-            window.onload = init;
-        })();
-
-        
-        </script>
+      
         <script>
           function showfats() {
             document.getElementById("fats").style.display="block";
