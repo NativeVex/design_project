@@ -76,17 +76,21 @@ def test_UC3_E2E_1(test_client, login_default_user):
     assert b"Personal Meal Plan Recommendations" in response.data
     assert response.status_code == 200
 
-    from bs4 import BeautifulSoup
     import pandas as pd
+    from bs4 import BeautifulSoup
 
-    soup = BeautifulSoup(response.data, 'html.parser')
-    table = soup.find_all('table')
-    tbl_items = [x for x in [x for x in table[0].children if x != '\n'][0] if x != '\n'][1:]
-    partitioned = [tbl_items[4*i:4*(i+1)] for i in range(3)]
+    soup = BeautifulSoup(response.data, "html.parser")
+    table = soup.find_all("table")
+    tbl_items = [
+        x for x in [x for x in table[0].children if x != "\n"][0] if x != "\n"
+    ][1:]
+    partitioned = [tbl_items[4 * i: 4 * (i + 1)] for i in range(3)]
     dfs = []
     # replaces last index of partitioned with series
     for A in partitioned:
-        whitespace_fix = [x.strip().split(':') for x in A[-1].text.split('\n') if x.strip() != '']
+        whitespace_fix = [
+            x.strip().split(":") for x in A[-1].text.split("\n") if x.strip() != ""
+        ]
         df = (pd.DataFrame(whitespace_fix).set_index(0))[1]
         dfs.append([*A[:-1], df])
 

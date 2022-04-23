@@ -26,8 +26,9 @@ def test_login_success(test_client, register_sample_account):
     assert response.status_code == 200
     assert b"Enter your Diet/Nutrition Preferences" in response.data
 
-#@pytest.mark.xfail(reason="testing that unregistered account login will fail")
-#@pytest.mark.skip(reason="Appears that users table doesn't exist... Need to investigate")
+
+# @pytest.mark.xfail(reason="testing that unregistered account login will fail")
+# @pytest.mark.skip(reason="Appears that users table doesn't exist... Need to investigate")
 def test_login_failed(test_client, register_sample_account):
     """
     GIVEN a Flask application configured for testing
@@ -35,11 +36,10 @@ def test_login_failed(test_client, register_sample_account):
     THEN check that the response is valid
 
     This test requires the database table users to exist. The
-    register_sample_account fixture ensures that this happens. 
+    register_sample_account fixture ensures that this happens.
     """
-    response = test_client.post("/",
-                                data=dict(email="any@gmail.com",
-                                          password="notsome"),
-                                follow_redirects=True)
+    response = test_client.post(
+        "/", data=dict(email="any@gmail.com", password="notsome"), follow_redirects=True
+    )
     assert response.status_code == 200
     assert b"Please check your login details and try again." in response.data

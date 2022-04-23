@@ -24,11 +24,15 @@ def test_client():
             db.session.remove()
             db.drop_all()
 
+
 @pytest.fixture()
-def register_sample_account(test_client, username = "ANYTHING", email = "anything@gmail.com", password = "some"):
+def register_sample_account(
+    test_client, username="ANYTHING", email="anything@gmail.com", password="some"
+):
     sample = User(email=email, username=username, password_plaintext=password)
     db.session.add(sample)
     db.session.commit()
+
 
 # deleted init_database here b.c. there was functionality being duplicated from
 # setup function
@@ -43,5 +47,3 @@ def login_default_user(test_client):
     )
     yield
     test_client.get("/logout", follow_redirects=True)
-
-

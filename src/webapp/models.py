@@ -27,11 +27,7 @@ class User(db.Model):
     registered_on = db.Column(db.DateTime)
     mealplan = db.Column(db.String)
 
-    def __init__(self,
-                 email: str,
-                 username: str,
-                 password_plaintext: str,
-                 mealplan=""):
+    def __init__(self, email: str, username: str, password_plaintext: str, mealplan=""):
         """Create a new User object using the email address and hashing the
         plaintext password using Werkzeug.Security.
         """
@@ -176,9 +172,11 @@ class Recipes(db.Model):
         self.fiber = data_dict["nutritional_values"]["fiber"]
         self.iron = data_dict["nutritional_values"]["iron"]
         self.monounsaturated_fat = data_dict["nutritional_values"][
-            "monounsaturated_fat"]
+            "monounsaturated_fat"
+        ]
         self.polyunsaturated_fat = data_dict["nutritional_values"][
-            "polyunsaturated_fat"]
+            "polyunsaturated_fat"
+        ]
         self.potassium = data_dict["nutritional_values"]["potassium"]
         self.calcium = data_dict["nutritional_values"]["calcium"]
         self.saturated_fat = data_dict["nutritional_values"]["saturated_fat"]

@@ -8,8 +8,7 @@ def test_signup(test_client, init_database):
     response = test_client.post(
         "/signup/",
         data=dict(email="anyone@gmail.com",
-                  username="newuser",
-                  password="some"),
+                  username="newuser", password="some"),
         follow_redirects=True,
     )
 
@@ -27,16 +26,14 @@ def test_dupe_signup(test_client):
     test_client.post(
         "/signup/",
         data=dict(email="anything@gmail.com",
-                  username="newuser",
-                  password="some"),
+                  username="newuser", password="some"),
         follow_redirects=True,
     )
 
     response = test_client.post(
         "/signup/",
         data=dict(email="anything@gmail.com",
-                  username="newuser",
-                  password="some"),
+                  username="newuser", password="some"),
         follow_redirects=True,
     )
     assert response.status_code == 200

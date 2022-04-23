@@ -18,6 +18,7 @@ from webapp.data_src import DataStructures
 from webapp.mealplan import MealplanGenerator, save_mealplan  # get_mealplan,;
 from webapp.models import User, db
 
+
 def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
 
@@ -30,17 +31,17 @@ def create_app(test_config=None):
     db.init_app(app)
     db.create_all(app=app)
 
-
     class signupform(Form):
         email = StringField("Email:", validators=[validators.DataRequired()])
-        username = StringField("Username:", validators=[validators.DataRequired()])
-        password = StringField("Password:", validators=[validators.DataRequired()])
-
+        username = StringField("Username:", validators=[
+                               validators.DataRequired()])
+        password = StringField("Password:", validators=[
+                               validators.DataRequired()])
 
     class loginform(Form):
         email = StringField("Email:", validators=[validators.DataRequired()])
-        password = StringField("Password:", validators=[validators.DataRequired()])
-
+        password = StringField("Password:", validators=[
+                               validators.DataRequired()])
 
     class dietform(Form):
         Calories = DecimalField("Calories:", [validators.InputRequired()])
@@ -48,10 +49,12 @@ def create_app(test_config=None):
         Proteins = DecimalField("Proteins:", [validators.InputRequired()])
         fat = DecimalField("Fat:", [validators.Optional()])
         fiber = DecimalField("Fiber:", [validators.Optional()])
-        monounsaturated_fat = DecimalField("Monosaturated fat:",
-                                           [validators.Optional()])
-        polyunsaturated_fat = DecimalField("Polyunsaturated fat:",
-                                           [validators.Optional()])
+        monounsaturated_fat = DecimalField(
+            "Monosaturated fat:", [validators.Optional()]
+        )
+        polyunsaturated_fat = DecimalField(
+            "Polyunsaturated fat:", [validators.Optional()]
+        )
         saturated_fat = DecimalField("saturated fat:", [validators.Optional()])
         Cholesterol = DecimalField("Cholesterol:", [validators.Optional()])
         sugar = DecimalField("Sugar:", [validators.Optional()])
@@ -62,7 +65,6 @@ def create_app(test_config=None):
         Calcium = DecimalField("Calcium:", [validators.Optional()])
         Iron = DecimalField("Iron:", [validators.Optional()])
         Potassium = DecimalField("Potassium:", [validators.Optional()])
-
 
     @app.route("/", methods=["GET", "POST"])
     def login():
@@ -101,7 +103,6 @@ def create_app(test_config=None):
         """
         return render_template("login.html")
 
-
     @app.route("/logout")
     def logout():
         """This function logs the user out by removing
@@ -120,7 +121,6 @@ def create_app(test_config=None):
         session.pop("savedexerciseplan", None)
         return redirect("/")
 
-
     @app.route("/points/")
     def points():
         """This function shows a calendar of the points earned by
@@ -132,7 +132,6 @@ def create_app(test_config=None):
         - UNLINKED. Not production code.
         """
         return render_template("points.html")
-
 
     @app.route("/signup/", methods=["GET", "POST"])
     def signup():
@@ -151,15 +150,15 @@ def create_app(test_config=None):
             # if this returns a user, then the email already exists in database
             user = User.query.filter_by(email=email).first()
             if (
-                    user
+                user
             ):  # if a user is found, we want to redirect back to signup page so user can try again
                 message = "Email address already exists"
                 return render_template("signup.html", message=message)
             else:
                 # create a new user with the form data.
-                new_user = User(email=email,
-                                username=username,
-                                password_plaintext=password)
+                new_user = User(
+                    email=email, username=username, password_plaintext=password
+                )
 
                 db.session.add(new_user)
                 db.session.commit()
@@ -171,7 +170,6 @@ def create_app(test_config=None):
 
                 """
         return render_template("signup.html", form=usersignupform)
-
 
     @app.route("/saveduserinfo/")
     def saveduserinfo():
@@ -190,7 +188,6 @@ def create_app(test_config=None):
         - Incomplete. Bindings present in template, but no mock.
         """
         return render_template("saveduserinfo.html")
-
 
     @app.route("/diet/", methods=["GET", "POST"])
     def diet():
@@ -213,7 +210,6 @@ def create_app(test_config=None):
         """
         form = dietform(request.form)
         return render_template("mealplanner.html", form=form)
-
 
     @app.route("/mealplan", methods=["GET", "POST"])
     def mealplan():
@@ -271,8 +267,8 @@ def create_app(test_config=None):
             caloriesbreakfast = request.form.get("caloriesbreakfastamount")
             calorieslunch = request.form.get("calorieslunchamount")
             if ((float(caloriesbreakfast)) + (float(calorieslunch))) < 1:
-                caloriesdinner = 1 - (float(caloriesbreakfast) +
-                                      float(calorieslunch))
+                caloriesdinner = 1 - \
+                    (float(caloriesbreakfast) + float(calorieslunch))
             elif ((float(caloriesbreakfast)) + (float(calorieslunch))) == 1:
                 caloriesdinner = 0.0
             else:
@@ -288,8 +284,8 @@ def create_app(test_config=None):
             proteinsbreakfast = request.form.get("proteinsbreakfastamount")
             proteinslunch = request.form.get("proteinslunchamount")
             if ((float(proteinsbreakfast)) + (float(proteinslunch))) < 1:
-                proteinsdinner = 1 - (float(proteinsbreakfast) +
-                                      float(proteinslunch))
+                proteinsdinner = 1 - \
+                    (float(proteinsbreakfast) + float(proteinslunch))
             elif ((float(proteinsbreakfast)) + (float(proteinslunch))) == 1:
                 proteinsdinner = 0.0
             else:
@@ -322,7 +318,6 @@ def create_app(test_config=None):
         elif request.method == "GET":
             return render_template("mealplans.html")
 
-
     @app.route("/savemealplan", methods=["GET"])
     def savemealplan():
         """This function goes to the saveduserinfo page where
@@ -346,7 +341,6 @@ def create_app(test_config=None):
             # replacing single quotes with double quotes to change string to json format
             return redirect(url_for("saveduserinfo"))
 
-
     class exerciseform(Form):
         sunday = BooleanField("Sunday")
         monday = BooleanField("Monday")
@@ -355,8 +349,8 @@ def create_app(test_config=None):
         thursday = BooleanField("Thursday")
         friday = BooleanField("Friday")
         saturday = BooleanField("Saturday")
-        intensity = IntegerField("Intensity:",
-                                 validators=[validators.InputRequired()])
+        intensity = IntegerField("Intensity:", validators=[
+                                 validators.InputRequired()])
         targetmusclegroup = SelectField(
             "Choose Target Muscle Group",
             choices=[
@@ -391,7 +385,6 @@ def create_app(test_config=None):
         cardio = BooleanField("cardio")
         traps = BooleanField("traps")
 
-
     @app.route("/saveexerciseplan", methods=["GET"])
     def saveexerciseplan():
         """This function takes the generated best meal plan and saves it to
@@ -407,7 +400,6 @@ def create_app(test_config=None):
         session["savedexerciseplan"] = session["tempexerciseplan"]
         if request.method == "GET":
             return redirect(url_for("saveduserinfo"))
-
 
     @app.route("/exerciseplan", methods=["GET", "POST"])
     def exerciseplan():
@@ -501,16 +493,15 @@ def create_app(test_config=None):
             session["tempexerciseplan"] = userexerciseplan
             # daysofweek.clear()     may need to empty days of week list for future requests
             # targetmusclegroups.clear()
-            return render_template("exerciseplan.html",
-                                   bestexerciseplan=userexerciseplan)
+            return render_template(
+                "exerciseplan.html", bestexerciseplan=userexerciseplan
+            )
 
         elif request.method == "GET":
             return render_template("exerciseplan.html")
 
-
     class foodsform(Form):
         newfood = StringField("Food:", validators=[validators.DataRequired()])
-
 
     @app.route("/addfood", methods=["GET", "POST"])
     def addfood():
@@ -520,7 +511,8 @@ def create_app(test_config=None):
         """
         if request.method == "POST":
             newrecipename = request.form.get(
-                "newrecipename")  # getting new food recipe to add to database
+                "newrecipename"
+            )  # getting new food recipe to add to database
             newrecipeingredients = request.form.get("newrecipeingredients")
             foodtype = request.form.get("foodtype")
             numberofservings = request.form.get("numberofservings")
@@ -559,7 +551,8 @@ def create_app(test_config=None):
             if fat != None and fat != "":
                 newrecipe["nutritional_values"]["fat"] = float(fat)
             if cholesterol != None and cholesterol != "":
-                newrecipe["nutritional_values"]["cholesterol"] = float(cholesterol)
+                newrecipe["nutritional_values"]["cholesterol"] = float(
+                    cholesterol)
             if sodium != None and sodium != "":
                 newrecipe["nutritional_values"]["sodium"] = float(sodium)
             if vitamina != None and vitamina != "":
@@ -572,10 +565,12 @@ def create_app(test_config=None):
                 newrecipe["nutritional_values"]["fiber"] = float(fiber)
             if monounsaturated_fat != None and monounsaturated_fat != "":
                 newrecipe["nutritional_values"]["monounsaturated_fat"] = float(
-                    monounsaturated_fat)
+                    monounsaturated_fat
+                )
             if polyunsaturated_fat != None and polyunsaturated_fat != "":
                 newrecipe["nutritional_values"]["polyunsaturated_fat"] = float(
-                    polyunsaturated_fat)
+                    polyunsaturated_fat
+                )
             if saturated_fat != None and saturated_fat != "":
                 newrecipe["nutritional_values"]["saturated_fat"] = float(
                     saturated_fat)
@@ -593,7 +588,6 @@ def create_app(test_config=None):
             newrecipe["type"] = foodtype
             # add newfoodrecipe to database
             return render_template("shoppinglist.html", jsonrecipe=newrecipe)
-
 
     @app.route("/addexercise", methods=["GET", "POST"])
     def addexercise():
@@ -629,7 +623,6 @@ def create_app(test_config=None):
                 muscles=selectedtargetmuscles,
             )
 
-
     @app.route("/listitems", methods=["GET", "POST"])
     def listitems():
         """This function takes user input to add a meal plan of recipes to
@@ -637,12 +630,14 @@ def create_app(test_config=None):
 
         """
         if request.method == "POST":
-            mealplan = DataStructures.meal_plan(
+            mealplan = (
+                DataStructures.meal_plan()
             )  # getting new mealplan to add to database
             newfoodname1 = request.form.get("newfoodname1")
             newfoodingredients1 = request.form.get("newfoodingredients1")
             newfooddirections1 = request.form.get("newfooddirections1")
-            newfood1numberofservings = request.form.get("newfood1numberofservings")
+            newfood1numberofservings = request.form.get(
+                "newfood1numberofservings")
             newfood1type = request.form.get("newfood1type")
 
             newfoodcalories1 = request.form.get("Calories1")
@@ -677,11 +672,13 @@ def create_app(test_config=None):
                 newfood1["nutritional_values"]["carbohydrate"] = float(
                     newfoodcarbs1)
             if newfoodproteins1 != None and newfoodproteins1 != "":
-                newfood1["nutritional_values"]["protein"] = float(newfoodproteins1)
+                newfood1["nutritional_values"]["protein"] = float(
+                    newfoodproteins1)
             if fat1 != None and fat1 != "":
                 newfood1["nutritional_values"]["fat"] = float(fat1)
             if cholesterol1 != None and cholesterol1 != "":
-                newfood1["nutritional_values"]["cholesterol"] = float(cholesterol1)
+                newfood1["nutritional_values"]["cholesterol"] = float(
+                    cholesterol1)
             if sodium1 != None and sodium1 != "":
                 newfood1["nutritional_values"]["sodium"] = float(sodium1)
             if vitamina1 != None and vitamina1 != "":
@@ -694,10 +691,12 @@ def create_app(test_config=None):
                 newfood1["nutritional_values"]["fiber"] = float(fiber1)
             if monounsaturated_fat1 != None and monounsaturated_fat1 != "":
                 newfood1["nutritional_values"]["monounsaturated_fat"] = float(
-                    monounsaturated_fat1)
+                    monounsaturated_fat1
+                )
             if polyunsaturated_fat1 != None and polyunsaturated_fat1 != "":
                 newfood1["nutritional_values"]["polyunsaturated_fat"] = float(
-                    polyunsaturated_fat1)
+                    polyunsaturated_fat1
+                )
             if saturated_fat1 != None and saturated_fat1 != "":
                 newfood1["nutritional_values"]["saturated_fat"] = float(
                     saturated_fat1)
@@ -715,7 +714,8 @@ def create_app(test_config=None):
             newfoodname2 = request.form.get("newfoodname2")
             newfoodingredients2 = request.form.get("newfoodingredients2")
             newfooddirections2 = request.form.get("newfooddirections2")
-            newfood2numberofservings = request.form.get("newfood2numberofservings")
+            newfood2numberofservings = request.form.get(
+                "newfood2numberofservings")
             newfood2type = request.form.get("newfood2type")
 
             newfoodcalories2 = request.form.get("Calories2")
@@ -750,11 +750,13 @@ def create_app(test_config=None):
                 newfood2["nutritional_values"]["carbohydrate"] = float(
                     newfoodcarbs2)
             if newfoodproteins2 != None and newfoodproteins2 != "":
-                newfood2["nutritional_values"]["protein"] = float(newfoodproteins2)
+                newfood2["nutritional_values"]["protein"] = float(
+                    newfoodproteins2)
             if fat2 != None and fat2 != "":
                 newfood2["nutritional_values"]["fat"] = float(fat2)
             if cholesterol2 != None and cholesterol2 != "":
-                newfood2["nutritional_values"]["cholesterol"] = float(cholesterol2)
+                newfood2["nutritional_values"]["cholesterol"] = float(
+                    cholesterol2)
             if sodium2 != None and sodium2 != "":
                 newfood2["nutritional_values"]["sodium"] = float(sodium2)
             if vitamina2 != None and vitamina2 != "":
@@ -767,10 +769,12 @@ def create_app(test_config=None):
                 newfood2["nutritional_values"]["fiber"] = float(fiber2)
             if monounsaturated_fat2 != None and monounsaturated_fat2 != "":
                 newfood2["nutritional_values"]["monounsaturated_fat"] = float(
-                    monounsaturated_fat2)
+                    monounsaturated_fat2
+                )
             if polyunsaturated_fat2 != None and polyunsaturated_fat2 != "":
                 newfood2["nutritional_values"]["polyunsaturated_fat"] = float(
-                    polyunsaturated_fat2)
+                    polyunsaturated_fat2
+                )
             if saturated_fat2 != None and saturated_fat2 != "":
                 newfood2["nutritional_values"]["saturated_fat"] = float(
                     saturated_fat2)
@@ -788,7 +792,8 @@ def create_app(test_config=None):
             newfoodname3 = request.form.get("newfoodname3")
             newfoodingredients3 = request.form.get("newfoodingredients3")
             newfooddirections3 = request.form.get("newfooddirections3")
-            newfood3numberofservings = request.form.get("newfood3numberofservings")
+            newfood3numberofservings = request.form.get(
+                "newfood3numberofservings")
             newfood3type = request.form.get("newfood3type")
 
             newfoodcalories3 = request.form.get("Calories3")
@@ -823,11 +828,13 @@ def create_app(test_config=None):
                 newfood3["nutritional_values"]["carbohydrate"] = float(
                     newfoodcarbs3)
             if newfoodproteins3 != None and newfoodproteins3 != "":
-                newfood3["nutritional_values"]["protein"] = float(newfoodproteins3)
+                newfood3["nutritional_values"]["protein"] = float(
+                    newfoodproteins3)
             if fat3 != None and fat3 != "":
                 newfood3["nutritional_values"]["fat"] = float(fat3)
             if cholesterol3 != None and cholesterol3 != "":
-                newfood3["nutritional_values"]["cholesterol"] = float(cholesterol3)
+                newfood3["nutritional_values"]["cholesterol"] = float(
+                    cholesterol3)
             if sodium3 != None and sodium3 != "":
                 newfood3["nutritional_values"]["sodium"] = float(sodium3)
             if vitamina3 != None and vitamina3 != "":
@@ -840,10 +847,12 @@ def create_app(test_config=None):
                 newfood3["nutritional_values"]["fiber"] = float(fiber3)
             if monounsaturated_fat3 != None and monounsaturated_fat3 != "":
                 newfood3["nutritional_values"]["monounsaturated_fat"] = float(
-                    monounsaturated_fat3)
+                    monounsaturated_fat3
+                )
             if polyunsaturated_fat3 != None and polyunsaturated_fat3 != "":
                 newfood3["nutritional_values"]["polyunsaturated_fat"] = float(
-                    polyunsaturated_fat3)
+                    polyunsaturated_fat3
+                )
             if saturated_fat3 != None and saturated_fat3 != "":
                 newfood3["nutritional_values"]["saturated_fat"] = float(
                     saturated_fat3)
@@ -860,7 +869,6 @@ def create_app(test_config=None):
             return render_template("shoppinglist.html", mealplan=mealplan)
         elif request.method == "GET":
             return render_template("shoppinglist.html")
-
 
     @app.route("/exercises/", methods=["GET", "POST"])
     def exercises():
