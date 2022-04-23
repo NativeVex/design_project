@@ -3,7 +3,6 @@ from datetime import datetime
 from locale import currency
 
 from flask_sqlalchemy import SQLAlchemy
-from regex import D
 from werkzeug.security import check_password_hash, generate_password_hash
 from webapp.data_src import DataStructures
 

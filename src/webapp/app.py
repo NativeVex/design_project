@@ -29,8 +29,8 @@ app = Flask(__name__, instance_relative_config=True)
 app.config.from_object(__name__)
 app.config["SECRET_KEY"] = "5e4c0f48eef083bde520ef8027eb12e3f8bafcc763969d58"
 
-# change this URI to postgres in production!!!!
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///db.sqlite"
+
+app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://db:5432/design_project_b23_db?user=root&password=changeme"
 
 db.init_app(app)
 db.create_all(app=app)
