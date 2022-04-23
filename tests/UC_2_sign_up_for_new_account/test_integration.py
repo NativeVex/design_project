@@ -1,4 +1,4 @@
-def test_signup(test_client, init_database):
+def test_signup(test_client):
     """
     GIVEN a Flask application configured for testing
     WHEN the '/signup/' page is posted to (POST) when the user enters signup information
