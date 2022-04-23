@@ -1,11 +1,12 @@
 from webapp.app import db
 from webapp.models import User
 
+
 def test_UC3_E2E_2(test_client, register_sample_account, login_default_user):
     """#2px3bng
 
     Given a logged in user, create a request for a mealplan and validate that
-    it is stored in the db after creation. 
+    it is stored in the db after creation.
     """
 
     data = dict(
@@ -29,7 +30,7 @@ def test_UC3_E2E_2(test_client, register_sample_account, login_default_user):
     assert b"Personal Meal Plan Recommendations" in response.data
     assert response.status_code == 200
 
-    user = db.session.query(User).filter(User.email == "anything@gmail.com").first()
+    user = db.session.query(User).filter(
+        User.email == "anything@gmail.com").first()
     A = user.get_mealplan()
     assert A is not None
-
