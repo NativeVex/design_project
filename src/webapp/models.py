@@ -71,7 +71,7 @@ class User(db.Model):
     def add_mealplan(self, mealplan: str):
         self.mealplan = mealplan
 
-    def get_mealplan(self) -> Union[str, None]:
+    def get_mealplan(self) -> Union[dict, None]:
         if self.mealplan:
             return json.loads(self.mealplan)
         else:
