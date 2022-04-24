@@ -16,7 +16,6 @@ class User(db.Model):
     The following attributes of a user are stored in this table:
         * email - email address of the user
         * hashed password - hashed password (using werkzeug.security)
-        * registered_on - date & time that the user registered
     REMEMBER: Never store the plaintext password in a database!
     """
 
@@ -26,7 +25,6 @@ class User(db.Model):
     email = db.Column(db.String, unique=True)
     username = db.Column(db.String)
     password_hashed = db.Column(db.String(128))
-    registered_on = db.Column(db.DateTime)
     mealplan = db.Column(db.String)
     exerciseplan = db.Column(db.String)
     curr_health_req = db.Column(db.String)

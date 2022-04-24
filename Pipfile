@@ -39,4 +39,4 @@ dkr-rm = "bash -c \"pipenv run dkr-kill && (docker ps -a | awk '{print $1}' | ta
 vgt-hard-reset = "vagrant.exe destroy && vagrant.exe up --provision-with build"
 vgt-port-fwd = "ssh -NTR 8080:localhost:8080 vagrant@localhost"
 vgt-dkr-repl = "vagrant.exe ssh -c 'cd /vagrant && pipenv run dkr-bld && pipenv run dkr-run"
-populate-db = "psql \"postgresql://localhost:5432/design_project_b23_db?user=root&password=changeme\" < postgres.sql"
+populate-db = "psql \"postgresql://localhost:5432/design_project_b23_db?user=root&password=changeme\" < src/webapp/postgres.sql"
