@@ -1,66 +1,160 @@
+import copy
+import fractions
 import itertools
 import json
+import math
 import os
 import random
 import sys
 
+from numpy import poly
+
 from webapp import data_src
 from webapp.data_src import DataStructures
+from webapp.models import Recipes, User, db
 
 
 # TODO: make this actually connect to a DB and pull recipes. Might need to add inputs to do a preliminary filtering of the DB first.
 # Idea for DB source: https://www.fatsecret.com/calories-nutrition/search?q=(encoded string)
 # This returns an array of JSON strings. Do we instead want one giant json string? Good question.
-def get_recipes_from_db():
-    # Hard coded recipes for now
+def get_recipes_from_db(
+    Calories_max=9999,
+    Calories_min=0,
+    Carbs_max=9999,
+    Carbs_min=0,
+    Proteins_max=9999,
+    Proteins_min=0,
+):
     recipes = []
-    recipes.append(
-        '{"name":"Chicken Parm","ingredients":["Chicken","Parmesan"],"nutritional value":{"calories":254.0,"carbs":12.18,"protein":22.83,"fat":12.38,"cholesterol":108.0,"sodium":615.0,"vitaminA":66.0,"vitaminB1":0.0,"vitaminB2":0.0,"vitaminB3":0.0,"vitaminB5":0.0,"vitaminB6":0.0,"vitaminB9":0.0,"vitaminB12":0.0,"vitaminC":4.7,"vitaminD":0.0,"vitaminE":0.0,"vitaminK":0.0,"calcium":145.0,"copper":0.0,"fluoride":0.0,"iodine":0.0,"iron":1.9,"magnesium":0.0,"manganese":0.0,"molybdenum":0.0,"phosphorus":0.0,"potassium":353.0,"selenium":0.0,"zinc":0.0}}'
+
+    queried_recipes = db.session.query(Recipes).filter(
+        Recipes.calories > Calories_min,
+        Recipes.calories < Calories_max,
+        Recipes.carbohydrate > Carbs_min,
+        Recipes.carbohydrate < Carbs_max,
+        Recipes.protein > Proteins_min,
+        Recipes.protein < Proteins_max,
     )
 
-    adobo_chicken = DataStructures.recipe_data()
-    adobo_chicken["name"] = "Adobo Chicken"
-    adobo_chicken["ingredients"] = ["Chicken", "Adobo Sauce"]
-    adobo_chicken["nutritional value"]["calories"] = 107.0
-    adobo_chicken["nutritional value"]["fat"] = 4.93
-    adobo_chicken["nutritional value"]["carbs"] = 2.48
-    adobo_chicken["nutritional value"]["protein"] = 11.88
-    adobo_chicken["nutritional value"]["sodium"] = 392.0
-    adobo_chicken["nutritional value"]["vitaminA"] = 9.0
-    adobo_chicken["nutritional value"]["vitaminC"] = 0.5
-    adobo_chicken["nutritional value"]["calcium"] = 14.0
-    adobo_chicken["nutritional value"]["iron"] = 1.05
-    adobo_chicken["nutritional value"]["potassium"] = 147.0
-    recipes.append(json.dumps(adobo_chicken))
+    for recipe in queried_recipes:
+        skeleton = DataStructures.recipe_data()
+        skeleton["name"] = recipe.name
+        skeleton["ingredients"] = json.loads(recipe.ingredients)
+        skeleton["directions"] = json.loads(recipe.directions)
+        skeleton["nutritional_values"]["calcium"] = recipe.calcium
+        skeleton["nutritional_values"]["calories"] = recipe.calories
+        skeleton["nutritional_values"]["carbohydrate"] = recipe.carbohydrate
+        skeleton["nutritional_values"]["cholesterol"] = recipe.cholesterol
+        skeleton["nutritional_values"]["fat"] = recipe.fat
+        skeleton["nutritional_values"]["fiber"] = recipe.fiber
+        skeleton["nutritional_values"]["iron"] = recipe.iron
+        skeleton["nutritional_values"][
+            "monounsaturated_fat"] = recipe.monounsaturated_fat
+        skeleton["nutritional_values"][
+            "polyunsaturated_fat"] = recipe.polyunsaturated_fat
+        skeleton["nutritional_values"]["potassium"] = recipe.potassium
+        skeleton["nutritional_values"]["protein"] = recipe.protein
+        skeleton["nutritional_values"]["saturated_fat"] = recipe.saturated_fat
+        skeleton["nutritional_values"]["sodium"] = recipe.sodium
+        skeleton["nutritional_values"]["sugar"] = recipe.sugar
+        skeleton["nutritional_values"]["trans_fat"] = recipe.trans_fat
+        skeleton["nutritional_values"]["vitamin_a"] = recipe.vitamin_a
+        skeleton["nutritional_values"]["vitamin_c"] = recipe.vitamin_c
+        skeleton["type"] = json.loads(recipe.type)
+        skeleton["number_of_servings"] = recipe.number_of_servings
+        recipes.append(json.dumps(skeleton))
 
-    ice_cream_sandwich = DataStructures.recipe_data()
-    ice_cream_sandwich["name"] = "Ice Cream Sandwich"
-    ice_cream_sandwich["ingredients"] = ["Ice", "Cream", "Sandwich"]
-    ice_cream_sandwich["nutritional value"]["calories"] = 143.0
-    ice_cream_sandwich["nutritional value"]["fat"] = 5.6
-    ice_cream_sandwich["nutritional value"]["carbs"] = 21.75
-    ice_cream_sandwich["nutritional value"]["protein"] = 2.61
-    ice_cream_sandwich["nutritional value"]["cholesterol"] = 20.0
-    ice_cream_sandwich["nutritional value"]["sodium"] = 37.0
-    ice_cream_sandwich["nutritional value"]["vitaminA"] = 53.0
-    ice_cream_sandwich["nutritional value"]["vitaminC"] = 0.3
-    ice_cream_sandwich["nutritional value"]["calcium"] = 60.0
-    ice_cream_sandwich["nutritional value"]["iron"] = 0.28
-    ice_cream_sandwich["nutritional value"]["potassium"] = 122.0
-    ice_cream_sandwich["nutritional value"]
-    recipes.append(json.dumps(ice_cream_sandwich))
-
-    the_void = DataStructures.recipe_data()
-    the_void["name"] = "The Void"
-    recipes.append(json.dumps(the_void))
     return recipes
+
+
+def save_mealplan(email: str, mealplan):
+    user = db.session.query(User).filter_by(email=email).first()
+
+    if user:
+        user.add_mealplan(mealplan)
+    db.session.add(user)
+    db.session.commit()
+    return mealplan
+
+
+def get_mealplan(email: str):
+    user = db.session.query(User).filter_by(email=email).first()
+
+    if user:
+        mealplan = user.get_mealplan()
+    return mealplan
+
+
+def add_recipe(
+    name: str,
+    directions: list,
+    ingredients: list,
+    calories: float,
+    carbohydrate: float,
+    protein: float,
+    cholesterol=0.0,
+    fat=0.0,
+    fiber=0.0,
+    iron=0.0,
+    monounsaturated_fat=0.0,
+    polyunsaturated_fat=0.0,
+    potassium=0.0,
+    calcium=0.0,
+    saturated_fat=0.0,
+    sodium=0.0,
+    sugar=0.0,
+    trans_fat=0.0,
+    vitamin_a=0.0,
+    vitamin_c=0.0,
+    number_of_servings=0,
+    type=[],
+):
+    skeleton = DataStructures.recipe_data()
+    skeleton["name"] = name
+    skeleton["directions"] = directions
+    skeleton["ingredients"] = ingredients
+    skeleton["nutritional_values"]["calcium"] = calcium
+    skeleton["nutritional_values"]["calories"] = calories
+    skeleton["nutritional_values"]["carbohydrate"] = carbohydrate
+    skeleton["nutritional_values"]["cholesterol"] = cholesterol
+    skeleton["nutritional_values"]["protein"] = protein
+    skeleton["nutritional_values"]["fat"] = fat
+    skeleton["nutritional_values"]["fiber"] = fiber
+    skeleton["nutritional_values"]["iron"] = iron
+    skeleton["nutritional_values"]["monounsaturated_fat"] = monounsaturated_fat
+    skeleton["nutritional_values"]["polyunsaturated_fat"] = polyunsaturated_fat
+    skeleton["nutritional_values"]["potassium"] = potassium
+    skeleton["nutritional_values"]["saturated_fat"] = saturated_fat
+    skeleton["nutritional_values"]["sodium"] = sodium
+    skeleton["nutritional_values"]["sugar"] = sugar
+    skeleton["nutritional_values"]["trans_fat"] = trans_fat
+    skeleton["nutritional_values"]["vitamin_a"] = vitamin_a
+    skeleton["nutritional_values"]["vitamin_c"] = vitamin_c
+    skeleton["number_of_servings"] = number_of_servings
+    skeleton["type"] = type
+
+    db.session.add(Recipes(json.dumps(skeleton)))
+    db.session.commit()
+    return
 
 
 class MealplanGenerator(data_src.DataStructures):
     recipes = []
+    breakfasts = []
+    lunches = []
+    main_dishes = []
+    side_dishes = []
+    snacks = []  # leave for now
     user_health_requirements = None
+    calorie_split = [0.25, 0.25, 0.5]
+    protein_split = [0.25, 0.25, 0.5]
+    carbs_split = [0.25, 0.25, 0.5]
 
-    def __init__(self, json_health_requirements):
+    def __init__(
+        self,
+        json_health_requirements,
+        json_splits='{"calorie_split": [0.25, 0.25, 0.5], "protein_split": [0.25, 0.25, 0.5], "carbs_split": [0.25, 0.25, 0.5]}',
+    ):
         """Plan Meals for Week Usecase
 
         Big paragraph
@@ -69,10 +163,28 @@ class MealplanGenerator(data_src.DataStructures):
 
         queries recipes from DB
         """
+        # Can be done in get_recipes_from_db()
         json_recipes = get_recipes_from_db()
         for i in json_recipes:
-            self.recipes.append(json.loads(i))
+            j = json.loads(i)
+            self.recipes.append(j)
+            for k in j["type"]:
+                if k == "Breakfast":
+                    self.breakfasts.append(j)
+                if k == "Lunch":
+                    self.lunches.append(j)
+                if k == "Main Dish":
+                    self.main_dishes.append(j)
+                if k == "Side Dish":
+                    self.side_dishes.append(j)
+                if k == "Snack":
+                    self.snacks.append(j)
+
         self.user_health_requirements = json.loads(json_health_requirements)
+        splits = json.loads(json_splits)
+        calorie_split = splits["calorie_split"]
+        protein_split = splits["protein_split"]
+        carbs_split = splits["carbs_split"]
 
     def _sum_nutritional_values(self, n1, n2):
         """Adds two nutritional value datastructures
@@ -104,6 +216,21 @@ class MealplanGenerator(data_src.DataStructures):
             n3[i] -= n2[i]
         return n3
 
+    def _mul_nutritional_values(self, n1, n2):
+        """Multiply a nutritional value datastructure by a scalar value
+
+        This function multiplies all values in a dict containing nutritional values by a scalar value
+        Paramaters:
+        n1 (dict): nutritional values
+        n2 (int/float): scalar to multipy by
+        Returns:
+        dict: n1*n2
+        """
+        n3 = dict(n1)
+        for i in n1:
+            n3[i] *= n2
+        return n3
+
     def _calculate_meal_plan_nutrition(self, recipes):
         """Calculates the total nutrition of a mealplan
 
@@ -116,52 +243,208 @@ class MealplanGenerator(data_src.DataStructures):
         nutrition_data = DataStructures.nutritional_values()
         for i in recipes:
             nutrition_data = self._sum_nutritional_values(
-                nutrition_data, i["nutritional value"])
+                nutrition_data, i["nutritional_values"])
         return nutrition_data
 
     def _meal_plan_RSS(self, health_requirements, meal_plan):
         """Calculates the RSS for a mealplan wrt health reqs
-
         Calculates the RSS (residual sum of squares) for a mealplan with regards to health requirements
+        """
+        RSS = 0
+        for i in meal_plan:
+            RSS += self._recipe_RSS(health_requirements, i)
+        RSS /= len(meal_plan)
+        return RSS
+
+    def _recipe_RSS(self, health_requirements, recipe_data):
+        """Calculates the RSS for a recipe wrt health reqs
+        Calculates the RSS (residual sum of squares) for a recipe with regards to health requirements
+        """
+        return self._nutritional_values_RSS(health_requirements,
+                                            recipe_data["nutritional_values"])
+
+    def _nutritional_values_RSS(self, health_requirements, nutritional_values):
+        """Calculates the RSS for a set of nutritional values wrt health reqs
+        Calculates the RSS (residual sum of squares) for a set of nutritional values with regards to health requirements
         """
         # TODO: data scaling; otherwise an error in calories will matter a lot more than an error in vitamin A
         RSS = 0
-        for i in meal_plan:
-            offset = self._diff_nutritional_values(health_requirements,
-                                                   i["nutritional value"])
-            for j in offset:
-                RSS += offset[j]**2
-        return RSS
-        # if we want some randomness so it doesn't always spit out the same meal plan we can uncomment and/or change the following line
-        # RSS += random.random() * 2
+        offset = self._diff_nutritional_values(health_requirements,
+                                               nutritional_values)
+        for j in offset:
+            RSS += offset[j]**2
+        return RSS / len(nutritional_values)
+
+    def _balance_health_requirements(self, calorie_split, protein_split,
+                                     carbs_split, health_requirements):
+        hr_breakfast = self._mul_nutritional_values(health_requirements,
+                                                    carbs_split[0])
+        hr_lunch = self._mul_nutritional_values(health_requirements,
+                                                carbs_split[1])
+        hr_dinner = self._mul_nutritional_values(health_requirements,
+                                                 carbs_split[2])
+        avg_split = [
+            (calorie_split[0] + protein_split[0] + carbs_split[0]) / 3,
+            (calorie_split[1] + protein_split[1] + carbs_split[1]) / 3,
+            (calorie_split[2] + protein_split[2] + carbs_split[2]) / 3,
+        ]
+
+        hr_breakfast[
+            "calories"] = health_requirements["calories"] * calorie_split[0]
+        hr_breakfast[
+            "protein"] = health_requirements["protein"] * protein_split[0]
+        hr_breakfast["iron"] = health_requirements["iron"] * avg_split[0]
+        hr_breakfast[
+            "vitamin_a"] = health_requirements["vitamin_a"] * avg_split[0]
+        hr_breakfast[
+            "vitamin_c"] = health_requirements["vitamin_c"] * avg_split[0]
+
+        hr_lunch[
+            "calories"] = health_requirements["calories"] * calorie_split[1]
+        hr_lunch["protein"] = health_requirements["protein"] * protein_split[1]
+        hr_lunch["iron"] = health_requirements["iron"] * avg_split[0]
+        hr_lunch["vitamin_a"] = health_requirements["vitamin_a"] * avg_split[0]
+        hr_lunch["vitamin_c"] = health_requirements["vitamin_c"] * avg_split[0]
+
+        hr_dinner[
+            "calories"] = health_requirements["calories"] * calorie_split[2]
+        hr_dinner[
+            "protein"] = health_requirements["protein"] * protein_split[2]
+        hr_dinner["iron"] = health_requirements["iron"] * avg_split[0]
+        hr_dinner[
+            "vitamin_a"] = health_requirements["vitamin_a"] * avg_split[0]
+        hr_dinner[
+            "vitamin_c"] = health_requirements["vitamin_c"] * avg_split[0]
+
+        return hr_breakfast, hr_lunch, hr_dinner
+
+    def _scale_recipe(self, recipe, scale):
+        for idx in range(len(recipe["ingredients"])):
+            i = recipe["ingredients"][idx]
+            str_value = i.split(" ")[0]
+            rest_of_str = i[len(str_value):]
+            fraction = fractions.Fraction(0, 1)
+            if (not str_value.replace(".", "", 1).isdigit()
+                    and not str_value.replace("/", "",
+                                              1).isdigit()):  # not a number
+                continue
+            else:
+                fraction = fractions.Fraction(
+                    str_value)  # works for fractions, decimals, and ints
+                fraction *= scale
+                recipe["ingredients"][idx] = str(fraction) + rest_of_str
+        recipe["number_of_servings"] = float(recipe["number_of_servings"] *
+                                             scale)
 
     # this is the "head" of the code
-    def gen_meal_plan(self) -> DataStructures.meal_plan:
+    def gen_meal_plan(self):
         """Generates a mealplan based on the health requirements that the class was created with
 
-        Creates n choose k different mealplans based on recipes gotten from DB, then calculates the
-        RSS of each of these wrt the user's heatlh requirements. Returns the best mealplan, with the
-        lowest RSS
+        For each of 3 meals, picks the meal option that best matches the user's desired intake for that meal.
+        Put each of the best meals together to generate a mealplan
+
+        TODO: add snacks to lower mealplan RSS
         """
-        best_meal_plan: DataStructures.meal_plan
+        best_meal_plan = [DataStructures.recipe_data() for i in range(4)]
 
-        # n choose k reqs. For this proof of concept n is number of recipes and k is 3. Thus there are
-        # n! / (k!(n-k)!) answers. This is obviously impossible to compute for any significant number of recipes.
-        # Thus, we need to do some form of optimization. Open to suggestions but for now our dataset is small so we can just do this.
+        # TODO
+        # Ability to add arbitrary # of snacks (favor coming at the RSS from the low end? Third slider so they can say how much they wanna snack?)
+        # Ability to deduce which meal should be composed of main + side dish and which meal should be just a lunch
+        # Figure out how to store both servings that recipe makes and how many of those to eat
+        # Eliminate duplicate meals in day (or at least control for them -> total # of servings made == over the course of the week; maybe scale ingredients?)
 
-        # We can assess the quality of a meal plan given the RSS of the meal plan wrt the reqs. With this we can compare
-        # two meal plans and pick the better one.
-        meals_per_meal_plan = 3
-        possible_meal_plans_iterator = itertools.combinations(
-            self.recipes, meals_per_meal_plan)
+        breakfast_reqs, lunch_reqs, dinner_reqs = self._balance_health_requirements(
+            self.calorie_split,
+            self.protein_split,
+            self.carbs_split,
+            self.user_health_requirements,
+        )
 
-        # print all possible meal plans
-        lowest_RSS = 1000000000000
-        for i in possible_meal_plans_iterator:
-            current_meal_plan_RSS = self._meal_plan_RSS(
-                self.user_health_requirements, i)
-            if current_meal_plan_RSS < lowest_RSS:
-                lowest_RSS = current_meal_plan_RSS
-                best_meal_plan = i
+        lowest_RSS = math.inf
+        for i in self.breakfasts:
+            for n in range(1, 5):
+                cur_RSS = self._nutritional_values_RSS(
+                    breakfast_reqs,
+                    self._mul_nutritional_values(i["nutritional_values"], n),
+                )
+                if cur_RSS < lowest_RSS:
+                    lowest_RSS = cur_RSS
+                    self._scale_recipe(
+                        i,
+                        fractions.Fraction(
+                            n, fractions.Fraction(i["number_of_servings"])),
+                    )
+                    i["nutritional_values"] = self._mul_nutritional_values(
+                        i["nutritional_values"], n)
+                    best_meal_plan[0] = i
+
+        lowest_RSS = math.inf
+        for i in self.lunches:
+            for n in range(1, 5):
+                cur_RSS = self._nutritional_values_RSS(
+                    lunch_reqs,
+                    self._mul_nutritional_values(i["nutritional_values"], n))
+                if cur_RSS < lowest_RSS:
+                    lowest_RSS = cur_RSS
+                    self._scale_recipe(
+                        i,
+                        fractions.Fraction(
+                            n, fractions.Fraction(i["number_of_servings"])),
+                    )
+                    i["nutritional_values"] = self._mul_nutritional_values(
+                        i["nutritional_values"], n)
+                    best_meal_plan[1] = i
+
+        lowest_RSS = math.inf
+        for i in self.main_dishes:
+            for j in self.side_dishes:
+                for n in range(1, 5):
+                    cur_RSS = self._nutritional_values_RSS(
+                        dinner_reqs,
+                        self._mul_nutritional_values(
+                            self._sum_nutritional_values(
+                                i["nutritional_values"],
+                                j["nutritional_values"]),
+                            n,
+                        ),
+                    )
+                    if cur_RSS < lowest_RSS:
+                        lowest_RSS = cur_RSS
+                        self._scale_recipe(
+                            i,
+                            fractions.Fraction(
+                                n,
+                                fractions.Fraction(i["number_of_servings"])),
+                        )
+                        self._scale_recipe(
+                            j,
+                            fractions.Fraction(
+                                n,
+                                fractions.Fraction(j["number_of_servings"])),
+                        )
+                        i["nutritional_values"] = self._mul_nutritional_values(
+                            i["nutritional_values"], n)
+                        j["nutritional_values"] = self._mul_nutritional_values(
+                            j["nutritional_values"], n)
+                        best_meal_plan[2] = i
+                        best_meal_plan[3] = j
+
+        missing_nutrition = self._diff_nutritional_values(
+            self.user_health_requirements,
+            self._calculate_meal_plan_nutrition(best_meal_plan),
+        )
+
+        #       best_meal_plan_with_snacks = copy.deepcopy(best_meal_plan)
+        #       while True:
+        #           lowest_RSS = self._nutritional_values_RSS(missing_nutrition, DataStructures.nutritional_values())
+        #           best_snack = None
+        #           for i in self.snacks:
+        #               cur_RSS = self._nutritional_values_RSS(missing_nutrition, i["nutritional_values"])
+        #               if cur_RSS < lowest_RSS: #adding this snack is better
+        #                   best_snack = i
+        #                   lowest_RSS = cur_RSS
+        #           if best_snack == None: #no snacks were better than None
+        #               break
+        #           best_meal_plan_with_snacks.append(best_snack)
 
         return json.dumps(best_meal_plan)

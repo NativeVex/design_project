@@ -1,9 +1,9 @@
 #Grab the latest ubuntu image
-FROM ubuntu:latest
+FROM ubuntu:bionic-20220315
 
 # Install python and pip
 RUN apt update && apt upgrade -y
-RUN apt install -y --no-install-recommends software-properties-common
+RUN apt install -y --no-install-recommends software-properties-common gpg
 RUN add-apt-repository ppa:deadsnakes/ppa
 RUN DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC apt-get -y install tzdata
 RUN apt install -y python3.9 python3.9-distutils curl

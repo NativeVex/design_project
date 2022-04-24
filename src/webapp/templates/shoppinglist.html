@@ -15,62 +15,218 @@
 </style>
 
    <br>
-   <div class="row align-items-center justify-content-center">
+   <div style="text-align:center">
+    <table class="table table-bordered" style="background-color:white;border-color:black">
+   <h2>{{message}}</h2><br>
+   <h2>{{message2}}</h2>
+  </table>
+  </div>
+   <br>
+   <div class="row align-items-center justify-content-center" style="text-align:center;">
+
+  
+
+{{days}}{{intensity}}{{muscles}}
    <div class="col-md-4" style="background-color:grey;color:black;border-radius:10px;width:80%">
-     <form  action="" method="post" role="form">
-       <h1 style="text-align:center;background-color:grey;color:black">Enter your foods for your personal shopping list</h1>
+    <h1 style="text-align:center;background-color:grey;color:black">Add a Exercise, Meal, or Food item</h1>
 
-       <div class="form-group">
+    <form action="/addexercise" method="post" role="form">
+      <label for="newexercise">Add new Exercise</label>
 
-         <label for="newfood">Enter new food:</label>
-         <input type="text" class="form-control" id="newfood" name="newfood" placeholder="newfood?">
-          </div>
-       <br>													   
+      <br>
+      <label for="name">Name</label>
+       <input type="text" id="name" name="name" >
+       <br>
+       <label for="intensity">Level</label>
+       <input type="number" id="intensity" name="intensity" >
+       <br>
+       <label for="sets">sets</label>
+       <input type="number" id="sets" name="sets" >
+       <br>
+       <label for="reps">reps</label>
+       <input type="number" id="reps" name="reps" >
+       <br>
+      <input type="checkbox" id="triceps" name="muscles" value="triceps">
+       <label for="triceps">triceps</label><br>
+       <input type="checkbox" id="shoulders" name="muscles" value="shoulders">
+       <label for="shoulders">shoulders</label><br>
+       <input type="checkbox" id="quads" name="muscles" value="quads">
+       <label for="quads">quads</label><br>
+       <input type="checkbox" id="upperback" name="muscles" value="upper back">
+       <label for="upperback">upper back</label><br>
+       <input type="checkbox" id="lowerback" name="muscles" value="lower back">
+       <label for="lowerback">lower back</label><br>
+       <input type="checkbox" id="chest" name="muscles" value="chest">
+       <label for="chest">chest</label><br>
+       <input type="checkbox" id="traps" name="muscles" value="traps">
+       <label for="traps">traps</label><br>
+       <input type="checkbox" id="calves" name="muscles" value="calves">
+       <label for="calves">calves</label><br>
+       <input type="checkbox" id="abs" name="muscles" value="abs">
+       <label for="abs">abs</label><br>
+       <input type="checkbox" id="side abs" name="muscles" value="side abs">
+       <label for="side abs">side abs</label><br>
+       <input type="checkbox" id="cardio" name="muscles" value="cardio">
+       <label for="cardio">cardio</label><br>
+       <input type="checkbox" id="biceps" name="muscles" value="biceps">
+       <label for="biceps">biceps</label><br>
+       <input type="checkbox" id="hamstrings" name="muscles" value="hamstrings">
+       <label for="hamstrings">hamstrings</label><br>
+       <input type="checkbox" id="glutes" name="muscles" value="glutes">
+       <label for="glutes">glutes</label>
+       <!-- <div>
+         <select name="targetmuscledropdown" > 
+           <option value="">Choose Target Muscle Group</option>
+           <option value="back">Back</option>
+           <option value="shoulders">Shoulders</option>
+           <option value="arms">Arms</option>
+           <option value="core">Core</option>
+           <option value="chest">chest</option>
+           <option value="thighs">Thighs</option>
+           <option value="hamstrings">Hamstring</option>
+           <option value="glutess">Glutes</option>
+       </select>
+      </div> -->
+      <br>
+     <button type="submit" class="btn btn-success">Add Exercise</button>
 
-       <center>
-         <button type="submit" class="btn btn-success">Submit</button>
-       </center>
-     </form>
+
+    </form>
+    <br>
+    <form action="/addfood" method="post" role="form">
+      <label for="newfood">Add new Food</label>
+      <input type="text" class="form-control" id="newfood" name="newrecipename" placeholder="Food name?">
+      <input type="text" class="form-control" id="newfood" name="newrecipeingredients" placeholder="Food Ingredients?">
+      <input type="text" class="form-control" id="newfood" name="foodtype" placeholder="Food Type?">
+      <input type="text" class="form-control" id="newfood" name="newrecipedirections" placeholder="Food Directions?">
+
+      <input type="number" class="form-control" step="0.1" id="Calories" min="0" name="newrecipecalories" placeholder="Calories?">
+      <input type="number" class="form-control" step="0.1" id="Carbs" min="0" name="newrecipecarbs" placeholder="Carbs?">
+      <input type="number" class="form-control" step="0.1" id="Proteins" min="0" name="protein" placeholder="Proteins?">
+      <input type="number" class="form-control" step="0.1" id="numberofservings" min="0" name="numberofservings" placeholder="number of servings?">
+
+      <div style="display:inline-block">
+        <div style="background-color:white;" onmouseover="myFunction()">Choose other diet requirements</div>
+        <div id="dietinfo" style="display:none;background-color:lightblue;color:black;padding:20px;">
+        <a onclick="showfats()">Fat</a>
+          <a onclick="showcholesterol()">Cholesterol</a>
+          <a onclick="showsodium()">sodium</a>
+          <a onclick="showvitamina()">vitamina</a>
+          <a onclick="showvitaminc()">vitaminc</a>
+          <a onclick="showcalcium()">calcium</a>
+          <a onclick="showfiber()">fiber</a>
+          <a onclick="showmonounsaturated_fat()">monounsaturated fat</a>
+          <a onclick="showpolyunsaturated_fat()">polyunsaturated fat</a>
+          <a onclick="showsaturated_fat()">saturated fat</a>
+          <a onclick="showsugar()">sugar</a>
+          <a onclick="showtrans_fat()">trans fat</a>
+          <a onclick="showiron()">iron</a>
+          <a onclick="showpotassium()">Potassium</a>
+
+
+        </div>
+      </div>
+      <div id="fats" style="display:none">
+        <input type="number" class="form-control" step="0.1" id="fats" min="0" name="fat" placeholder="fat?">
+      </div>
+      <div id="cholesterols" style="display:none">
+        <input type="number" class="form-control" step="0.1" id="cholesterols" min="0" name="cholesterol" placeholder="cholesterol?">
+      </div>
+      <div id="sodiums" style="display:none">
+        <input type="number" class="form-control" step="0.1" id="sodiums" min="0" name="sodium" placeholder="sodium?">
+      </div>
+      <div id="vitamina" style="display:none">
+        <input type="number" class="form-control" step="0.1" id="vitamina" min="0" name="vitamina" placeholder="vitamin a?">
+      </div>
+      <div id="vitaminc" style="display:none">
+        <input type="number" class="form-control" step="0.1" id="vitaminc" min="0" name="vitaminc" placeholder="vitamin c?">
+      </div>
+      <div id="calciums" style="display:none">
+        <input type="number" class="form-control" step="0.1" id="calciums" min="0" name="calcium" placeholder="calcium?">
+      </div>
+      <div id="fiber" style="display:none">
+        <input type="number" class="form-control" step="0.1" id="fiber" min="0" name="fiber" placeholder="fiber?">
+      </div>
+      <div id="monounsaturated_fat" style="display:none">
+        <input type="number" class="form-control" step="0.1" id="monounsaturated_fat" min="0" name="monounsaturated_fat" placeholder="monounsaturated fat?">
+      </div>
+      <div id="polyunsaturated_fat" style="display:none">
+        <input type="number" class="form-control" step="0.1" id="polyunsaturated_fat" min="0" name="polyunsaturated_fat" placeholder="polyunsaturated fat?">
+      </div>
+      <div id="saturated_fat" style="display:none">
+        <input type="number" class="form-control" step="0.1" id="saturated_fat" min="0" name="saturated_fat" placeholder="saturated fat?">
+      </div>
+      <div id="sugar" style="display:none">
+        <input type="number" class="form-control" step="0.1" id="sugar" min="0" name="sugar" placeholder="sugar?">
+      </div>
+      <div id="trans_fat" style="display:none">
+        <input type="number" class="form-control" step="0.1" id="trans_fat" min="0" name="trans_fat" placeholder="trans fat?">
+      </div>
+      <div id="irons" style="display:none">
+        <input type="number" class="form-control" step="0.1" id="irons" min="0" name="iron" placeholder="iron?">
+      </div>
+      <div id="potassiums" style="display:none">
+        <input type="number" class="form-control" step="0.1" id="potassiums" min="0" name="potassium" placeholder="potassium?">
+      </div>
+      
+      <button type="submit" class="btn btn-success">Add Food Recipe</button>
+
+      </form>
+      <br>
 
      <br>
-     <div class="list-group">
-      <div class="list-group-item ">
-        <div>
-          <h5 class="mb-1">Foods</h5>
-        </div>
-        <p class="mb-1">Recipe</p>
-        </div>
-        <div class="list-group-item ">
-         <div>
-           <h5 class="mb-1">Foods</h5>
-         </div>
-         <p class="mb-1">Recipe</p>
-         </div>
-         <div class="list-group-item ">
-            <div>
-              <h5 class="mb-1">Foods</h5>
-            </div>
-            <p class="mb-1">Recipe</p>
-            </div>
-            <div class="list-group-item">
-               <div>
-                 <h5 class="mb-1">Foods</h5>
-               </div>
-               <p class="mb-1">Recipe</p>
-               </div>
-               <div class="list-group-item ">
-                  <div>
-                    <h5 class="mb-1">Foods</h5>
-                  </div>
-                  <p class="mb-1">Recipe</p>
-                  </div>
-                  <div class="list-group-item ">
-                     <div>
-                       <h5 class="mb-1">Foods</h5>
-                     </div>
-                     <p class="mb-1">Recipe of the food</p>
-                     </div>
-    </div>
+     
+    <script>
+      function showfats() {
+        document.getElementById("fats").style.display="block";
+      }
+      function showcholesterol() {
+        document.getElementById("cholesterols").style.display="block";
+      }
+      function showsodium() {
+        document.getElementById("sodiums").style.display="block";
+      }
+      function showvitamina() {
+        document.getElementById("vitamina").style.display="block";
+      }
+      function showvitaminc() {
+        document.getElementById("vitaminc").style.display="block";
+      }
+      function showcalcium() {
+        document.getElementById("calciums").style.display="block";
+      }
+      function showfiber() {
+        document.getElementById("fiber").style.display="block";
+      }
+      function showpolyunsaturated_fat() {
+        document.getElementById("polyunsaturated_fat").style.display="block";
+      }
+      function showsaturated_fat() {
+        document.getElementById("saturated_fat").style.display="block";
+      }
+      function showiron() {
+        document.getElementById("irons").style.display="block";
+      }
+      function showmonounsaturated_fat() {
+        document.getElementById("monounsaturated_fat").style.display="block";
+      }
+      function showsugar() {
+        document.getElementById("sugar").style.display="block";
+      }
+      function showtrans_fat() {
+        document.getElementById("trans_fat").style.display="block";
+      }
+      function showpotassium() {
+        document.getElementById("potassiums").style.display="block";
+      }
+      function myFunction() {
+        document.getElementById("dietinfo").style.display="block";       
+        }
+        
+      
+      
+      </script>
    </div>
+  </div>
  
 {% endblock %}

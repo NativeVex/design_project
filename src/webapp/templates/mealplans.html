@@ -6,42 +6,84 @@
   
   
   </style>
-    <h1 style="margin-top:10px;text-align:center;background-color:grey;color:black">{% block title %} Personal Meal Plan Recommendations{% endblock %}</h1>
+
+    <h1 style="margin-top:10px;text-align:center;color:black">{% block title %} Personal Meal Plan Recommendations{% endblock %}</h1>
     <div style="width: 50%; margin: auto">
+        
         <form action="/diet/" method="">
             <button name="btn" class="btn-primary btn-lg" type="submit">Generate new mealplan</button>
         </form>    
         {% if bestmealplan is defined %}
 
         <br>
-        <form action="/listitems/" method="">
-            <button name="btn1" class="btn-primary btn-lg" type="submit">Generate Shopping List from mealplan</button>
-        </form>     
-        <div style="padding: 15px; background-color: white; margin: 25px">
-            {% for item in bestmealplan %}
-            Name:<span>{{ item['name'] }}</span>
+            
+            <table class="table table-bordered" style="background-color:white;border-color:black">
+                <tbody>
+                  <tr>
+                    {% for item in bestmealplan %}
+                    <td>Name: {{item['name']}}</td>
+                    <td>Ingredients: {% for food in item['ingredients'] %}
+                      {{food}}
+                      {% endfor %}</td>
+                      <td>Directions: {% for direction in item['directions'] %}
+                        {{direction}}
+                        {% endfor %}</td>
+                    <td>Calories: <span>{{item['nutritional_values']['calories']}}</span>
+                      <br>
+                         Carbs: <span>{{item['nutritional_values']['carbohydrate']}}</span>
+                         <br>
+                         Protein: <span>{{ item['nutritional_values']['protein'] }}</span>
+                      <br>
+                      Fat: <span>{{ item['nutritional_values']['fat'] }}</span>
+                      <br>
+                      Cholesterol: <span>{{ item['nutritional_values']['cholesterol'] }}</span>
+                      <br>
+                      Sodium: <span>{{ item['nutritional_values']['sodium'] }}</span>
+                      <br>
+                      Vitamina: <span>{{ item['nutritional_values']['vitamin_a'] }}</span>
+                      <br>
+                      Vitaminc: <span>{{ item['nutritional_values']['vitamin_c'] }}</span>
+                      <br>
+                      Calcium: <span>{{ item['nutritional_values']['calcium'] }}</span>
+                      <br>
+                      Fiber: <span>{{ item['nutritional_values']['fiber'] }}</span>
+                      <br>
+                      monounsaturated fat: <span>{{ item['nutritional_values']['monounsaturated_fat'] }}</span>
+                      <br>
+                      polyunsaturated fat: <span>{{ item['nutritional_values']['polyunsaturated_fat'] }}</span>
+                      <br>
+                      Iron: <span>{{ item['nutritional_values']['iron'] }}</span>
+                      <br>
+                      saturated fat: <span>{{ item['nutritional_values']['saturated_fat'] }}</span>
+                      <br>
+                      sugar: <span>{{ item['nutritional_values']['sugar'] }}</span>
+                      <br>
+                      trans fat: <span>{{ item['nutritional_values']['trans_fat'] }}</span>
+                      <br>
+                      Potassium: <span>{{ item['nutritional_values']['potassium'] }}</span>
+                      <br>
+                      </td>
+          
+                  </tr>
+          
+                </tbody>
+                {% endfor %}
+
+          
+              </table>
+            
             <br>
-            Ingredients:<span>{{ item['ingredients'] }}</span>
-            <br>
-            Nutritional Values:<span>{{ item['nutritional value'] }}</span>
             <br>
             <br>
-    {% endfor %}
-    <form action="{{ url_for('savemealplan') }}" method="post">
+    <form action="{{ url_for('savemealplan') }}" method="get">
         <tbody>
            <tr>
           <br>
-          <th><input type="text" name="bestmealplan" value='{{ bestmealplan }}' required></th>
           <th><input type="submit" name="button" class="btn btn-success" value="Save Mealplan"></a></th>
           </tr>
         </tbody>
     </form>
-        </div>
-        {% for meal in mealplans %}
-        <div style="padding: 15px; background-color:white; margin: 25px">
-            <p style="font-size: 24px">{{ meal }}</p>
-        </div>
-{% endfor %}
+    
 
 {% endif %}
 
