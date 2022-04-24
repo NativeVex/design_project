@@ -1,6 +1,6 @@
 BEGIN TRANSACTION;
 CREATE TABLE users (
-	id INTEGER NOT NULL, 
+	id SERIAL NOT NULL, 
 	email VARCHAR, 
 	username VARCHAR, 
 	password_hashed VARCHAR(128), 
@@ -12,7 +12,7 @@ CREATE TABLE users (
 	UNIQUE (email)
 );
 CREATE TABLE recipes (
-	id INTEGER NOT NULL, 
+	id SERIAL NOT NULL, 
 	name VARCHAR(100), 
 	directions VARCHAR, 
 	ingredients VARCHAR, 
@@ -723,7 +723,7 @@ INSERT INTO recipes VALUES(683,'Zucchini Muffins','["Preheat oven to 350 \u00b0F
 INSERT INTO recipes VALUES(684,'Zucchini Patties','["Grate zucchini.", "Mix all ingredients in a bowl.", "Add salt and pepper to taste.", "Spray cookie sheet with oil.", "Form into 8 patties.", "Bake at 400 \u00b0F (205 \u00b0C) for 20 minutes on each side."]','["1/4 tsp Italian Italian herb seasoning", "2 tbsps high fiber coconut flour", "2 large eggs", "1/4 cup parmesan cheese, grated", "4 cups zucchini, chopped"]',8.0,98.000000000000000001,6.5999999999999996447,111.0,5.0,2.6000000000000000888,5.0,1.4930000000000001048,0.5080000000000000071,366.0,7.5499999999999998223,2.402000000000000135,153.99999999999999999,2.6400000000000001243,0.0,6.0,22.999999999999999999,4,'"Side Dish"');
 INSERT INTO recipes VALUES(685,'Zucchini Tots','["Preheat oven to 400 \u00b0F (205 \u00b0C).  Spray a mini muffin tin with non-stick spray, set aside.", "Grate the zucchini and place in a dish towel to squeeze out the excess water.", "In a bowl combine the egg, onion, cheese, bread crumbs, zucchini, salt and pepper.", "Spoon mixture into muffin tin.", "Bake 15-18 minutes, or until the top is browned and set.", "Note: instead of a mini muffin tin you can also use a cookie sheet, spooning the mixture on with a tablespoon."]','["1/2 cup panko bread crumbs", "1/4 mozzarella cheese, shredded", "1 large egg", "1/2 large onion", "1 zucchini, grated"]',2.0,90.0,8.3699999999999992184,75.999999999999999999,3.830000000000000071,0.8000000000000000444,3.0,0.64600000000000001865,0.27400000000000002131,166.99999999999999999,5.9900000000000002131,1.705000000000000071,98.000000000000000001,2.25,0.0,3.0,10.0,3,'["Appetizer", "Side Dish", "Snack"]');
 CREATE TABLE exercise (
-	id INTEGER NOT NULL, 
+	id SERIAL NOT NULL, 
 	name VARCHAR, 
 	targetmusclegroups VARCHAR, 
 	level INTEGER, 

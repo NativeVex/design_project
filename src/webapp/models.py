@@ -3,6 +3,7 @@ from datetime import datetime
 from locale import currency
 
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import false
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from webapp.data_src import DataStructures
@@ -16,17 +17,15 @@ class User(db.Model):
     The following attributes of a user are stored in this table:
         * email - email address of the user
         * hashed password - hashed password (using werkzeug.security)
-        * registered_on - date & time that the user registered
     REMEMBER: Never store the plaintext password in a database!
     """
 
     __tablename__ = "users"
 
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True, nullable=False)
     email = db.Column(db.String, unique=True)
     username = db.Column(db.String)
     password_hashed = db.Column(db.String(128))
-    registered_on = db.Column(db.DateTime)
     mealplan = db.Column(db.String)
     exerciseplan = db.Column(db.String)
     curr_health_req = db.Column(db.String)
