@@ -1,12 +1,13 @@
-PRAGMA foreign_keys=OFF;
 BEGIN TRANSACTION;
 CREATE TABLE users (
 	id INTEGER NOT NULL, 
 	email VARCHAR, 
 	username VARCHAR, 
 	password_hashed VARCHAR(128), 
-	registered_on DATETIME, 
 	mealplan VARCHAR, 
+	exerciseplan VARCHAR, 
+	curr_health_req VARCHAR, 
+	old_health_req VARCHAR, 
 	PRIMARY KEY (id), 
 	UNIQUE (email)
 );

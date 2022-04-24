@@ -31,6 +31,7 @@ app.config["SECRET_KEY"] = "5e4c0f48eef083bde520ef8027eb12e3f8bafcc763969d58"
 
 
 app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://db:5432/design_project_b23_db?user=root&password=changeme"
+# app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///db.sqlite"
 
 db.init_app(app)
 db.create_all(app=app)
