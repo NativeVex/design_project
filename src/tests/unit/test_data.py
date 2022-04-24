@@ -12,13 +12,11 @@ from webapp.mealplan import MealplanGenerator
 # Functions to test that a given datastructure is valid
 # Written to be used in other test code
 
-
 # def test_nutritional_values(nv1):
 #     template_nv = DataStructures.nutritional_values()
 #     for i in template_nv:
 #         assert i in nv1
 #         assert type(nv1[i]) == type(template_nv[i])
-
 
 # def test_recipe_data(rd1):
 #     template_rd = DataStructures.recipe_data()
@@ -32,11 +30,9 @@ from webapp.mealplan import MealplanGenerator
 #         assert type(i) == str
 #     test_nutritional_values(rd1["nutritional_values"])
 
-
 # def test_meal_plan(mp):
 #     for i in mp:
 #         test_recipe_data(i)
-
 
 # @pytest.mark.xfail(reason="testing bad nutritional values")
 # class TestBadNVs:
@@ -66,10 +62,8 @@ from webapp.mealplan import MealplanGenerator
 #         assert "vitaminA" in nv2
 #         test_nutritional_values(nv2)
 
-
 # def test_delim1():
 #     pass
-
 
 # @pytest.mark.xfail(reason="testing bad recipe data")
 # class TestBadRDs:
@@ -100,10 +94,8 @@ from webapp.mealplan import MealplanGenerator
 #     def test_good_recipe(rd1, self):
 #         test_recipe_data(rd1)
 
-
 # def test_delim2():
 #     pass
-
 
 # @pytest.mark.xfail(reason="testing bad meal plan")
 # class TestBadMPs:
@@ -122,10 +114,8 @@ from webapp.mealplan import MealplanGenerator
 #     def test_good_meal_plan(self, mp):
 #         test_meal_plan(mp)
 
-
 # def test_delim3():
 #     pass
-
 
 # class TestGoodData:
 

@@ -1,9 +1,9 @@
+import copy
 import itertools
 import json
 import os
 import random
 import sys
-import copy
 
 from webapp import data_src
 from webapp.data_src import DataStructures
@@ -24,7 +24,8 @@ def get_exercises_from_db(
     for exercise in queried_exercises:
         skeleton = DataStructures.exercise()
         skeleton["name"] = exercise.name
-        skeleton["targetmusclegroups"] = json.loads(exercise.targetmusclegroups)
+        skeleton["targetmusclegroups"] = json.loads(
+            exercise.targetmusclegroups)
         skeleton["level"] = exercise.level
         skeleton["sets"] = exercise.sets
         skeleton["reps"] = exercise.reps
@@ -32,10 +33,16 @@ def get_exercises_from_db(
 
     return exercises
 
-def add_exercise_to_db(name: str, targetmusclegroups: list, level=0, sets=0, reps=0):
+
+def add_exercise_to_db(name: str,
+                       targetmusclegroups: list,
+                       level=0,
+                       sets=0,
+                       reps=0):
     db.session.add(Exercise(name, targetmusclegroups, level, sets, reps))
     db.session.commit()
     return
+
 
 def save_exerciseplan(email: str, exerciseplan):
     user = db.session.query(User).filter_by(email=email).first()
@@ -46,6 +53,7 @@ def save_exerciseplan(email: str, exerciseplan):
     db.session.commit()
     return exerciseplan
 
+
 def get_exerciseplan(email: str):
     user = db.session.query(User).filter_by(email=email).first()
 
@@ -53,9 +61,11 @@ def get_exerciseplan(email: str):
         exerciseplan = user.get_exerciseplan()
     return exerciseplan
 
+
 class ExerciseplanGenerator(data_src.DataStructures):
     user_requirements = None
-    exercise_list = [] 
+    exercise_list = []
+
     def __init__(self, json_str):
         """
         Init function
@@ -68,9 +78,9 @@ class ExerciseplanGenerator(data_src.DataStructures):
             self.exercise_list.append(json.loads(i))
         return
 
-    #For each day that the user wants to work out, give them exercises S.T.
-    #every day they do exercises summing to ~3x their level
-    #every day they do at least one exercise that targets every muscle group specified
+    # For each day that the user wants to work out, give them exercises S.T.
+    # every day they do exercises summing to ~3x their level
+    # every day they do at least one exercise that targets every muscle group specified
     def _overlap(self, needed_groups, exercise):
         """
         Check whether an exercise overlaps with the target muscle groups
@@ -104,7 +114,8 @@ class ExerciseplanGenerator(data_src.DataStructures):
         """
         user_exercises = []
         exercise_sum = 0
-        needed_groups = copy.deepcopy(self.user_requirements["targetmusclegroups"])
+        needed_groups = copy.deepcopy(
+            self.user_requirements["targetmusclegroups"])
         exercise_list = copy.deepcopy(self.exercise_list)
         random.shuffle(exercise_list)
         while exercise_sum != (3 * self.user_requirements["level"]):
@@ -112,10 +123,13 @@ class ExerciseplanGenerator(data_src.DataStructures):
             for i in exercise_list:
                 if exercise_sum == 3 * self.user_requirements["level"]:
                     break
-                if i["level"] > self.user_requirements["level"] or i["level"] > ((3 * self.user_requirements["level"]) - exercise_sum):
+                if i["level"] > self.user_requirements["level"] or i[
+                        "level"] > ((3 * self.user_requirements["level"]) -
+                                    exercise_sum):
                     continue
                 if needed_groups == []:
-                    if self._overlap(self.user_requirements["targetmusclegroups"], i):
+                    if self._overlap(
+                            self.user_requirements["targetmusclegroups"], i):
                         user_exercises.append(i)
                         exercise_sum += i["level"]
                         exercise_list.remove(i)
@@ -127,7 +141,8 @@ class ExerciseplanGenerator(data_src.DataStructures):
                             if j in needed_groups:
                                 needed_groups.remove(j)
                         exercise_list.remove(i)
-            if ex_size == len(user_exercises): #no exercises added this entire loop
+            if ex_size == len(
+                    user_exercises):  # no exercises added this entire loop
                 break
         return user_exercises
 

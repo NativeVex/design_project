@@ -4,6 +4,7 @@ from locale import currency
 
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import check_password_hash, generate_password_hash
+
 from webapp.data_src import DataStructures
 
 db = SQLAlchemy()
@@ -31,7 +32,16 @@ class User(db.Model):
     curr_health_req = db.Column(db.String)
     old_health_req = db.Column(db.String)
 
-    def __init__(self, email: str, username: str, password_plaintext: str, mealplan = "", exerciseplan = "", curr_health_req = "", old_health_req = ""):
+    def __init__(
+        self,
+        email: str,
+        username: str,
+        password_plaintext: str,
+        mealplan="",
+        exerciseplan="",
+        curr_health_req="",
+        old_health_req="",
+    ):
         """Create a new User object using the email address and hashing the
         plaintext password using Werkzeug.Security.
         """
@@ -74,7 +84,7 @@ class User(db.Model):
     def get_id(self):
         """Return the user ID as a unicode string (`str`)."""
         return str(self.id)
-    
+
     def add_mealplan(self, mealplan):
         self.mealplan = json.dumps(mealplan)
 
@@ -85,7 +95,7 @@ class User(db.Model):
 
     def add_exerciseplan(self, exerciseplan):
         self.exerciseplan = json.dumps(exerciseplan)
-    
+
     def get_exerciseplan(self):
         if self.exerciseplan == "":
             return []
@@ -105,6 +115,7 @@ class User(db.Model):
         self.old_health_req = self.curr_health_req
         self.curr_health_req = json.dumps(health_req)
         return
+
 
 class Recipes(db.Model):
     __tablename__ = "recipes"
@@ -165,6 +176,7 @@ class Recipes(db.Model):
         """Return the user ID as a unicode string (`str`)."""
         return str(self.id)
 
+
 class Exercise(db.Model):
     __tablename__ = "exercise"
 
@@ -175,11 +187,18 @@ class Exercise(db.Model):
     sets = db.Column(db.Integer)
     reps = db.Column(db.Integer)
 
-    def __init__(self, name="", targetmusclegroups=[], level = 0, sets = 0, reps = 0, json_str = ""):
+    def __init__(self,
+                 name="",
+                 targetmusclegroups=[],
+                 level=0,
+                 sets=0,
+                 reps=0,
+                 json_str=""):
         if json_str != "":
             data_dict = json.loads(json_str)
             self.name = data_dict["name"]
-            self.targetmusclegroups = json.dumps(data_dict["targetmusclegroups"])
+            self.targetmusclegroups = json.dumps(
+                data_dict["targetmusclegroups"])
             self.level = data_dict["level"]
             self.sets = data_dict["sets"]
             self.reps = data_dict["reps"]

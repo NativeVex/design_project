@@ -1,5 +1,7 @@
 import json
+
 from webapp.models import Exercise, db
+
 
 def populate_db(db):
     exercises = []

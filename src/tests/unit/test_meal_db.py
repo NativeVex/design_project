@@ -1,6 +1,8 @@
-from webapp.models import Recipes, db
-from webapp.mealplan import add_recipe, get_recipes_from_db
 import json
+
+from webapp.mealplan import add_recipe, get_recipes_from_db
+from webapp.models import Recipes, db
+
 
 def test_load_recipe_db(init_database_load):
     recipes = get_recipes_from_db()
