@@ -3,6 +3,7 @@ from datetime import datetime
 from locale import currency
 
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import false
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from webapp.data_src import DataStructures
@@ -21,7 +22,7 @@ class User(db.Model):
 
     __tablename__ = "users"
 
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True, nullable=False)
     email = db.Column(db.String, unique=True)
     username = db.Column(db.String)
     password_hashed = db.Column(db.String(128))
