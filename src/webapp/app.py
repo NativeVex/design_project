@@ -3,7 +3,6 @@ from cmath import log
 from locale import currency
 from random import randint
 from time import strftime
-import os
 
 from flask import (
     Flask,
@@ -50,7 +49,8 @@ app = Flask(__name__, instance_relative_config=True)
 app.config.from_object(__name__)
 app.config["SECRET_KEY"] = "5e4c0f48eef083bde520ef8027eb12e3f8bafcc763969d58"
 
-app.config["SQLALCHEMY_DATABASE_URI"] = str(os.environ.get('URI'))
+app.config[
+    "SQLALCHEMY_DATABASE_URI"] = "postgresql://db:5432/design_project_b23_db?user=root&password=changeme"
 # app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///db.sqlite"
 
 db.init_app(app)

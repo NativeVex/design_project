@@ -6,8 +6,6 @@ services:
       - "8080:80"
     depends_on:
       - db
-    environment:
-      - URI=${URI}
   db:
     image: postgres:latest
     restart: always
