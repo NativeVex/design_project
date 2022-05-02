@@ -150,6 +150,12 @@ def logout():
 def changehealthrequirements():
     """This function gets current health configurations for the user"""
     form = dietform(request.form)
+
+#make sure there is a session for the user
+    if "email" not in session:
+        return redirect("/")
+
+
     email = session["email"]
 
     curr_health_req = get_curr_health_req(email)
@@ -269,6 +275,8 @@ def saveduserinfo():
     the user sees their saved meal plan and their saved
     exercise plan
     """
+    if "email" not in session:
+        return redirect(url_for("login"))
     savedmealplan = get_mealplan(session["email"])
     savedexerciseplan = get_exerciseplan(session["email"])
 
